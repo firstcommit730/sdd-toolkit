@@ -1,4 +1,4 @@
-# LLM SDD Toolkit
+# LLM Specification Driven Development Toolkit
 
 Vendor-neutral Specification Driven Development (SDD) workflow toolkit for collaborating with multiple AI coding assistants (currently Amazon Q Developer & GitHub Copilot) using consistent prompts and a spec→plan→tasks→implement loop.
 
@@ -41,6 +41,7 @@ Inspired by and originally derived from the excellent upstream project: [github/
    @plan
    @tasks
    @implement
+   @audit
    ```
 
 ## Workflow Diagrams
@@ -48,32 +49,37 @@ Inspired by and originally derived from the excellent upstream project: [github/
 ### Standard Workflow
 
 ```
-┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐
-│   @specify  │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │
-│             │    │              │    │             │    │             │
-│ Creates     │    │ Generates    │    │ Creates     │    │ Executes    │
-│ spec.md     │    │ design docs  │    │ tasks.md    │    │ code        │
-└─────────────┘    └──────────────┘    └─────────────┘    └─────────────┘
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   @specify  │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
+│             │    │              │    │             │    │             │    │             │
+│ Creates     │    │ Generates    │    │ Creates     │    │ Executes    │    │ Validates   │
+│ spec.md     │    │ design docs  │    │ tasks.md    │    │ code        │    │ quality     │
+└─────────────┘    └──────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### Enhanced Workflow with Reference Folders
+### Enhanced Workflow with Reference Context
 
 ```
-┌───────────────────┐    ┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐
-│ @specify-reference│───▶│   @specify  │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │
-│                   │    │             │    │              │    │             │    │             │
-│ Creates template  │    │ Uses folder │    │ Integrates   │    │ Includes    │    │ Executes    │
-│ in reference/     │    │ context +   │    │ reference    │    │ reference   │    │ code        │
-│                   │    │ creates     │    │ entities &   │    │ edge cases  │    │             │
-│                   │    │ spec.md     │    │ requirements │    │ & scenarios │    │             │
-└───────────────────┘    └─────────────┘    └──────────────┘    └─────────────┘    └─────────────┘
-                               ▲                   ▲                   ▲
-                               │                   │                   │
-                         ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-                         │ Reference   │    │ Reference   │    │ Reference   │
-                         │ Folder      │    │ Folder      │    │ Folder      │
-                         │ Context     │    │ Context     │    │ Context     │
-                         └─────────────┘    └─────────────┘    └─────────────┘
+┌─────────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│    @specify     │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
+│  -ref <folder>  │    │              │    │             │    │             │    │             │
+│                 │    │              │    │             │    │             │    │             │
+│ Loads reference │    │ Uses stored  │    │ Applies     │    │ Executes    │    │ Validates   │
+│ folder ONCE     │    │ Reference    │    │ Reference   │    │ code        │    │ quality     │
+│ Summarizes into │    │ Context from │    │ Context     │    │             │    │             │
+│ spec.md         │    │ spec.md      │    │ patterns    │    │             │    │             │
+└─────────────────┘    └──────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+        │                      │                   │
+        ▼                      │                   │
+┌─────────────────┐            │                   │
+│ Reference       │            │                   │
+│ Context Section │◀───────────┴───────────────────┘
+│ in spec.md      │
+│                 │  • Architecture & Patterns
+│ Stored ONCE,    │  • Code Examples & Interfaces
+│ Used 3x         │  • Configuration & Setup
+│                 │  • Testing Approaches
+└─────────────────┘  • Referenced Files
 ```
 
 ## Example Commands
@@ -85,55 +91,162 @@ Inspired by and originally derived from the excellent upstream project: [github/
 @plan
 @tasks
 @implement
+@audit
 ```
 
-**Enhanced with Reference Folder:**
+**Enhanced with Reference Context:**
 
 ```bash
-# 1. Create reference folder with requirements template
-@specify-reference user-authentication
+# 1. Create reference folder with requirements (optional - can be done once and reused)
+mkdir -p .specify/reference/user-authentication
+# Edit .specify/reference/user-authentication/README.md with requirements
 
-# 2. Edit .specify/reference/user-authentication/README.md with:
-#    - Primary User Story
-#    - Acceptance Scenarios
-#    - Edge Cases
-#    - Functional Requirements
-#    - Key Entities
+# 2. Create specification with reference context
+@specify Add JWT-based user authentication with login/logout -ref user-authentication
 
-# 3. Create specification (automatically loads reference folder)
-@specify Add user authentication ***using user-authentication***
-
-# 4. Generate plan (integrates reference folder entities & requirements)
+# 3. Generate plan (uses Reference Context from spec, no re-loading)
 @plan
 
-# 5. Create tasks (includes reference folder edge cases & scenarios)
+# 4. Create tasks (uses Reference Context from spec, no re-loading)
 @tasks
 
-# 6. Execute implementation
+# 5. Execute implementation
 @implement
+
+# 6. Validate implementation quality
+@audit
 ```
 
-This generates design documents, creates a task list, and implements the feature following your project's constitutional principles. Reference folders in `.specify/reference/` can provide additional context for the entire workflow.
+This generates design documents, creates a task list, and implements the feature following your project's constitutional principles. Reference folders in `.specify/reference/` provide structured context that is loaded once during specification and reused throughout the workflow.
 
-## Reference Folders
+## Reference Context System
 
-Create structured requirement folders in `.specify/reference/[folder-name]/` to enhance your entire workflow:
+The toolkit uses an optimized reference context system that **loads once and reuses**:
 
-- **Specifications** - Predefined user stories, acceptance criteria, edge cases
-- **Planning** - Technical constraints, functional requirements inform design decisions
-- **Tasks** - Additional test scenarios and implementation requirements
+### How It Works
 
-Reference folders are automatically integrated when mentioned in your `@specify` command. Each folder contains a README.md with structured requirements and can include additional supporting files.
+1. **During `@specify -ref <folder>`**:
+
+   - Loads all files from `.specify/reference/<folder>/`
+   - Extracts and categorizes insights:
+     - Architecture & Patterns
+     - Code Examples & Interfaces
+     - Configuration & Setup
+     - Testing Approaches
+   - Stores comprehensive summary in spec.md's **Reference Context** section
+
+2. **During `@plan` and `@tasks`**:
+   - Reads the Reference Context section from spec.md
+   - Uses pre-analyzed insights without re-loading files
+   - 50-70% faster with consistent context across stages
+
+### Benefits
+
+- **Performance**: Files loaded once instead of 3 times (67% reduction)
+- **Consistency**: Single source of truth across all stages
+- **Transparency**: All insights documented and reviewable in spec.md
+- **Efficiency**: Reduced token usage and faster execution
+
+### Creating Reference Folders
+
+Create structured requirement folders to enhance your workflow:
+
+```bash
+# Create folder structure
+mkdir -p .specify/reference/your-domain-name
+
+# Create README.md with requirements
+cat > .specify/reference/your-domain-name/README.md << 'EOF'
+# Your Domain Requirements
+
+## Primary User Story
+As a [user], I want [goal] so that [benefit].
+
+## Acceptance Criteria
+- [ ] Must have: [requirement]
+- [ ] Should have: [requirement]
+
+## Key Entities
+- **Entity1**: fields, relationships
+- **Entity2**: fields, relationships
+
+## Technical Constraints
+- Performance: [requirements]
+- Security: [requirements]
+EOF
+
+# Use in workflow
+@specify Your feature description -ref your-domain-name
+```
 
 ## Available Prompts
 
-- `@audit` - Generate compliance audit and TODO list
-- `@constitution` - Update project constitution with versioning
-- `@specify-reference` - Create reference folder with requirements template
-- `@specify` - Create feature specifications from descriptions (optionally using reference folders)
-- `@plan` - Generate implementation plans and design artifacts
-- `@tasks` - Create dependency-ordered task breakdowns
-- `@implement` - Execute implementation following task plan
+| Prompt          | Purpose                                                        | Usage                                                              |
+| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                    |
+| `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                           |
+| `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -ref <folder>` |
+| `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                            |
+| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                           |
+| `@implement`    | Execute implementation following task plan                     | `@implement`                                                       |
+| `@audit`        | Validate implementation against specification                  | `@audit`                                                           |
+
+### Prompt Details
+
+**Constitution Management**
+
+- Manages project principles and governance
+- Supports semantic versioning (MAJOR.MINOR.PATCH)
+- Validates consistency across templates
+- Generates sync impact reports
+
+**Drift Detection**
+
+- Detects drift between project state and constitutional requirements
+- Identifies gaps and violations
+- Prioritizes drift items by severity (Critical/High/Medium/Low)
+- Includes security drift checks
+- Generates `.specify/specs/CONSTITUTION_DRIFT.md` with realignment tasks
+- Overwrites existing drift report on each run for fresh analysis
+
+**Specification Creation**
+
+- Creates feature branches automatically
+- Supports reference context via `-ref <folder>`
+- Generates structured spec.md with requirements
+- Optimized: Loads reference files once, stores summary
+
+**Implementation Planning**
+
+- Generates multi-phase design artifacts
+- Integrates constitutional requirements
+- Uses Reference Context from spec (no re-loading)
+- Creates: research.md, data-model.md, contracts/, quickstart.md
+
+**Task Generation**
+
+- Dependency-ordered task lists (TDD approach)
+- Marks parallel tasks with [P]
+- Uses Reference Context patterns
+- Phase-based: Setup → Tests → Core → Integration → Polish
+
+**Implementation Execution**
+
+- Executes tasks in dependency order
+- Marks completed tasks as [X]
+- Respects parallel vs sequential constraints
+- Progress tracking and error handling
+
+**Implementation Audit**
+
+- Validates implementation against specification after `@implement`
+- Checks requirements coverage, acceptance criteria, task completion
+- Audits code quality, testing, error handling, and security
+- Calculates compliance metrics (requirements %, task %, test coverage)
+- Identifies issues by severity (Critical/High/Medium/Low)
+- Generates quality scores and production readiness assessment
+- Creates feature-specific `AUDIT.md` in `.specify/specs/<feature>/`
+- Overwrites existing audit report on each run for fresh validation
 
 ## Documentation
 
