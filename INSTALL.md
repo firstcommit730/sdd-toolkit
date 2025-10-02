@@ -181,6 +181,54 @@ rm -rf ~/.aws/amazonq/prompts
 rm -rf .github/prompts
 ```
 
+## Updating to Latest Version
+
+### Update Amazon Q Developer (Global)
+
+Pull the latest prompts and update your global Amazon Q installation:
+
+```bash
+# Update Amazon Q prompts from repository
+cd /tmp && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+rm -rf ~/.aws/amazonq/prompts/*.md && \
+cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+rm -rf ~/.aws/amazonq/.specify && \
+cp -r sdd-llm-toolkit/.specify ~/.aws/amazonq/ && \
+rm -rf sdd-llm-toolkit && \
+echo "✅ Amazon Q prompts updated successfully!"
+```
+
+### Update GitHub Copilot (Project-Local)
+
+Pull the latest prompts and update your project's Copilot installation:
+
+```bash
+# Update GitHub Copilot prompts in current project
+cd /tmp && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+cd - && \
+rm -rf .github/prompts/*.prompt.md && \
+mkdir -p .github/prompts && \
+for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+  cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+done && \
+rm -rf .specify/templates .specify/scripts && \
+cp -r /tmp/sdd-llm-toolkit/.specify/templates .specify/ && \
+cp -r /tmp/sdd-llm-toolkit/.specify/scripts .specify/ && \
+rm -rf /tmp/sdd-llm-toolkit && \
+echo "✅ GitHub Copilot prompts updated successfully!"
+```
+
+**Note:** The update commands will:
+
+- Remove existing prompt files to avoid conflicts
+- Pull the latest version from the repository
+- **Preserve** your `.specify/memory/` directory (constitution and audits)
+- Update `.specify/templates/` and `.specify/scripts/` to the latest versions
+
+**⚠️ Warning:** If you've customized any templates in `.specify/templates/`, back them up before updating, as they will be overwritten.
+
 ## Source Files
 
 Prompt files are located at: `prompts/*.md`
