@@ -15,19 +15,18 @@ The user will provide a feature description and optionally a reference folder fo
 
 ### Steps
 
-0. **Summarize the feature description**: Before running the script, create a concise summary of the feature description that is 80 characters or less. This summary should capture the essential meaning while being suitable for use as a git branch name. Preserve key technical terms and maintain clarity.
+0. **Create a branch name**: Before running the script, create a concise, descriptive name suitable for a git branch that captures the essence of the feature. This name should be clear and meaningful, preserving key technical terms while being suitable for branch naming conventions. The script will automatically process this into a valid git branch name limited to 65 characters.
 
-1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<summarized_description>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
+1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<branch_description>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
-   **NOTE** Branch names are automatically generated from the summarized description (max 65 chars after transformation).
 
-   **Branch Name Generation**: The script automatically generates a git branch name from the summarized feature description by:
+   **Branch Name Generation**: The script automatically generates a git branch name from your description by:
    - Converting the description to lowercase
    - Replacing all non-alphanumeric characters with hyphens
    - Removing consecutive hyphens
    - Trimming leading and trailing hyphens
    - Truncating to a maximum of 65 characters
-   - Example: "High-Value Field Redaction & Structured Context" → "high-value-field-redaction---structured-context"
+   - Example: "High-Value Field Redaction & Structured Context" → "high-value-field-redaction-structured-context" (62 chars)
 
 1.5. **Load Reference Folder (if provided)**: If the user specified a reference folder with `-ref <folder_name>`, check for `.specify/reference/<folder_name>/` and load all files in the folder for additional context about:
 
@@ -64,7 +63,7 @@ Reference folders provide reusable context that enhances @specify, @plan, and @t
 
 ### How to Create a Reference Folder
 
-1. **Summarize folder name**: If the description is long, create a concise summary (80 characters or less) in kebab-case format.
+1. **Create folder name**: Create a concise, descriptive folder name in kebab-case format that represents the domain or feature area.
 
 2. **Check if folder exists**: First check if `.specify/reference/<folder_name>/` already exists
 
