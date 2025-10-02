@@ -2,14 +2,13 @@
 
 A vendor-neutral installation guide for setting up SDD prompts with Amazon Q Developer and GitHub Copilot.
 
-## Quick Install (From GitHub Repository)
+## Quick Install
 
-### Amazon Q Developer Install (Global)
+### Amazon Q Developer (Global Installation)
 
-Pull prompts directly from the repository and install globally for Amazon Q:
+Install prompts and `.specify/` directory globally for Amazon Q Developer. Copy and paste this command:
 
 ```bash
-# Clone the repository to a temporary directory and copy prompts
 mkdir -p ~/.aws/amazonq/prompts && \
 cd /tmp && \
 git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
@@ -19,12 +18,20 @@ rm -rf sdd-llm-toolkit && \
 echo "✅ Amazon Q prompts and .specify directory installed successfully!"
 ```
 
-### GitHub Copilot Install (Project-Local)
+**What this does:**
 
-Pull prompts directly from the repository into your project:
+- Creates `~/.aws/amazonq/prompts/` directory
+- Clones the latest toolkit from GitHub
+- Copies all prompt files (`.md`)
+- Copies the complete `.specify/` directory structure
+- Cleans up temporary files
+- Provides confirmation message
+
+### GitHub Copilot (Project-Local Installation)
+
+Install prompts and `.specify/` directory in your current project. Navigate to your project directory first, then copy and paste this command:
 
 ```bash
-# Clone the repository and copy prompts to your project
 cd /tmp && \
 git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
 cd - && \
@@ -37,21 +44,29 @@ rm -rf /tmp/sdd-llm-toolkit && \
 echo "✅ GitHub Copilot prompts and .specify directory installed successfully!"
 ```
 
+**What this does:**
+
+- Clones the latest toolkit from GitHub
+- Creates `.github/prompts/` directory in your project
+- Copies all prompt files with `.prompt.md` extension (Copilot requirement)
+- Copies the complete `.specify/` directory structure to your project
+- Cleans up temporary files
+- Provides confirmation message
+
 ## Local Install (From Cloned Repository)
 
-If you've already cloned this repository:
+If you've already cloned this repository locally:
 
-### Amazon Q Developer Install
+### Amazon Q Developer
 
 ```bash
-# Create Amazon Q prompts directory and copy all prompts
 mkdir -p ~/.aws/amazonq/prompts && \
 cp prompts/*.md ~/.aws/amazonq/prompts/ && \
 cp -r .specify ~/.aws/amazonq/ && \
 echo "✅ Amazon Q prompts installed successfully!"
 ```
 
-### GitHub Copilot Install
+### GitHub Copilot
 
 **Note:** GitHub Copilot requires prompts to be in the project's `.github/prompts/` directory with `.prompt.md` extension.
 
@@ -74,14 +89,13 @@ cp prompts/*.md ~/.aws/amazonq/prompts/
 cp -r .specify ~/.aws/amazonq/
 ```
 
-**For GitHub Copilot:**
-
 ```bash
-mkdir -p .github/prompts
-for file in prompts/*.md; do
-  cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"
-done
-cp -r .specify .
+mkdir -p .github/prompts && \
+for file in prompts/*.md; do \
+  cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+done && \
+cp -r .specify . && \
+echo "✅ GitHub Copilot prompts installed successfully!"
 ```
 
 ## Verify Installation
@@ -99,6 +113,8 @@ ls -la .github/prompts/
 ```
 
 You should see the following prompts: `audit.md`, `constitution.md`, `drift.md`, `implement.md`, `plan.md`, `specify.md`, `tasks.md`
+
+(Note: GitHub Copilot prompts will have `.prompt.md` extension)
 
 ## Quick Test
 
@@ -183,7 +199,37 @@ rm -rf .github/prompts
 
 ## Updating to Latest Version
 
-### Update Amazon Q Developer (Global)
+### Using Update Scripts (Recommended)
+
+The easiest way to update is using the automated update scripts:
+
+**For GitHub Copilot:**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
+```
+
+Or if you have the repository cloned:
+
+```bash
+./sdd-toolkit/sdd-update-copilot.sh
+```
+
+**For Amazon Q Developer:**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-amazonq.sh | bash
+```
+
+Or if you have the repository cloned:
+
+```bash
+./sdd-toolkit/sdd-update-amazonq.sh
+```
+
+### Manual Update (From GitHub Repository)
+
+#### Amazon Q Developer (Global)
 
 Pull the latest prompts and update your global Amazon Q installation:
 
@@ -199,7 +245,7 @@ rm -rf sdd-llm-toolkit && \
 echo "✅ Amazon Q prompts updated successfully!"
 ```
 
-### Update GitHub Copilot (Project-Local)
+#### GitHub Copilot (Project-Local)
 
 Pull the latest prompts and update your project's Copilot installation:
 

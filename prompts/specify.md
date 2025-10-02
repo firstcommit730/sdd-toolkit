@@ -21,6 +21,7 @@ The user will provide a feature description and optionally a reference folder fo
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
    **Branch Name Generation**: The script automatically generates a git branch name from your description by:
+
    - Converting the description to lowercase
    - Replacing all non-alphanumeric characters with hyphens
    - Removing consecutive hyphens

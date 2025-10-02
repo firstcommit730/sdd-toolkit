@@ -27,13 +27,32 @@ Inspired by and originally derived from the excellent upstream project: [github/
 
 1. **Install prompts:**
 
-   ```bash
-   # For Amazon Q
-   mkdir -p ~/.aws/amazonq/prompts && cp prompts/*.md ~/.aws/amazonq/prompts/
+   **Amazon Q Developer (Global):**
 
-   # For GitHub Copilot
-   mkdir -p .github/prompts && for file in prompts/*.md; do cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; done
+   ```bash
+   mkdir -p ~/.aws/amazonq/prompts && \
+   cd /tmp && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+   cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+   cp -r sdd-llm-toolkit/.specify ~/.aws/amazonq/ && \
+   rm -rf sdd-llm-toolkit
    ```
+
+   **GitHub Copilot (Project-Local):**
+
+   ```bash
+   cd /tmp && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+   cd - && \
+   mkdir -p .github/prompts && \
+   for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+     cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+   done && \
+   cp -r /tmp/sdd-llm-toolkit/.specify . && \
+   rm -rf /tmp/sdd-llm-toolkit
+   ```
+
+   See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
 
 2. **Start developing:**
    ```
@@ -251,8 +270,17 @@ EOF
 ## Documentation
 
 - [Installation Guide](./INSTALL.md)
-- [Usage Guide](./AMAZONQ_PROMPTS_HOWTO.md)
-- [Prompt Summary](./AMAZONQ_PROMPTS_SUMMARY.md)
+- [Usage Guide](./PROMPTS_HOWTO.md)
+- [Prompt Summary](./PROMPTS_SUMMARY.md)
+- [Update Scripts](./sdd-toolkit/README.md)
+
+## Automated Updates
+
+The `sdd-toolkit/` directory contains automated update scripts to keep your installation current:
+
+- **Update Scripts**: `sdd-update-copilot.sh`, `sdd-update-amazonq.sh`
+
+Scripts can be run directly from GitHub using curl, or locally if you've cloned the repository. See [sdd-toolkit/README.md](./sdd-toolkit/README.md) for details.
 
 ## Credits
 
