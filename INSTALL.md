@@ -2,16 +2,56 @@
 
 A vendor-neutral installation guide for setting up SDD prompts with Amazon Q Developer and GitHub Copilot.
 
-## Amazon Q Developer Install
+## Quick Install (From GitHub Repository)
+
+### Amazon Q Developer Install (Global)
+
+Pull prompts directly from the repository and install globally for Amazon Q:
+
+```bash
+# Clone the repository to a temporary directory and copy prompts
+mkdir -p ~/.aws/amazonq/prompts && \
+cd /tmp && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+cp -r sdd-llm-toolkit/.specify ~/.aws/amazonq/ && \
+rm -rf sdd-llm-toolkit && \
+echo "✅ Amazon Q prompts and .specify directory installed successfully!"
+```
+
+### GitHub Copilot Install (Project-Local)
+
+Pull prompts directly from the repository into your project:
+
+```bash
+# Clone the repository and copy prompts to your project
+cd /tmp && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+cd - && \
+mkdir -p .github/prompts && \
+for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+  cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+done && \
+cp -r /tmp/sdd-llm-toolkit/.specify . && \
+rm -rf /tmp/sdd-llm-toolkit && \
+echo "✅ GitHub Copilot prompts and .specify directory installed successfully!"
+```
+
+## Local Install (From Cloned Repository)
+
+If you've already cloned this repository:
+
+### Amazon Q Developer Install
 
 ```bash
 # Create Amazon Q prompts directory and copy all prompts
 mkdir -p ~/.aws/amazonq/prompts && \
 cp prompts/*.md ~/.aws/amazonq/prompts/ && \
+cp -r .specify ~/.aws/amazonq/ && \
 echo "✅ Amazon Q prompts installed successfully!"
 ```
 
-## GitHub Copilot Install
+### GitHub Copilot Install
 
 **Note:** GitHub Copilot requires prompts to be in the project's `.github/prompts/` directory with `.prompt.md` extension.
 
@@ -31,6 +71,7 @@ echo "✅ GitHub Copilot prompts installed successfully!"
 ```bash
 mkdir -p ~/.aws/amazonq/prompts
 cp prompts/*.md ~/.aws/amazonq/prompts/
+cp -r .specify ~/.aws/amazonq/
 ```
 
 **For GitHub Copilot:**
@@ -40,6 +81,7 @@ mkdir -p .github/prompts
 for file in prompts/*.md; do
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"
 done
+cp -r .specify .
 ```
 
 ## Verify Installation
