@@ -70,6 +70,11 @@ echo -e "${GREEN}  ✓ Updated .specify directory${NC}"
 # Make scripts executable
 chmod +x "$AMAZONQ_DIR/.specify/scripts/bash"/*.sh 2>/dev/null || true
 
+# Update sdd-toolkit directory
+rm -rf "$AMAZONQ_DIR/sdd-toolkit" 2>/dev/null || true
+cp -r "$TMP_DIR"/sdd-llm-toolkit/sdd-toolkit "$AMAZONQ_DIR/"
+echo -e "${GREEN}  ✓ Updated sdd-toolkit directory${NC}"
+
 # Restore memory folder if it was backed up
 if [ -n "$MEMORY_BACKUP" ] && [ -d "$MEMORY_BACKUP" ]; then
     mkdir -p "$AMAZONQ_DIR/.specify/memory"
@@ -86,6 +91,7 @@ echo -e "${YELLOW}📋 Updated components:${NC}"
 echo -e "  • Prompts: ~/.aws/amazonq/prompts/*.md"
 echo -e "  • Templates: ~/.aws/amazonq/.specify/templates/"
 echo -e "  • Scripts: ~/.aws/amazonq/.specify/scripts/"
+echo -e "  • Update scripts: ~/.aws/amazonq/sdd-toolkit/"
 echo -e "  • Preserved: ~/.aws/amazonq/.specify/memory/ (constitution & audits)"
 echo ""
 echo -e "${YELLOW}💡 Next steps:${NC}"

@@ -14,8 +14,9 @@ cd /tmp && \
 git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
 cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
 cp -r sdd-llm-toolkit/.specify ~/.aws/amazonq/ && \
+cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
 rm -rf sdd-llm-toolkit && \
-echo "✅ Amazon Q prompts and .specify directory installed successfully!"
+echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
 
 **What this does:**
@@ -24,6 +25,7 @@ echo "✅ Amazon Q prompts and .specify directory installed successfully!"
 - Clones the latest toolkit from GitHub
 - Copies all prompt files (`.md`)
 - Copies the complete `.specify/` directory structure
+- Copies the `sdd-toolkit/` directory (update scripts and documentation)
 - Cleans up temporary files
 - Provides confirmation message
 
@@ -40,8 +42,9 @@ for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
 done && \
 cp -r /tmp/sdd-llm-toolkit/.specify . && \
+cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
 rm -rf /tmp/sdd-llm-toolkit && \
-echo "✅ GitHub Copilot prompts and .specify directory installed successfully!"
+echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
 
 **What this does:**
@@ -50,53 +53,87 @@ echo "✅ GitHub Copilot prompts and .specify directory installed successfully!"
 - Creates `.github/prompts/` directory in your project
 - Copies all prompt files with `.prompt.md` extension (Copilot requirement)
 - Copies the complete `.specify/` directory structure to your project
+- Copies the `sdd-toolkit/` directory (update scripts and documentation)
 - Cleans up temporary files
 - Provides confirmation message
 
 ## Local Install (From Cloned Repository)
 
-If you've already cloned this repository locally:
+If you've already cloned this repository locally, run these commands from the toolkit repository directory:
 
 ### Amazon Q Developer
+
+Install prompts globally for Amazon Q Developer:
 
 ```bash
 mkdir -p ~/.aws/amazonq/prompts && \
 cp prompts/*.md ~/.aws/amazonq/prompts/ && \
-cp -r .specify ~/.aws/amazonq/ && \
-echo "✅ Amazon Q prompts installed successfully!"
+if [ ! -d ~/.aws/amazonq/.specify ]; then \
+  cp -r .specify ~/.aws/amazonq/; \
+else \
+  rsync -av --exclude='memory/' .specify/ ~/.aws/amazonq/.specify/; \
+fi && \
+cp -r sdd-toolkit ~/.aws/amazonq/ && \
+echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
 
-### GitHub Copilot
+**Note:** This command preserves your existing `.specify/memory/` directory (including `constitution.md`) if it already exists.
 
-**Note:** GitHub Copilot requires prompts to be in the project's `.github/prompts/` directory with `.prompt.md` extension.
+### GitHub Copilot (Install to Your Project)
+
+Navigate to your target project directory, then run this command (replace `/path/to/sdd-llm-toolkit` with the actual path to this cloned repository):
 
 ```bash
-# Create GitHub Copilot prompts directory and copy all prompts
+TOOLKIT_PATH="/path/to/sdd-llm-toolkit" && \
 mkdir -p .github/prompts && \
-for file in prompts/*.md; do \
+for file in "$TOOLKIT_PATH"/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
 done && \
-echo "✅ GitHub Copilot prompts installed successfully!"
+if [ ! -d .specify ]; then \
+  cp -r "$TOOLKIT_PATH/.specify" .; \
+else \
+  rsync -av --exclude='memory/' "$TOOLKIT_PATH/.specify/" .specify/; \
+fi && \
+cp -r "$TOOLKIT_PATH/sdd-toolkit" . && \
+echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
+
+**Note:**
+
+- Replace `/path/to/sdd-llm-toolkit` with the actual path to the cloned toolkit repository
+- This installs prompts to `.github/prompts/` (Copilot requirement), `.specify/`, and `sdd-toolkit/` in your project
+- Preserves existing `.specify/memory/` directory (including `constitution.md`) if it already exists
+- Does NOT copy the `prompts/` folder to your project
 
 ## Manual Install
 
 **For Amazon Q Developer:**
 
+Run from the toolkit repository directory:
+
 ```bash
 mkdir -p ~/.aws/amazonq/prompts
 cp prompts/*.md ~/.aws/amazonq/prompts/
 cp -r .specify ~/.aws/amazonq/
+cp -r sdd-toolkit ~/.aws/amazonq/
 ```
 
+**For GitHub Copilot:**
+
+Navigate to your target project, then run (replace `/path/to/sdd-llm-toolkit`):
+
 ```bash
+TOOLKIT_PATH="/path/to/sdd-llm-toolkit" && \
 mkdir -p .github/prompts && \
-for file in prompts/*.md; do \
+for file in "$TOOLKIT_PATH"/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
 done && \
-cp -r .specify . && \
-echo "✅ GitHub Copilot prompts installed successfully!"
+cp -r "$TOOLKIT_PATH/.specify" . && \
+cp -r "$TOOLKIT_PATH/sdd-toolkit" . && \
+echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
+
+**Note:** Does NOT copy the `prompts/` folder to your project - only installs to `.github/prompts/`, `.specify/`, and `sdd-toolkit/`.
 
 ## Verify Installation
 
@@ -241,8 +278,10 @@ rm -rf ~/.aws/amazonq/prompts/*.md && \
 cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
 rm -rf ~/.aws/amazonq/.specify && \
 cp -r sdd-llm-toolkit/.specify ~/.aws/amazonq/ && \
+rm -rf ~/.aws/amazonq/sdd-toolkit && \
+cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
 rm -rf sdd-llm-toolkit && \
-echo "✅ Amazon Q prompts updated successfully!"
+echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit updated successfully!"
 ```
 
 #### GitHub Copilot (Project-Local)
@@ -262,8 +301,10 @@ done && \
 rm -rf .specify/templates .specify/scripts && \
 cp -r /tmp/sdd-llm-toolkit/.specify/templates .specify/ && \
 cp -r /tmp/sdd-llm-toolkit/.specify/scripts .specify/ && \
+rm -rf sdd-toolkit && \
+cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
 rm -rf /tmp/sdd-llm-toolkit && \
-echo "✅ GitHub Copilot prompts updated successfully!"
+echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit updated successfully!"
 ```
 
 **Note:** The update commands will:
@@ -272,6 +313,7 @@ echo "✅ GitHub Copilot prompts updated successfully!"
 - Pull the latest version from the repository
 - **Preserve** your `.specify/memory/` directory (constitution and audits)
 - Update `.specify/templates/` and `.specify/scripts/` to the latest versions
+- Update `sdd-toolkit/` directory (update scripts and documentation)
 
 **⚠️ Warning:** If you've customized any templates in `.specify/templates/`, back them up before updating, as they will be overwritten.
 

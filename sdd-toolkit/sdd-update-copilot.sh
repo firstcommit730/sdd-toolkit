@@ -96,6 +96,12 @@ fi
 # Create reference directory if it doesn't exist
 mkdir -p .specify/reference
 
+# Update sdd-toolkit directory
+echo -e "${YELLOW}🔧 Updating sdd-toolkit directory...${NC}"
+rm -rf sdd-toolkit 2>/dev/null || true
+cp -r "$TMP_DIR"/sdd-llm-toolkit/sdd-toolkit .
+echo -e "${GREEN}  ✓ Updated sdd-toolkit${NC}"
+
 echo -e "${GREEN}✅ GitHub Copilot SDD Toolkit updated successfully!${NC}"
 echo ""
 echo -e "${YELLOW}📋 Updated components:${NC}"
