@@ -15,45 +15,118 @@ The user will provide a feature description and optionally a reference folder fo
 
 ### Validation Requirements
 
-**CRITICAL**: All feature descriptions MUST include a valid branch type prefix. If the user provides a description without a proper prefix, immediately stop processing and return an error message.
+**CRITICAL**: All feature descriptions MUST comply with constitution branching standards. If the constitution is missing Section 1 or the branch name doesn't comply, immediately stop and return an error.
 
 ### Steps
 
-0. **Validate Branch Type Prefix**: Before proceeding, ensure the feature description includes a valid branch type prefix according to the constitution.md Branch Naming standards:
+0. **Load and Validate Constitution**: Before proceeding with branch creation, you MUST:
 
-   - **REQUIRED**: The description MUST start with one of: `feat/`, `fix/`, `chore/`, `refactor/`, `test/`, `docs/`, `hotfix/`, `maintenance/`
-   - **STOP AND ERROR**: If no valid prefix is provided, immediately stop processing and inform the user they must specify a branch type prefix
-   - **Constitution Reference**: Per `.specify/memory/constitution.md` § 1 "Branching and Repository Standards", all branches must follow the `type/short-description` pattern
+   **Step 0.1 - Check Constitution Existence**:
 
-   **Valid Examples**:
+   - Check if `.specify/memory/constitution.md` exists
+   - If it doesn't exist, respond with:
 
-   - ✅ `feat/user-authentication-system`
-   - ✅ `fix/payment-timeout-issue`
-   - ✅ `docs/api-documentation-update`
-   - ❌ `user-authentication-system` (missing type prefix)
-   - ❌ `new-feature/authentication` (invalid type)
+     ```
+     FATAL ERROR: Constitution file not found.
 
-   **ERROR HANDLING**: If the user's description does not start with a valid type prefix, respond with:
+     Required file: .specify/memory/constitution.md
 
-   ```
-   ERROR: Invalid branch type prefix provided.
+     The constitution must exist before creating new specifications.
+     Please initialize the constitution from the template first.
+     ```
 
-   The feature description must start with a valid branch type according to the constitution.md Branch Naming standards.
+     STOP all processing and do not continue.
 
-   Required format: type/description
-   Valid types: feat, fix, chore, refactor, test, docs, hotfix, maintenance
+   **Step 0.2 - Validate Section 1 Exists**:
 
-   Examples:
-   - feat/add-user-authentication
-   - fix/resolve-payment-timeout
-   - docs/update-api-documentation
+   - Read `.specify/memory/constitution.md`
+   - Search for section header: `## 1. Branching and Repository Standards`
+   - If this section does NOT exist, respond with:
 
-   Please provide your feature description with a proper type prefix.
-   ```
+     ```
+     FATAL ERROR: Constitution Section 1 missing.
 
-   Do not proceed with any further steps.
+     Required section: "## 1. Branching and Repository Standards"
+     File: .specify/memory/constitution.md
 
-0.1. **Create a branch name**: After validating the prefix, create a concise, descriptive name suitable for a git branch that captures the essence of the feature. This name should be clear and meaningful, preserving key technical terms and the required type prefix while being suitable for branch naming conventions. The script will automatically process this into a valid git branch name limited to 65 characters.
+     The constitution must include branching standards before creating branches.
+     Please add Section 1 to the constitution following the template format.
+     ```
+
+     STOP all processing and do not continue.
+
+   **Step 0.3 - Parse Branching Rules from Constitution**:
+
+   - Extract the YAML block under `## 1. Branching and Repository Standards`
+   - Parse the following from the constitution (DO NOT hardcode these values):
+     - `allowed_type_prefixes` array
+     - `constraints.must` array
+     - `constraints.must_not` array
+     - `length_constraints.minimum` and `maximum`
+     - `pattern` (expected: `type/short-description`)
+   - Store these rules for validation
+
+   **Step 0.4 - Validate User Input Against Constitution Rules**:
+
+   - Check if feature description starts with a valid type prefix from `allowed_type_prefixes`
+   - If NO valid prefix found, respond with:
+
+     ```
+     ERROR: Invalid branch type prefix.
+
+     Constitution Reference: .specify/memory/constitution.md § 1 "Branching and Repository Standards"
+
+     Required format: type/short-description
+     Valid type prefixes from constitution: [list from constitution]
+
+     Your input: [user's description]
+
+     Examples of valid format:
+     - feat/add-user-authentication
+     - fix/resolve-payment-timeout
+     - docs/update-api-documentation
+
+     Please provide your feature description with a valid type prefix per the constitution.
+     ```
+
+     STOP all processing and do not continue.
+
+   **Step 0.5 - Validate Against All Constitution Constraints**:
+
+   - Validate branch name against ALL `constraints.must` rules from constitution
+   - Validate branch name against ALL `constraints.must_not` rules from constitution
+   - Check length is between `minimum` and `maximum` from constitution
+   - If ANY constraint is violated, respond with:
+
+     ```
+     ERROR: Branch name violates constitution constraints.
+
+     Constitution Reference: .specify/memory/constitution.md § 1 "Branching and Repository Standards"
+
+     Violations found:
+     [List each violated constraint with the specific rule from constitution]
+
+     Your proposed branch: [branch name]
+
+     Please revise to comply with all constitution requirements.
+     ```
+
+     STOP all processing and do not continue.
+
+     STOP all processing and do not continue.
+
+0.6. **Create a branch name**: After successfully validating against all constitution rules, create a concise, descriptive name suitable for a git branch that captures the essence of the feature. This name MUST comply with ALL rules from `.specify/memory/constitution.md § 1`. The script will automatically process this into a valid git branch name.
+
+**Constitution Compliance Requirements**:
+
+- Use valid type prefix from constitution's `allowed_type_prefixes`
+- Follow pattern specified in constitution (typically `type/short-description`)
+- Respect length constraints from constitution (`minimum` to `maximum` characters)
+- Comply with all `constraints.must` rules from constitution
+- Avoid all `constraints.must_not` violations from constitution
+- Use lowercase letters, numbers, hyphens, and forward slashes only (per constitution)
+
+**Reference**: All rules sourced from `.specify/memory/constitution.md § 1 "Branching and Repository Standards"`
 
 1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<branch_description_with_prefix>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
@@ -64,8 +137,14 @@ The user will provide a feature description and optionally a reference folder fo
    - Replacing all non-alphanumeric characters with hyphens
    - Removing consecutive hyphens
    - Trimming leading and trailing hyphens
-   - Truncating to a maximum of 65 characters
-   - Example: "High-Value Field Redaction & Structured Context" → "high-value-field-redaction-structured-context" (62 chars)
+   - Truncating to the maximum length specified in constitution (typically 50 characters)
+   - Example: "High-Value Field Redaction & Structured Context" → "high-value-field-redaction-structured-context"
+
+   **Post-Script Validation**: After the script runs:
+
+   - Verify the generated BRANCH_NAME still complies with constitution rules
+   - If the script's output violates any constitution constraint, report the violation and halt
+   - Reference: `.specify/memory/constitution.md § 1 "Branching and Repository Standards"`
 
 1.5. **Load Reference Folder (if provided)**: If the user specified a reference folder with `-ref <folder_name>`, check for `.specify/reference/<folder_name>/` and load all files in the folder for additional context about:
 

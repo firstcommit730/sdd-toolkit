@@ -8,7 +8,7 @@ Authoritative guardrails governing architecture, technology choices, coding stan
 **Ratified**: [RATIFICATION_DATE]  
 **Last Amended**: [LAST_AMENDED_DATE]
 
-## 1. Branching and Repository Standards
+## 1. Branching and Repository Standards - DO NOT REMOVE USED BY specify prompt
 
 ```yaml
 branching_rules:
