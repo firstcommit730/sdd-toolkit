@@ -1,4 +1,4 @@
-# [PROJECT_NAME] Constitution
+# [PROJECT_NAME] Constitution - TEMPLATE
 
 <!-- Example: Project Constitution, TaskFlow Constitution, etc. -->
 
@@ -10,59 +10,247 @@ Authoritative guardrails governing architecture, technology choices, coding stan
 
 ## 1. Branching and Repository Standards
 
-### Branch Naming (MUST)
+```yaml
+branching_rules:
+  - rule_name: Branch Naming Convention
+    description: All Git branches must follow a strict naming pattern for consistency and automation
+    pattern: type/short-description
 
-- Every branch name **MUST** follow this pattern:  
-  `type/short-description`  
-  Examples:
-  - ✅ `feat/add-payment-endpoint`
-  - ✅ `fix/handle-auth-timeout`
-  - ✅ `docs/update-readme`
-  - ✅ `maintenance/update-dependencies`
-- The **type** prefix MUST be one of:  
-  `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `hotfix`, `maintenance`.
-- Branch names **MUST NOT** begin with a number or numeric prefix.  
-  ✅ `feat/add-v2-endpoint` ❌ `123-fix-bug`
-- Branch names **MUST NOT** contain uppercase letters or spaces.
-- Branch names **MAY** include numbers **inside** the name when semantically relevant (e.g. version or API level):  
-  ✅ `feat/add-v2-endpoint` ❌ `feat/123-add-endpoint`
-- Allowed characters: lowercase letters (`a–z`), digits (`0–9`), hyphens (`-`), and slashes (`/`).
-- Prohibited characters: `_`, `@`, `#`, `$`, `%`, `?`, `!`, and spaces.
-- **Minimum branch-name length:** 10 characters.
-- **Maximum branch-name length:** 50 characters.
-- Every new branch MUST be created from an up-to-date `develop` branch, unless it is a `hotfix` (from `main`) or `maintenance` branch.
+    constraints:
+      must:
+        - Follow pattern 'type/short-description'
+        - Start with valid type prefix from allowed list
+        - Use only lowercase letters (a-z), numbers (0-9), hyphens (-), and forward slashes (/)
+        - Be between 10-50 characters in length
+        - Be created from up-to-date develop branch (except hotfix from main, maintenance from main or develop)
 
-### Branch Lifecycle (MUST)
+      must_not:
+        - Begin with numbers or numeric prefixes
+        - Contain uppercase letters
+        - Contain spaces or special characters (_, @, #, $, %, ?, !)
+        - Use invalid type prefixes
 
-- `main` → always deployable; protected.
-- `develop` → integration branch; merged to `main` via PR after successful audit.
-- `feature/*` → created from `develop`; merged via PR after all checks pass.
-- `hotfix/*` → created from `main`; merged into both `main` and `develop`.
-- `maintenance/*` → created from `main` **or** `develop`; used for dependency upgrades, security patches, or operational maintenance; merged via PR after review and successful tests.
+      may:
+        - Include numbers inside the name when semantically relevant (e.g., version or API level)
 
-### Commit Hygiene (MUST)
+    allowed_type_prefixes:
+      - feat        # New feature development
+      - fix         # Bug fixes
+      - chore       # Maintenance tasks
+      - refactor    # Code refactoring
+      - test        # Test additions or updates
+      - docs        # Documentation changes
+      - hotfix      # Critical production fixes
+      - maintenance # Dependency updates and operational maintenance
 
-- Commit messages MUST follow the format: `[TYPE]: [BRIEF_DESCRIPTION]`
-  - Example: `feat: add user authentication endpoint`
-  - Example: `fix: resolve timeout issue in payment processing`
-  - Example: `docs: update API documentation for v2.1`
-- Commit messages MUST be clear and descriptive of the change
-- Use imperative mood (e.g., "add feature" not "added feature")
+    length_constraints:
+      minimum: 10
+      maximum: 50
+
+    examples:
+      valid:
+        - feat/add-payment-endpoint
+        - fix/handle-auth-timeout
+        - docs/update-readme
+        - maintenance/update-dependencies
+        - feat/add-v2-endpoint
+        - chore/refactor-logging
+      invalid:
+        - user-authentication-system  # Missing type prefix
+        - 123-fix-bug                 # Starts with number
+        - Fix_DB_Bug                  # Contains uppercase and underscore
+        - feat/123-add-endpoint       # Number after type prefix
+        - new-feature                 # Too short
+
+  - rule_name: Branch Lifecycle Management
+    description: Defines the lifecycle and merge patterns for different branch types
+
+    branches:
+      main:
+        description: Production-ready code only
+        protection_level: protected
+        deployment_ready: true
+        merge_sources:
+          - develop
+          - hotfix/*
+        merge_method: pull_request
+
+      develop:
+        description: Integration branch for features
+        merge_sources:
+          - feature/*
+          - maintenance/*
+        merge_destination: main
+        merge_requirements:
+          - successful_audit
+          - all_tests_passing
+          - code_review_approved
+
+      feature/*:
+        description: New feature development
+        created_from: develop
+        merge_destination: develop
+        lifecycle: short_lived
+        merge_requirements:
+          - all_checks_pass
+          - pr_review_approved
+          - no_merge_conflicts
+
+      hotfix/*:
+        description: Critical production fixes
+        created_from: main
+        merge_destinations:
+          - main
+          - develop
+        priority: critical
+        merge_method: emergency_procedure
+
+      maintenance/*:
+        description: Dependency updates, security patches, operational maintenance
+        created_from:
+          - main
+          - develop
+        merge_destinations:
+          - main
+          - develop
+        merge_requirements:
+          - code_review
+          - successful_tests
+          - security_scan_passed
+
+  - rule_name: Commit Message Standards
+    description: Standardized commit message format for clarity and automation
+    format: "[TYPE]: [BRIEF_DESCRIPTION]"
+
+    constraints:
+      must:
+        - Follow format '[TYPE]: [BRIEF_DESCRIPTION]'
+        - Use imperative mood (add, fix, update - NOT added, fixed, updated)
+        - Be clear and descriptive of the change
+        - Match the branch type prefix
+        - Use lowercase for type prefix
+
+      must_not:
+        - Exceed 72 characters in subject line
+        - Use past tense or present continuous
+        - Include sensitive information
+        - Be vague or non-descriptive
+
+    components:
+      type:
+        description: Commit category matching branch type
+        values:
+          - feat
+          - fix
+          - chore
+          - refactor
+          - test
+          - docs
+          - hotfix
+          - maintenance
+
+      brief_description:
+        description: Concise description of the change
+        max_length: 72
+        style: imperative_mood
+
+    examples:
+      valid:
+        - "feat: add user authentication endpoint"
+        - "fix: resolve timeout issue in payment processing"
+        - "docs: update API documentation for v2.1"
+        - "refactor: simplify error handling logic"
+        - "test: add unit tests for validation module"
+      invalid:
+        - "added new feature"                                    # Past tense
+        - "bug fix"                                              # Missing type prefix format
+        - "Updated the readme file with new instructions"        # Too long, wrong tense
+        - "fix stuff"                                            # Not descriptive
+        - "FEAT: Add Feature"                                    # Uppercase type
+```
 
 ## 2. Immutable Technology Stack
 
-The following technologies are MANDATED. Introductions of alternatives require a formal RFC + approval by core maintainers.
+```yaml
+technology_stack:
+  description: "Mandated technologies requiring formal RFC + core maintainer approval for alternatives"
 
-| Layer      | Technology (Locked)  | Notes                   |
-| ---------- | -------------------- | ----------------------- |
-| Runtime    | [RUNTIME_TECHNOLOGY] | [RUNTIME_NOTES]         |
-| Language   | [LANGUAGE_CHOICE]    | [LANGUAGE_CONSTRAINTS]  |
-| Compute    | [COMPUTE_PLATFORM]   | [COMPUTE_RESTRICTIONS]  |
-| API Layer  | [API_GATEWAY_CHOICE] | [API_RESTRICTIONS]      |
-| Data Store | [DATABASE_CHOICE]    | [DATABASE_RESTRICTIONS] |
-| Testing    | [TESTING_FRAMEWORK]  | [TESTING_CONSTRAINTS]   |
-| Logging    | [LOGGING_PLATFORM]   | [LOGGING_NOTES]         |
-| Auditing   | [AUDITING_PLATFORM]  | [AUDITING_NOTES]        |
+  locked_technologies:
+    runtime:
+      technology: [RUNTIME_TECHNOLOGY]
+      notes: [RUNTIME_NOTES]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    language:
+      technology: [LANGUAGE_CHOICE]
+      constraints: [LANGUAGE_CONSTRAINTS]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    compute:
+      technology: [COMPUTE_PLATFORM]
+      restrictions: [COMPUTE_RESTRICTIONS]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    api_layer:
+      technology: [API_GATEWAY_CHOICE]
+      restrictions: [API_RESTRICTIONS]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    data_store:
+      technology: [DATABASE_CHOICE]
+      restrictions: [DATABASE_RESTRICTIONS]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    testing:
+      technology: [TESTING_FRAMEWORK]
+      constraints: [TESTING_CONSTRAINTS]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    logging:
+      technology: [LOGGING_PLATFORM]
+      notes: [LOGGING_NOTES]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+    auditing:
+      technology: [AUDITING_PLATFORM]
+      notes: [AUDITING_NOTES]
+      change_process: formal_rfc_required
+      approval_required: core_maintainers
+
+  prohibited_technologies:
+    description: "Technologies that are explicitly prohibited without formal approval"
+    list:
+      - [LIST_PROHIBITED_TECHNOLOGIES]
+    exception_process: formal_rfc_with_justification
+
+  approval_process:
+    trigger: alternative_technology_introduction
+    required_approvers:
+      - core_maintainers
+    process_steps:
+      - submit_formal_rfc
+      - technical_review
+      - security_assessment
+      - cost_benefit_analysis
+      - maintainer_approval
+      - constitution_amendment
+
+    rfc_requirements:
+      must_include:
+        - problem_statement
+        - proposed_solution
+        - alternative_evaluation
+        - migration_strategy
+        - risk_assessment
+        - timeline_and_resources
+```
 
 PROHIBITED without approval: [LIST_PROHIBITED_TECHNOLOGIES]
 
@@ -135,17 +323,84 @@ PROHIBITED without approval: [LIST_PROHIBITED_TECHNOLOGIES]
 
 ## 4. Coding Standards
 
-| Concern        | Standard                             |
-| -------------- | ------------------------------------ |
-| Language       | [LANGUAGE_STANDARD]                  |
-| Type Safety    | [TYPE_SAFETY_REQUIREMENTS]           |
-| Async Patterns | [ASYNC_PATTERN_REQUIREMENTS]         |
-| Modularity     | [MODULARITY_STANDARDS]               |
-| Error Handling | [ERROR_HANDLING_PATTERN]             |
-| Logging        | [LOGGING_LIBRARY]; [LOGGING_PATTERN] |
-| Secrets        | [SECRET_HANDLING_RULES]              |
-| Validation     | [INPUT_VALIDATION_REQUIREMENTS]      |
-| DTOs / Models  | [DTO_NAMING_CONVENTIONS]             |
+```yaml
+coding_standards:
+  - concern: Language
+    standard: [LANGUAGE_STANDARD]
+    enforcement: mandatory
+    validation: automated_linting
+
+  - concern: Type Safety
+    standard: [TYPE_SAFETY_REQUIREMENTS]
+    enforcement: mandatory
+    validation: compile_time_check
+
+  - concern: Async Patterns
+    standard: [ASYNC_PATTERN_REQUIREMENTS]
+    enforcement: mandatory
+    validation: code_review
+
+  - concern: Modularity
+    standard: [MODULARITY_STANDARDS]
+    enforcement: mandatory
+    validation: architecture_review
+
+  - concern: Error Handling
+    standard: [ERROR_HANDLING_PATTERN]
+    enforcement: mandatory
+    validation: automated_linting
+    examples:
+      valid: |
+        try {
+          const result = await operation();
+          return result;
+        } catch (error) {
+          logger.error('Operation failed', { correlationId, error });
+          throw error;
+        }
+      invalid: |
+        const result = await operation(); // No error handling
+
+  - concern: Logging
+    standard: "[LOGGING_LIBRARY]; [LOGGING_PATTERN]"
+    enforcement: mandatory
+    validation: automated_scanning
+    requirements:
+      - use_structured_logging
+      - include_correlation_id
+      - never_log_secrets
+      - consistent_field_names
+
+  - concern: Secrets
+    standard: [SECRET_HANDLING_RULES]
+    enforcement: mandatory
+    validation: automated_secret_scanning
+    prohibited:
+      - plaintext_secrets_in_code
+      - secrets_in_environment_variables
+      - secrets_in_logs
+      - secrets_in_error_messages
+
+  - concern: Validation
+    standard: [INPUT_VALIDATION_REQUIREMENTS]
+    enforcement: mandatory
+    validation: security_review
+    requirements:
+      - validate_all_external_inputs
+      - sanitize_before_persistence
+      - type_checking
+      - boundary_validation
+
+  - concern: DTOs / Models
+    standard: [DTO_NAMING_CONVENTIONS]
+    enforcement: mandatory
+    validation: code_review
+    requirements:
+      - clear_naming
+      - type_annotations
+      - immutability_preferred
+      - validation_methods
+```
 
 ## 5. Linting & Code Quality Standards
 
@@ -271,166 +526,408 @@ PROHIBITED without approval: [LIST_PROHIBITED_TECHNOLOGIES]
 
 ## 6. Testing Rules
 
-- [COVERAGE_REQUIREMENTS]
+```yaml
+testing_standards:
+  coverage:
+    requirements: [COVERAGE_REQUIREMENTS]
+    threshold_policy: [COVERAGE_THRESHOLD_POLICY]
+    exclusions: [COVERAGE_EXCLUSIONS]
+    enforcement: mandatory
+    validation: automated_ci_check
 
-- [COVERAGE_THRESHOLD_POLICY]
+  test_organization:
+    - test_type: [TEST_TYPE_1]
+      location_rule: [TEST_LOCATION_1]
+      directory: [TEST_DIRECTORY_1]
+      placement: [TEST_PLACEMENT_1]
+      suffix: [TEST_SUFFIX_1]
 
-### Test File Organization
+      constraints:
+        must:
+          - be_colocated_with_source
+          - end_with_specified_suffix
+          - follow_naming_convention
+        must_not:
+          - be_placed_in: [PROHIBITED_TEST_LOCATION_1]
 
-- **[TEST_TYPE_1] MUST be [TEST_LOCATION_1]** in `[TEST_DIRECTORY_1]` directories [TEST_PLACEMENT_1].
+      examples:
+        - source: [SOURCE_EXAMPLE_1]
+          test: [TEST_EXAMPLE_1]
+        - source: [SOURCE_EXAMPLE_2]
+          test: [TEST_EXAMPLE_2]
 
-  - Example: `[SOURCE_EXAMPLE_1]` → `[TEST_EXAMPLE_1]`
-  - Example: `[SOURCE_EXAMPLE_2]` → `[TEST_EXAMPLE_2]`
-  - **PROHIBITED**: [PROHIBITED_TEST_LOCATION_1]
-  - [TEST_TYPE_1] filenames MUST end with `[TEST_SUFFIX_1]`
+    - test_type: [TEST_TYPE_2]
+      location_rule: [TEST_LOCATION_2]
+      directory: [TEST_DIRECTORY_2]
+      placement: [TEST_PLACEMENT_2]
+      description: [TEST_TYPE_2_DESCRIPTION]
+      suffix: [CONTRACT_SUFFIX]
 
-- **[TEST_TYPE_2] MUST be [TEST_LOCATION_2]** in `[TEST_DIRECTORY_2]` directories [TEST_PLACEMENT_2].
+      examples:
+        - contract: [CONTRACT_EXAMPLE_1]
+          test: [CONTRACT_EXAMPLE_2]
 
-  - [TEST_TYPE_2_DESCRIPTION]
-  - Example: `[CONTRACT_EXAMPLE_1]` → `[CONTRACT_EXAMPLE_2]`
-  - [TEST_TYPE_2] filenames MUST end with `[CONTRACT_SUFFIX]`
+    - test_type: [TEST_TYPE_3]
+      location_rule: exclusive_directory
+      directory: [INTEGRATION_DIRECTORY]
+      restrictions: [INTEGRATION_TEST_RESTRICTIONS]
+      suffix: [INTEGRATION_SUFFIX]
+      mocking_requirements: [INTEGRATION_TEST_MOCKING_REQUIREMENTS]
 
-- **[TEST_TYPE_3] MUST be placed only in the `[INTEGRATION_DIRECTORY]` directory**.
+      constraints:
+        must:
+          - be_in_dedicated_directory
+          - test_real_integrations
+          - include_proper_setup_teardown
+        must_not:
+          - be_mixed_with_unit_tests
+          - mock_external_services_excessively
 
-  - [INTEGRATION_TEST_RESTRICTIONS]
-  - [TEST_TYPE_3] filenames MUST end with `[INTEGRATION_SUFFIX]`
-  - [INTEGRATION_TEST_MOCKING_REQUIREMENTS]
+    - test_type: [TEST_TYPE_4]
+      policy: [PERFORMANCE_TEST_POLICY]
+      directory_status: [PERFORMANCE_DIRECTORY_STATUS]
+      optimization_approach: [PERFORMANCE_OPTIMIZATION_APPROACH]
+      exception_policy: [PERFORMANCE_TEST_EXCEPTION_POLICY]
 
-- **[TEST_TYPE_4] are [PERFORMANCE_TEST_POLICY]**.
+  security_testing:
+    requirement: mandatory
+    test_types: [SECURITY_TEST_TYPES]
 
-  - [PERFORMANCE_DIRECTORY_STATUS]
-  - [PERFORMANCE_OPTIMIZATION_APPROACH]
-  - [PERFORMANCE_TEST_EXCEPTION_POLICY]
+    test_categories:
+      authentication:
+        requirements: [AUTHENTICATION_TEST_REQUIREMENTS]
+        examples:
+          - authentication_bypass_attempts
+          - invalid_token_handling
+          - session_management_validation
 
-- [COVERAGE_EXCLUSIONS]
-- [INTEGRATION_TEST_REQUIREMENTS]
+      authorization:
+        requirements: [AUTHORIZATION_TEST_REQUIREMENTS]
+        examples:
+          - privilege_escalation_tests
+          - role_boundary_validation
+          - permission_enforcement
 
-### Security Testing Requirements
+      input_validation:
+        requirements: [INPUT_VALIDATION_TEST_REQUIREMENTS]
+        examples:
+          - sql_injection_tests
+          - xss_attack_tests
+          - command_injection_tests
 
-- **[SECURITY_TEST_TYPES] MUST be included** in the test suite to validate security controls.
+      cryptographic:
+        requirements: [CRYPTOGRAPHIC_TEST_REQUIREMENTS]
+        examples:
+          - encryption_decryption_validation
+          - key_management_tests
+          - secure_random_generation
 
-  - [AUTHENTICATION_TEST_REQUIREMENTS] <!-- Example: Authentication bypass attempts, invalid token handling -->
-  - [AUTHORIZATION_TEST_REQUIREMENTS] <!-- Example: Privilege escalation tests, role boundary validation -->
-  - [INPUT_VALIDATION_TEST_REQUIREMENTS] <!-- Example: SQL injection, XSS, and other injection attack tests -->
-  - [CRYPTOGRAPHIC_TEST_REQUIREMENTS] <!-- Example: Encryption/decryption validation, key management tests -->
+    organization:
+      location: [SECURITY_TEST_LOCATION]
+      suffix: [SECURITY_TEST_SUFFIX]
+      examples:
+        - source: [SECURITY_TEST_EXAMPLE_1]
+          test: [SECURITY_TEST_EXAMPLE_2]
 
-- **[SECURITY_TEST_ORGANIZATION]** security tests MUST be [SECURITY_TEST_LOCATION].
+    penetration_testing:
+      simulation: [PENETRATION_TEST_SIMULATION]
+      scope: [PENTEST_SCOPE]
+      requirements: [PENTEST_SIMULATION_REQUIREMENTS]
+      baseline_validation: [SECURITY_BASELINE_VALIDATION]
 
-  - Example: `[SECURITY_TEST_EXAMPLE_1]` → `[SECURITY_TEST_EXAMPLE_2]`
-  - Security test filenames MUST end with `[SECURITY_TEST_SUFFIX]` <!-- Example: .security.test.ts -->
+  flow_documentation:
+    requirements: [FLOW_DOCUMENTATION_REQUIREMENTS]
+    directory: [FLOW_DIRECTORY]
+    definition: [FLOW_TEST_DEFINITION]
 
-- **[PENETRATION_TEST_SIMULATION]** may be included for [PENTEST_SCOPE].
-  - [PENTEST_SIMULATION_REQUIREMENTS] <!-- Example: Automated security scanning integration -->
-  - [SECURITY_BASELINE_VALIDATION] <!-- Example: OWASP Top 10 validation tests -->
+    constraints:
+      must:
+        - document_entry_points: [FLOW_TEST_ENTRY_POINT_REQUIREMENTS]
+        - validate_complete_flows: [FLOW_TEST_VALIDATION_SCOPE]
+        - include_documentation: [FLOW_DOCUMENTATION_CONTENT_REQUIREMENTS]
 
-### Flow Documentation
+      directory_contents: [FLOW_DIRECTORY_CONTENTS]
+      distinction_from_integration: [FLOW_VS_INTEGRATION_TEST_DISTINCTION]
 
-- **[FLOW_DOCUMENTATION_REQUIREMENTS]** documented and tested in the `[FLOW_DIRECTORY]` directory.
-- [FLOW_TEST_DEFINITION]
-- [FLOW_TEST_ENTRY_POINT_REQUIREMENTS]
-- [FLOW_TEST_VALIDATION_SCOPE]
-- [FLOW_DIRECTORY_CONTENTS]
-- [FLOW_DOCUMENTATION_CONTENT_REQUIREMENTS]
-- [FLOW_VS_INTEGRATION_TEST_DISTINCTION]
-- [INTEGRATION_TEST_LOGGING_REQUIREMENTS]
-- [UNIT_TEST_MOCKING_PERMISSIONS]
-- [MOCK_IMPLEMENTATION_REQUIREMENTS]
+  integration_testing:
+    requirements: [INTEGRATION_TEST_REQUIREMENTS]
+    logging_requirements: [INTEGRATION_TEST_LOGGING_REQUIREMENTS]
+    mocking_scope: [INTEGRATION_TEST_MOCKING_SCOPE]
 
-- [INTEGRATION_TEST_MOCKING_SCOPE]
+    constraints:
+      must:
+        - test_real_service_interactions
+        - include_proper_logging
+        - validate_error_scenarios
+      must_not:
+        - mock_critical_integrations
+        - skip_cleanup_operations
+
+  mocking:
+    unit_test_permissions: [UNIT_TEST_MOCKING_PERMISSIONS]
+    implementation_requirements: [MOCK_IMPLEMENTATION_REQUIREMENTS]
+
+    best_practices:
+      - use_consistent_mocking_framework
+      - mock_external_dependencies
+      - verify_mock_interactions
+      - maintain_realistic_behavior
+```
 
 ## 7. Logging Standards (Detailed Implementation)
 
-### Entry Logging Pattern
+```yaml
+logging_standards:
+  entry_pattern:
+    pattern: [LOGGING_ENTRY_PATTERN]
+    message_guidelines: [LOGGING_MESSAGE_GUIDELINES]
+    parameter_inclusion: [LOGGING_PARAMETER_INCLUSION]
+    format: [LOGGING_FORMAT_PATTERN]
 
-- [LOGGING_ENTRY_PATTERN]
-- [LOGGING_MESSAGE_GUIDELINES]
-- [LOGGING_PARAMETER_INCLUSION]
-- [LOGGING_FORMAT_PATTERN]
+    constraints:
+      must:
+        - log_at_operation_entry
+        - include_correlation_id
+        - use_structured_format
+        - be_concise_and_clear
+      must_not:
+        - log_sensitive_data
+        - use_string_concatenation
+        - exceed_reasonable_size
 
-### Test Environment Logging
+  test_environment:
+    output_requirements: [TEST_LOGGING_OUTPUT_REQUIREMENTS]
+    format_consistency: [TEST_LOGGING_FORMAT_CONSISTENCY]
+    cloud_prevention: [TEST_LOGGING_CLOUD_PREVENTION]
 
-- [TEST_LOGGING_OUTPUT_REQUIREMENTS]
-- [TEST_LOGGING_FORMAT_CONSISTENCY]
-- [TEST_LOGGING_CLOUD_PREVENTION]
+    constraints:
+      must:
+        - maintain_same_format_as_production
+        - output_to_console
+        - be_parseable
+      must_not:
+        - send_to_cloud_services
+        - skip_critical_fields
 
-### Examples
+  required_fields:
+    mandatory:
+      - field: correlationId
+        type: string
+        description: "Unique identifier to trace requests across services"
+        validation: uuid_or_similar
 
-```pseudocode
-// [EXAMPLE_TYPE_1]: Entry logging pattern
-LOG.INFO("[OPERATION_NAME] started", {correlationId, userId, requestId})
+      - field: timestamp
+        type: string
+        format: iso_8601
+        description: "ISO 8601 format timestamp"
+        validation: valid_iso8601
 
-// [EXAMPLE_TYPE_2]: Success logging pattern
-LOG.INFO("[OPERATION_NAME] completed", {correlationId, outcome: "success", duration})
+      - field: level
+        type: enum
+        values: [INFO, DEBUG, WARN, ERROR]
+        description: "Log level classification"
+        validation: one_of_allowed_values
 
-// [EXAMPLE_TYPE_3]: Error logging pattern
-LOG.ERROR("[OPERATION_NAME] failed", {correlationId, errorCode, errorType})
-```
+      - field: service
+        type: string
+        description: "Name of service/component generating the log"
+        validation: non_empty_string
 
-### Sample Implementation Pattern
+      - field: message
+        type: string
+        description: "Human-readable log message"
+        validation: non_empty_descriptive
 
-```pseudocode
-FUNCTION serviceOperation(request) {
-  correlationId = request.correlationId OR generateId()
+    optional_context:
+      - field: operation
+        type: string
+        description: "Specific function/method being executed"
+        when: available
 
-  // ENTRY: Log operation start with context
-  LOG.INFO("Operation started", {correlationId, operation, userId, requestId})
+      - field: userId
+        type: string
+        description: "User identifier when available"
+        when: user_context_exists
 
-  TRY {
-    result = processRequest(request)
-    // SUCCESS: Log completion with metrics
-    LOG.INFO("Operation completed", {correlationId, outcome: "success", duration})
-    RETURN result
-  } CATCH (error) {
-    // ERROR: Log failure (exclude sensitive data)
-    LOG.ERROR("Operation failed", {correlationId, errorCode, errorType})
-    THROW error
-  }
-}
-```
+      - field: sessionId
+        type: string
+        description: "Session identifier when available"
+        when: session_context_exists
 
-**Key Requirements**: Always include correlationId, never log secrets, use structured logging with consistent field names.
+      - field: requestId
+        type: string
+        description: "Request identifier for HTTP/API calls"
+        when: http_request_context
 
-### Required Log Fields
+      - field: duration
+        type: number
+        unit: milliseconds
+        description: "Operation execution time"
+        when: operation_complete
 
-Every log entry MUST include these standard fields:
+      - field: outcome
+        type: enum
+        values: [success, failure, timeout, partial]
+        description: "Result status"
+        when: operation_complete
 
-```pseudocode
-// Standard Log Entry Structure
-LOG_ENTRY {
-  // MANDATORY FIELDS
-  correlationId: STRING     // Unique identifier to trace requests across services
-  timestamp: STRING         // ISO 8601 format timestamp
-  level: ENUM              // Log level: INFO, DEBUG, WARN, ERROR
-  service: STRING          // Name of service/component generating the log
-  message: STRING          // Human-readable log message
+    error_specific:
+      - field: errorCode
+        type: string
+        description: "Application-specific error code"
+        required_when: level == ERROR
 
-  // OPTIONAL CONTEXT FIELDS
-  operation: STRING        // Specific function/method being executed
-  userId: STRING           // User identifier when available
-  sessionId: STRING        // Session identifier when available
-  requestId: STRING        // Request identifier for HTTP/API calls
-  duration: NUMBER         // Operation execution time in milliseconds
-  outcome: ENUM           // Result status: success, failure, timeout, etc.
+      - field: errorMessage
+        type: string
+        description: "Error description"
+        required_when: level == ERROR
 
-  // ERROR-SPECIFIC FIELDS (when level = ERROR)
-  errorCode: STRING        // Application-specific error code
-  errorMessage: STRING     // Error description
-  errorType: STRING        // Error category/classification
-  stackTrace: STRING       // Technical stack trace (exclude in production logs)
+      - field: errorType
+        type: string
+        description: "Error category/classification"
+        required_when: level == ERROR
 
-  // CUSTOM FIELDS
-  [additionalContext]: ANY // Service-specific contextual data
-}
+      - field: stackTrace
+        type: string
+        description: "Technical stack trace"
+        required_when: level == ERROR
+        environment_restriction: development_only
+        production_behavior: exclude
+
+  implementation_examples:
+    entry_logging:
+      pattern: 'LOG.INFO("[OPERATION_NAME] started", {correlationId, userId, requestId})'
+      use_case: operation_entry_point
+
+    success_logging:
+      pattern: 'LOG.INFO("[OPERATION_NAME] completed", {correlationId, outcome: "success", duration})'
+      use_case: successful_operation_completion
+
+    error_logging:
+      pattern: 'LOG.ERROR("[OPERATION_NAME] failed", {correlationId, errorCode, errorType})'
+      use_case: operation_failure
+
+    sample_implementation: |
+      FUNCTION serviceOperation(request) {
+        correlationId = request.correlationId OR generateId()
+        
+        // ENTRY: Log operation start with context
+        LOG.INFO("Operation started", {correlationId, operation, userId, requestId})
+        
+        TRY {
+          result = processRequest(request)
+          // SUCCESS: Log completion with metrics
+          LOG.INFO("Operation completed", {correlationId, outcome: "success", duration})
+          RETURN result
+        } CATCH (error) {
+          // ERROR: Log failure (exclude sensitive data)
+          LOG.ERROR("Operation failed", {correlationId, errorCode, errorType})
+          THROW error
+        }
+      }
+
+  key_requirements:
+    - requirement: always_include_correlation_id
+      description: "Every log entry must include correlationId for tracing"
+      enforcement: mandatory
+
+    - requirement: never_log_secrets
+      description: "Never log passwords, tokens, keys, or sensitive data"
+      enforcement: mandatory
+      validation: automated_scanning
+
+    - requirement: use_structured_logging
+      description: "Use structured logging with consistent field names"
+      enforcement: mandatory
+      validation: linting_rules
+
+    - requirement: consistent_field_names
+      description: "Maintain consistent field naming across all services"
+      enforcement: mandatory
+      validation: schema_validation
 ```
 
 ## 8. [DATABASE_SECTION_TITLE] Usage
 
-| Guideline | Rule                          |
-| --------- | ----------------------------- |
-| Keys      | [KEY_DEFINITION_REQUIREMENTS] |
-| TTL       | [TTL_REQUIREMENTS]            |
-| GSIs      | [GSI_ADDITION_CRITERIA]       |
-| Capacity  | [CAPACITY_CONFIGURATION]      |
+```yaml
+database_guidelines:
+  - guideline: Keys
+    rule: [KEY_DEFINITION_REQUIREMENTS]
+    enforcement: mandatory
+    validation: schema_validation
+    constraints:
+      must:
+        - define_clear_partition_key
+        - define_appropriate_sort_key
+        - follow_naming_conventions
+      must_not:
+        - use_ambiguous_key_patterns
+        - create_hot_partitions
+
+  - guideline: TTL
+    rule: [TTL_REQUIREMENTS]
+    enforcement: mandatory
+    validation: code_review
+    constraints:
+      must:
+        - set_ttl_for_transient_data
+        - document_ttl_rationale
+        - consider_data_lifecycle
+      must_not:
+        - use_ttl_without_justification
+        - skip_cleanup_considerations
+
+  - guideline: GSIs
+    rule: [GSI_ADDITION_CRITERIA]
+    enforcement: conditional
+    validation: architecture_review
+    criteria:
+      required_when:
+        - alternative_query_pattern_needed
+        - performance_requirements_justify
+        - cost_benefit_analysis_positive
+      prohibited_when:
+        - table_scan_sufficient
+        - query_pattern_uncommon
+        - maintenance_burden_outweighs_benefit
+    constraints:
+      must:
+        - justify_gsi_necessity
+        - project_only_required_attributes
+        - monitor_gsi_performance
+      must_not:
+        - create_unnecessary_gsis
+        - duplicate_primary_key_pattern
+
+  - guideline: Capacity
+    rule: [CAPACITY_CONFIGURATION]
+    enforcement: mandatory
+    validation: operations_review
+    modes:
+      on_demand:
+        when: unpredictable_traffic_patterns
+        benefits:
+          - no_capacity_planning
+          - automatic_scaling
+        costs:
+          - higher_per_request_cost
+      provisioned:
+        when: predictable_traffic_patterns
+        benefits:
+          - lower_cost_at_scale
+          - predictable_performance
+        costs:
+          - requires_capacity_planning
+          - manual_scaling_overhead
+    constraints:
+      must:
+        - justify_capacity_mode
+        - monitor_usage_patterns
+        - optimize_for_cost
+      must_not:
+        - over_provision_capacity
+        - ignore_cost_implications
+```
 
 ## 9. API Design
 
@@ -727,12 +1224,108 @@ LOG_ENTRY {
 
 ## 12. Observability
 
-| Aspect  | Requirement                     |
-| ------- | ------------------------------- |
-| Logs    | [LOGS_STRUCTURE_REQUIREMENT]    |
-| Logs    | [LOGS_ENVIRONMENT_REQUIREMENTS] |
-| Metrics | [METRICS_INTEGRATION_PLAN]      |
-| Tracing | [TRACING_POLICY]                |
+```yaml
+observability_standards:
+  logs:
+    - aspect: Structure
+      requirement: [LOGS_STRUCTURE_REQUIREMENT]
+      enforcement: mandatory
+      validation: automated_linting
+      constraints:
+        must:
+          - use_structured_json_format
+          - include_mandatory_fields
+          - be_machine_parseable
+        must_not:
+          - use_unstructured_text
+          - skip_correlation_ids
+
+    - aspect: Environment
+      requirement: [LOGS_ENVIRONMENT_REQUIREMENTS]
+      enforcement: mandatory
+      validation: deployment_check
+      constraints:
+        must:
+          - configure_per_environment
+          - respect_log_levels
+          - route_to_appropriate_destination
+        must_not:
+          - log_sensitive_data_production
+          - skip_required_fields
+
+  metrics:
+    requirement: [METRICS_INTEGRATION_PLAN]
+    enforcement: mandatory
+    validation: monitoring_review
+
+    types:
+      - type: Business Metrics
+        examples:
+          - user_signups
+          - transactions_completed
+          - revenue_generated
+        collection_frequency: real_time
+
+      - type: System Metrics
+        examples:
+          - request_latency
+          - error_rates
+          - throughput
+        collection_frequency: real_time
+
+      - type: Performance Metrics
+        examples:
+          - database_query_time
+          - external_api_latency
+          - memory_usage
+        collection_frequency: continuous
+
+    constraints:
+      must:
+        - emit_key_metrics
+        - use_consistent_naming
+        - include_relevant_tags
+        - set_appropriate_thresholds
+      must_not:
+        - skip_critical_metrics
+        - use_inconsistent_units
+        - emit_high_cardinality_metrics
+
+  tracing:
+    policy: [TRACING_POLICY]
+    enforcement: mandatory
+    validation: observability_review
+
+    requirements:
+      - requirement: distributed_tracing
+        description: "Implement distributed tracing across all services"
+        implementation: trace_context_propagation
+
+      - requirement: span_creation
+        description: "Create spans for significant operations"
+        granularity: function_level
+
+      - requirement: trace_sampling
+        description: "Configure appropriate sampling rates"
+        sampling_strategy: adaptive_sampling
+
+    constraints:
+      must:
+        - propagate_trace_context
+        - create_meaningful_spans
+        - include_relevant_attributes
+        - configure_sampling
+      must_not:
+        - break_trace_context
+        - create_excessive_spans
+        - skip_error_tracking
+
+    best_practices:
+      - use_semantic_conventions
+      - enrich_spans_with_context
+      - monitor_trace_completeness
+      - analyze_trace_performance
+```
 
 ## 13. Security & Privacy
 
