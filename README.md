@@ -19,6 +19,57 @@ Consistent, auditable, specification-first workflow across different AI assistan
 
 If you maintain or use another AI assistant, add support by placing these markdown prompt files into that tool's custom prompt directory or ingestion mechanism.
 
+## Quick Start
+
+1. **Install prompts:**
+
+   **Amazon Q Developer (Global):**
+
+   ```bash
+   mkdir -p ~/.aws/amazonq/prompts && \
+   cd /tmp && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+   cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+   cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
+   cd - && \
+   if [ ! -d .specify ]; then \
+     rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+   else \
+     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+   fi && \
+   rm -rf /tmp/sdd-llm-toolkit
+   ```
+
+   **GitHub Copilot (Project-Local):**
+
+   ```bash
+   cd /tmp && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+   cd - && \
+   mkdir -p .github/prompts && \
+   for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+     cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+   done && \
+   if [ ! -d .specify ]; then \
+     rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+   else \
+     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+   fi && \
+   cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
+   rm -rf /tmp/sdd-llm-toolkit
+   ```
+
+   See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
+
+2. **Start developing:**
+   ```
+   @specify Add user authentication system
+   @plan
+   @tasks
+   @implement
+   @audit
+   ```
+
 ## Why YAML for LLM Consistency
 
 This toolkit uses **structured YAML format** for defining rules, standards, and constraints in the constitution and templates. This design choice dramatically improves LLM output determinism and consistency.
@@ -105,61 +156,6 @@ Consistency: ~97%
 - **Reduced Ambiguity**: Boolean constraints eliminate interpretation variance
 - **Better Onboarding**: New team members see exact requirements
 - **Tooling Integration**: YAML enables linting, validation, and automation
-
-## Upstream Attribution
-
-Inspired by and originally derived from the excellent upstream project: [github/spec-kit](https://github.com/github/spec-kit). This toolkit reworks distribution, naming, and multi-vendor support while retaining the spirit of the original specification-first workflow.
-
-## Quick Start
-
-1. **Install prompts:**
-
-   **Amazon Q Developer (Global):**
-
-   ```bash
-   mkdir -p ~/.aws/amazonq/prompts && \
-   cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
-   cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
-   cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
-   cd - && \
-   if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
-   else \
-     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
-   fi && \
-   rm -rf /tmp/sdd-llm-toolkit
-   ```
-
-   **GitHub Copilot (Project-Local):**
-
-   ```bash
-   cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
-   cd - && \
-   mkdir -p .github/prompts && \
-   for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
-     cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
-   done && \
-   if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
-   else \
-     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
-   fi && \
-   cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
-   rm -rf /tmp/sdd-llm-toolkit
-   ```
-
-   See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
-
-2. **Start developing:**
-   ```
-   @specify Add user authentication system
-   @plan
-   @tasks
-   @implement
-   @audit
-   ```
 
 ## Workflow Diagrams
 
@@ -380,10 +376,10 @@ The `sdd-toolkit/` directory contains automated update scripts to keep your inst
 
 Scripts can be run directly from GitHub using curl, or locally if you've cloned the repository. See [sdd-toolkit/README.md](./sdd-toolkit/README.md) for details.
 
-## Credits
+## Credits & Attribution
 
-This work is based on the original [Spec-Kit](https://github.com/github/spec-kit) by GitHub. All credit for the methodology and workflow design goes to the original authors.
+This work is inspired by and originally derived from the excellent upstream project: [github/spec-kit](https://github.com/github/spec-kit) by GitHub. All credit for the methodology and workflow design goes to the original authors. This toolkit reworks distribution, naming, and multi-vendor support while retaining the spirit of the original specification-first workflow.
 
 ## License
 
-Same as original Spec-Kit project.
+MIT License - Same as the original [github/spec-kit](https://github.com/github/spec-kit) project.
