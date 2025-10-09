@@ -78,7 +78,11 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
 
 - **Location**: `~/.aws/amazonq/prompts/audit.md`
 - **Purpose**: Validate implementation quality and specification alignment after `@implement`
+- **Usage**: `@audit <feature-name>` or `@audit` (auto-selects if only one spec)
 - **Key Features**:
+  - Audits a single feature specification at a time
+  - Feature name parameter for projects with multiple specs
+  - Automatic feature selection when only one spec exists
   - Requirements coverage verification
   - Acceptance criteria validation
   - Task completion analysis
@@ -136,7 +140,7 @@ To use these prompts in Amazon Q:
 5. Type `@plan` to generate implementation plans from specifications
 6. Type `@tasks` to create task breakdowns from design artifacts
 7. Type `@implement` to execute the implementation plan
-8. Type `@audit` to validate implementation quality and specification alignment
+8. Type `@audit <feature-name>` to validate implementation quality and specification alignment
 
 **Example Workflow**:
 
@@ -146,7 +150,7 @@ To use these prompts in Amazon Q:
 @plan
 @tasks
 @implement
-@audit
+@audit user-authentication
 @drift
 ```
 

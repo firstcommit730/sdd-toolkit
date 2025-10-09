@@ -90,12 +90,15 @@
 ### 6. Validate Implementation Quality
 
 ```
-@audit
+@audit <feature-name>
+@audit user-authentication
 ```
 
 **What it does:**
 
-- Validates implementation against specification
+- Validates a single feature implementation against its specification
+- Accepts feature name parameter: `@audit <feature-name>`
+- Auto-selects if only one spec exists in project
 - Checks requirements coverage and acceptance criteria
 - Audits code quality, testing, error handling, security
 - Calculates compliance metrics (requirements %, task %, test coverage)
@@ -185,8 +188,9 @@ mkdir -p .specify/reference/payment-domain
 ### Implementation Audit
 
 ```
-@audit
-@audit After fixing critical issues
+@audit <feature-name>
+@audit user-authentication
+@audit payment-system  # Audit specific feature after fixes
 ```
 
 ## Common Patterns
@@ -198,7 +202,7 @@ mkdir -p .specify/reference/payment-domain
 @plan
 @tasks
 @implement
-@audit
+@audit payment-processing  # Audit the payment-processing feature
 ```
 
 **With Reference Context (Optimized):**
@@ -208,7 +212,18 @@ mkdir -p .specify/reference/payment-domain
 @plan  # Uses Reference Context from spec.md
 @tasks # Uses Reference Context from spec.md
 @implement
-@audit # Validates implementation against spec
+@audit payment-processing  # Validates implementation against spec
+```
+
+**Working with Multiple Features:**
+
+```
+# If you have multiple specs and forget the feature name
+@audit
+# Output: Lists all available features
+
+# Audit specific feature
+@audit user-authentication
 ```
 
 **Constitution Management:**
@@ -350,9 +365,11 @@ This section is then used by @plan and @tasks without re-loading the files.
 - Use `-ref <folder>` to enable Reference Context optimization
 - Check that @plan and @tasks are reading from spec.md, not re-loading files
 
-**"Specification not found" error (when using @audit):**
+**"Specification not found" or "Multiple specs found" error (when using @audit):**
 
-- Run `@specify` first to create the feature specification
+- If no spec exists: Run `@specify` first to create the feature specification
+- If multiple specs exist: Provide feature name: `@audit <feature-name>`
+- Use `@audit` without parameters to see list of available features
 - Ensure spec.md, plan.md, and tasks.md exist in feature directory
 
 **Missing AUDIT.md after @audit:**

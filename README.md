@@ -204,7 +204,7 @@ Consistency: ~97%
 @plan
 @tasks
 @implement
-@audit
+@audit user-authentication  # Audit specific feature
 ```
 
 **Enhanced with Reference Context:**
@@ -226,8 +226,20 @@ mkdir -p .specify/reference/user-authentication
 # 5. Execute implementation
 @implement
 
-# 6. Validate implementation quality
+# 6. Validate implementation quality (specify feature name)
+@audit user-authentication
+```
+
+**Working with Multiple Specs:**
+
+```bash
+# List available features if you forget the name
 @audit
+# Output: "Multiple specs found. Please specify which feature to audit: @audit <feature-name>"
+#         Available features: user-authentication, payment-system, api-endpoints
+
+# Audit specific feature
+@audit payment-system
 ```
 
 This generates design documents, creates a task list, and implements the feature following your project's constitutional principles. Reference folders in `.specify/reference/` provide structured context that is loaded once during specification and reused throughout the workflow.
@@ -302,7 +314,7 @@ EOF
 | `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                            |
 | `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                           |
 | `@implement`    | Execute implementation following task plan                     | `@implement`                                                       |
-| `@audit`        | Validate implementation against specification                  | `@audit`                                                           |
+| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>` or `@audit` (auto-selects if one spec)     |
 
 ### Prompt Details
 
@@ -353,6 +365,8 @@ EOF
 **Implementation Audit**
 
 - Validates implementation against specification after `@implement`
+- Usage: `@audit <feature-name>` or `@audit` (auto-selects if only one spec)
+- Audits a single feature specification at a time
 - Checks requirements coverage, acceptance criteria, task completion
 - Audits code quality, testing, error handling, and security
 - Calculates compliance metrics (requirements %, task %, test coverage)
@@ -360,6 +374,7 @@ EOF
 - Generates quality scores and production readiness assessment
 - Creates feature-specific `AUDIT.md` in `.specify/specs/<feature>/`
 - Overwrites existing audit report on each run for fresh validation
+- For projects with multiple specs, specify which feature to audit
 
 ## Documentation
 

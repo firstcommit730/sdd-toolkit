@@ -1,7 +1,21 @@
 ```markdown
 Audit the implementation against the specification to validate quality and alignment.
 
-1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks` from repo root and parse FEATURE_DIR, SPEC_FILE, and AVAILABLE_DOCS. All paths must be absolute.
+**Usage**: `@audit <feature-name>`
+
+Example: `@audit user-authentication` will audit `.specify/specs/user-authentication/`
+
+1. Determine which feature to audit:
+
+   - **If user provided feature name**: Use that specific feature
+   - **If no feature name provided**:
+     - List all available features in `.specify/specs/`
+     - If only one feature exists: use it automatically
+     - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to audit: @audit <feature-name>"
+     - Available features: [list directory names from .specify/specs/]
+   - Set FEATURE_NAME to the determined feature name
+   - Set FEATURE_DIR to `.specify/specs/<feature-name>/`
+   - Run `.specify/scripts/bash/check-prerequisites.sh <feature-name> --json --require-tasks` to validate and parse SPEC_FILE and AVAILABLE_DOCS. All paths must be absolute.
 
 2. Verify required files exist:
 
