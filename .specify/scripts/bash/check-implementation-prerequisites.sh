@@ -1,11 +1,34 @@
 #!/usr/bin/env bash
 set -e
 JSON_MODE=false
-for arg in "$@"; do case "$arg" in --json) JSON_MODE=true ;; --help|-h) echo "Usage: $0 [--json]"; exit 0 ;; esac; done
+FEATURE_NAME=""
+for arg in "$@"; do 
+    case "$arg" in 
+        --json) JSON_MODE=true ;; 
+        --help|-h) 
+            echo "Usage: $0 [<feature-name>] [--json]"
+            echo "  <feature-name>  Optional feature name (auto-detects if omitted)"
+            echo "  --json          Output in JSON format"
+            exit 0 
+            ;; 
+        *) 
+            if [[ -z "$FEATURE_NAME" ]]; then
+                FEATURE_NAME="$arg"
+            fi
+            ;;
+    esac
+done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
-eval $(get_feature_paths)
-check_feature_branch "$CURRENT_BRANCH" || exit 1
+
+# Determine which feature to use
+if [[ -z "$FEATURE_NAME" ]]; then
+    FEATURE_NAME=$(determine_feature) || exit 1
+else
+    determine_feature "$FEATURE_NAME" > /dev/null || exit 1
+fi
+
+eval $(get_feature_paths "$FEATURE_NAME")
 if [[ ! -d "$FEATURE_DIR" ]]; then echo "ERROR: Feature directory not found: $FEATURE_DIR"; echo "Run /specify first."; exit 1; fi
 if [[ ! -f "$IMPL_PLAN" ]]; then echo "ERROR: plan.md not found in $FEATURE_DIR"; echo "Run /plan first."; exit 1; fi
 if [[ ! -f "$TASKS" ]]; then echo "ERROR: tasks.md not found in $FEATURE_DIR"; echo "Run /tasks first."; exit 1; fi
