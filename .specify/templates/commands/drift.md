@@ -1,10 +1,10 @@
 ```markdown
 Detect drift between the current project state and the constitution, creating a realignment TODO list.
 
-1. Check if `.specify/memory/constitution.md` exists. If not, throw an error:
-   "ERROR: Constitution not found at .specify/memory/constitution.md. Run @constitution first to create the project constitution."
+1. Check if `.specify/memory/constitution.yaml` exists. If not, throw an error:
+   "ERROR: Constitution not found at .specify/memory/constitution.yaml. Run @constitution first to create the project constitution."
 
-2. Read the constitution at `.specify/memory/constitution.md` to understand all principles and requirements.
+2. Read the constitution at `.specify/memory/constitution.yaml` to understand all principles and requirements.
 
 3. Load the drift report template:
 

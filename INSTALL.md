@@ -14,7 +14,7 @@ cd /tmp && \
 git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
 cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
 if [ ! -d ~/.aws/amazonq/.specify ]; then \
-  rsync -av --exclude='memory/constitution.md' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
+  rsync -av --exclude='memory/constitution.yaml' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
 else \
   rsync -av --exclude='memory/' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
 fi && \
@@ -29,7 +29,7 @@ echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit installed succes
 - Creates `~/.aws/amazonq/prompts/` directory
 - Clones the latest toolkit from GitHub
 - Copies all prompt files (`.md`)
-- Copies the complete `.specify/` directory structure (excludes `constitution.md` on first install, preserves existing `memory/` folder on updates)
+- Copies the complete `.specify/` directory structure (excludes `constitution.yaml` on first install, preserves existing `memory/` folder on updates)
 - Copies the `sdd-toolkit/` directory (update scripts and documentation)
 - Cleans up temporary files
 - Provides confirmation message
@@ -47,7 +47,7 @@ for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
 done && \
 if [ ! -d .specify ]; then \
-  rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+  rsync -av --exclude='memory/constitution.yaml' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
 else \
   rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
 fi && \

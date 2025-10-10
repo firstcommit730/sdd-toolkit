@@ -218,6 +218,6 @@ The prompts rely on the existing `.specify/` directory structure:
 
 - `.specify/scripts/bash/` - Shell scripts for automation
 - `.specify/templates/` - Template files for specifications and plans
-- `.specify/memory/constitution.md` - Project constitution template
+- `.specify/memory/constitution.yaml` - Project constitution template
 
 All dependencies are present and functional in the current project structure.

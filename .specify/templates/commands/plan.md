@@ -13,7 +13,7 @@ Execute the implementation planning workflow using the plan template to generate
      - This provides pre-analyzed context without re-loading files
      - Reference the "Key Insights" and "Referenced Files" for design decisions and consistency
 
-3. Read the constitution at `.specify/memory/constitution.md` to understand constitutional requirements.
+3. Read the constitution at `.specify/memory/constitution.yaml` to understand constitutional requirements.
 
 4. Execute the implementation plan template:
 

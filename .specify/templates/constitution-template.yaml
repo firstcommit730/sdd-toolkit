@@ -11,7 +11,7 @@ Authoritative guardrails governing architecture, technology choices, coding stan
 ## 1. Branching and Repository Standards
 
 > **Note**: Branching standards have been extracted to a separate file for use by the specify prompt.  
-> See: `.specify/memory/branching-standards.md` (copied from `.specify/templates/branching-standards-template.md` during constitution initialization)
+> See: `.specify/memory/branching-standards.yaml` (copied from `.specify/templates/branching-standards-template.yaml` during constitution initialization)
 
 ## 2. Immutable Technology Stack
 

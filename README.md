@@ -33,7 +33,7 @@ If you maintain or use another AI assistant, add support by placing these markdo
    cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
    cd - && \
    if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/constitution.yaml' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
    else \
      rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
    fi && \
@@ -51,7 +51,7 @@ If you maintain or use another AI assistant, add support by placing these markdo
      cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
    done && \
    if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/constitution.yaml' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
    else \
      rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
    fi && \
