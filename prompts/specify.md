@@ -15,129 +15,134 @@ The user will provide a feature description and optionally a reference folder fo
 
 ### Validation Requirements
 
-**CRITICAL**: All feature descriptions MUST comply with branching standards. If the branching standards file is missing or the branch name doesn't comply, immediately stop and return an error.
-
-**Reference**: See `.specify/templates/includes/validation-common.md` for detailed validation procedures and standard error messages.
+**CRITICAL**: All feature descriptions MUST include a valid branch type prefix. If the user provides a description without a proper prefix, immediately stop processing and return an error message.
 
 ### Steps
 
-0. **Load and Validate Branching Standards**:
+0. **Validate Branch Type Prefix**: Before proceeding, ensure the feature description includes a valid branch type prefix according to the constitution.md Branch Naming standards:
 
-   - Check `.specify/memory/git-workflow.md` exists (fatal error if missing)
-   - Parse YAML: `allowed_type_prefixes`, `constraints.must/must_not`, `length_constraints`
-   - Validate user input against all rules
-   - Use standard error messages from validation-common.md
-   - STOP processing if any validation fails
-   - Check length is between `minimum` and `maximum` from branching standards
-   - If ANY constraint is violated, respond with:
+   - **REQUIRED**: The description MUST start with one of: `feat/`, `fix/`, `chore/`, `refactor/`, `test/`, `docs/`, `hotfix/`, `maintenance/`
+   - **STOP AND ERROR**: If no valid prefix is provided, immediately stop processing and inform the user they must specify a branch type prefix
+   - **Constitution Reference**: Per `.specify/memory/constitution.md` § 1 "Branching and Repository Standards", all branches must follow the `type/short-description` pattern
 
-     ```
-     ERROR: Branch name violates branching standards constraints.
+   **Valid Examples**:
 
-     Branching Standards Reference: .specify/memory/git-workflow.md
+   - ✅ `feat/user-authentication-system`
+   - ✅ `fix/payment-timeout-issue`
+   - ✅ `docs/api-documentation-update`
+   - ❌ `user-authentication-system` (missing type prefix)
+   - ❌ `new-feature/authentication` (invalid type)
 
-     Violations found:
-     [List each violated constraint with the specific rule from branching standards]
+   **ERROR HANDLING**: If the user's description does not start with a valid type prefix, respond with:
 
-     Your proposed branch: [branch name]
+   ```
+   ERROR: Invalid branch type prefix provided.
 
-     Please revise to comply with all branching standards requirements.
-     ```
+   The feature description must start with a valid branch type according to the constitution.md Branch Naming standards.
 
-     STOP all processing and do not continue.
+   Required format: type/description
+   Valid types: feat, fix, chore, refactor, test, docs, hotfix, maintenance
 
-     STOP all processing and do not continue.
+   Examples:
+   - feat/add-user-authentication
+   - fix/resolve-payment-timeout
+   - docs/update-api-documentation
 
-0.5. **Create a branch name**: After successfully validating against all branching rules, create a concise, descriptive name suitable for a git branch that captures the essence of the feature. This name MUST comply with ALL rules from `.specify/memory/git-workflow.md`. The script will automatically process this into a valid git branch name.
+   Please provide your feature description with a proper type prefix.
+   ```
 
-**Branching Standards Compliance Requirements**:
+   Do not proceed with any further steps.
 
-- Use valid type prefix from branching standards' `allowed_type_prefixes`
-- Follow pattern specified in branching standards (typically `type/short-description`)
-- Respect length constraints from branching standards (`minimum` to `maximum` characters)
-- Comply with all `constraints.must` rules from branching standards
-- Avoid all `constraints.must_not` violations from branching standards
-- Use lowercase letters, numbers, hyphens, and forward slashes only (per branching standards)
+0.1. **Summarize the feature description**: After validating the prefix, create a concise summary of the feature description that is 80 characters or less. This summary should capture the essential meaning while preserving the required type prefix and being suitable for use as a git branch name. Preserve key technical terms and maintain clarity.
 
-**Reference**: All rules sourced from `.specify/memory/git-workflow.md`
-
-1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<branch_description_with_prefix>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
+1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<summarized_description_with_prefix>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
+   **NOTE** Branch names are automatically generated from the summarized description (max 65 chars after transformation).
 
-   **Branch Name Generation**: The script automatically generates a git branch name from your description by:
+   **Branch Name Generation**: The script automatically generates a git branch name from the summarized feature description by:
 
    - Converting the description to lowercase
    - Replacing all non-alphanumeric characters with hyphens
    - Removing consecutive hyphens
    - Trimming leading and trailing hyphens
-   - Truncating to the maximum length specified in constitution (typically 50 characters)
-   - Example: "High-Value Field Redaction & Structured Context" → "high-value-field-redaction-structured-context"
+   - Truncating to a maximum of 65 characters
+   - Example: "High-Value Field Redaction & Structured Context" → "high-value-field-redaction---structured-context"
 
-   **Post-Script Validation**: After the script runs:
+1.5. **Load Reference Folder (if provided)**: If the user specified a reference folder with `-ref <folder_name>`:
 
-   - Verify the generated BRANCH_NAME still complies with branching standards rules
-   - If the script's output violates any branching standards constraint, report the violation and halt
-   - Reference: `.specify/memory/git-workflow.md`
+- Check if `.specify/reference/<folder_name>/` exists
+- **If folder does NOT exist**, immediately stop and return:
 
-1.5. **Load Reference Folder (if provided)**: If the user specified a reference folder with `-ref <folder_name>`, check for `.specify/reference/<folder_name>/` and load all files in the folder for additional context about:
+  ```
+  ERROR: Reference folder not found
 
-- Primary User Story details (from README.md)
-- Acceptance Scenarios examples
-- Edge Cases to consider
-- Functional Requirements templates
-- Key Entities definitions
-- Any additional supporting files in the folder
+  Requested folder: .specify/reference/<folder_name>/
 
-**Important**: If a reference folder is used, add a metadata section at the top of the spec file:
+  Available reference folders:
+  [List all subdirectories in .specify/reference/]
 
-```yaml
----
-reference: <folder_name>
----
-```
+  To create a new reference folder, see the "Creating Reference Folders" section in the specify command documentation.
+  ```
 
-This allows @plan and @tasks to automatically source the reference context without needing to pass `-ref` explicitly.
+  STOP all processing and do not continue.
 
-2. **Load Constitutional Standards**: Execute `.specify/scripts/bash/load-constitution.sh` with an appropriate preset based on the project type to load relevant constitutional standards:
+- **If folder exists**, load all files in the folder. Extract and summarize:
+  - **Architecture & Patterns**: Code patterns, design decisions, and conventions found
+  - **Code Examples & Interfaces**: API signatures, interfaces, or code patterns to follow
+  - **Configuration & Setup**: Configuration patterns, environment setup, dependencies
+  - **Testing Approaches**: Testing patterns, fixtures, or utilities available
+  - **Key Technical Decisions**: Important technical choices and rationale
 
-   **Available Presets**:
+Store this as REFERENCE_CONTEXT for inclusion in the spec.
 
-   - `backend` - Loads: core, testing, security, observability, architecture, branching
-   - `frontend` - Loads: core, testing, architecture, optional, branching
-   - `infra` - Loads: core, operations, security, observability, branching
-   - `core` - Loads: core, branching (minimal set)
-   - `full` - Loads all sections (use sparingly due to token usage)
+2. Load `.specify/templates/spec-template.md` to understand required sections.
 
-   **Custom Section Loading**: You can also load specific sections by name:
+3. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description and reference folder (if provided) while preserving section order and headings.
 
-   ```bash
-   .specify/scripts/bash/load-constitution.sh "core,testing,security"
+   **If a reference folder was used**, include both:
+
+   a) **YAML frontmatter at the very top**:
+
+   ```yaml
+   ---
+   reference: <folder_name>
+   ---
    ```
 
-   **Default**: Use `backend` preset unless the feature clearly indicates a different project type.
+   b) **Reference Context section after User Stories**:
 
-   **Purpose**: The loaded constitutional standards will guide the specification to ensure:
+   ```markdown
+   ## Reference Context
 
-   - Technology stack compliance (Section 2: Immutable Technology Stack)
-   - Architectural pattern adherence (Section 3: Architectural Principles)
-   - Coding standards alignment (Section 4: Coding Standards)
-   - Testing requirements (Section 6: Testing Rules)
-   - Security requirements (Section 13: Security & Privacy)
-   - Branching workflow compliance (from git-workflow.md)
+   **Reference Folder**: [folder-name]
+   **Purpose**: Context from existing implementation for consistency and pattern reuse
 
-3. Load `.specify/templates/spec-template.md` to understand required sections.
+   ### Key Insights from Reference Material
 
-4. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description, constitutional standards, and reference folder (if provided) while preserving section order and headings. If a reference folder was used, ensure the YAML frontmatter is at the very top of the file.
+   #### Architecture & Patterns
 
-   **Constitutional Compliance**: Ensure the specification reflects:
+   [Summarize architectural patterns, design decisions, and conventions found]
 
-   - Mandated technologies from loaded constitution
-   - Required architectural patterns
-   - Testing strategies and coverage requirements
-   - Security and validation requirements
-   - Logging and observability standards
+   #### Code Examples & Interfaces
 
-5. Report completion with branch name, spec file path, reference folder used (if any), constitutional preset loaded, and readiness for the next phase.
+   [List relevant API signatures, interfaces, or code patterns to follow]
+
+   #### Configuration & Setup
+
+   [Note any configuration patterns, environment setup, or dependencies]
+
+   #### Testing Approaches
+
+   [Document testing patterns, fixtures, or utilities available]
+
+   ### Referenced Files
+
+   [List files that were loaded and analyzed]
+   ```
+
+   This allows @plan and @tasks to use the pre-analyzed insights without re-loading files.
+
+4. Report completion with branch name, spec file path, reference folder used (if any), and readiness for the next phase.
 
 Note: The script creates the feature directory and initializes the spec file.
 
@@ -149,7 +154,7 @@ Reference folders provide reusable context that enhances @specify, @plan, and @t
 
 ### How to Create a Reference Folder
 
-1. **Create folder name**: Create a concise, descriptive folder name in kebab-case format that represents the domain or feature area.
+1. **Summarize folder name**: If the description is long, create a concise summary (80 characters or less) in kebab-case format.
 
 2. **Check if folder exists**: First check if `.specify/reference/<folder_name>/` already exists
 
