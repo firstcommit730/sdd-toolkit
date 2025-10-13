@@ -19,7 +19,7 @@ Update existing installation to the latest version:
 Or run directly from GitHub:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
+curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
 ```
 
 **What it does:**
@@ -42,7 +42,7 @@ Update existing installation to the latest version:
 Or run directly from GitHub:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-amazonq.sh | bash
+curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-toolkit/main/sdd-toolkit/sdd-update-amazonq.sh | bash
 ```
 
 **What it does:**
@@ -118,5 +118,5 @@ After installation, you'll have:
 
 For issues, questions, or contributions:
 
-- Repository: https://github.com/firstcommit730/sdd-llm-toolkit
-- Issues: https://github.com/firstcommit730/sdd-llm-toolkit/issues
+- Repository: https://github.com/firstcommit730/sdd-toolkit
+- Issues: https://github.com/firstcommit730/sdd-toolkit/issues

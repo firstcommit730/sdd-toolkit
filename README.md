@@ -64,35 +64,35 @@ This is a clean, modern implementation designed for simplicity and clarity from 
    ```bash
    mkdir -p ~/.aws/amazonq/prompts && \
    cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
-   cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
-   cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
+   cp sdd-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+   cp -r sdd-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
    cd - && \
    if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
    else \
-     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/' /tmp/sdd-toolkit/.specify/ .specify/; \
    fi && \
-   rm -rf /tmp/sdd-llm-toolkit
+   rm -rf /tmp/sdd-toolkit
    ```
 
    **GitHub Copilot (Project-Local):**
 
    ```bash
    cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
    cd - && \
    mkdir -p .github/prompts && \
-   for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+   for file in /tmp/sdd-toolkit/prompts/*.md; do \
      cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
    done && \
    if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
    else \
-     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/' /tmp/sdd-toolkit/.specify/ .specify/; \
    fi && \
-   cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
-   rm -rf /tmp/sdd-llm-toolkit
+   cp -r /tmp/sdd-toolkit/sdd-toolkit . && \
+   rm -rf /tmp/sdd-toolkit
    ```
 
    See [INSTALL.md](./INSTALL.md) for detailed installation instructions.

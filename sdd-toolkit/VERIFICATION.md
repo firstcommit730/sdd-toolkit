@@ -76,13 +76,13 @@ Update scripts include:
 All scripts correctly reference:
 
 ```
-https://github.com/firstcommit730/sdd-llm-toolkit.git
+https://github.com/firstcommit730/sdd-toolkit.git
 ```
 
 All curl commands correctly reference:
 
 ```
-https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/
+https://raw.githubusercontent.com/firstcommit730/sdd-toolkit/main/sdd-toolkit/
 ```
 
 ## ✅ File Permissions
@@ -102,7 +102,7 @@ Before committing and pushing:
 
    ```bash
    cd /tmp
-   git clone https://github.com/firstcommit730/sdd-llm-toolkit.git test-repo
+   git clone https://github.com/firstcommit730/sdd-toolkit.git test-repo
    cd test-repo
    # Manually install first using INSTALL.md commands
    ./sdd-toolkit/sdd-update-copilot.sh
@@ -119,7 +119,7 @@ Before committing and pushing:
 
 3. **Test curl update** (after pushing to GitHub):
    ```bash
-   curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
+   curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
    ```
 
 ## Summary

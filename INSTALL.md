@@ -11,17 +11,17 @@ Install prompts and `.specify/` directory globally for Amazon Q Developer. Copy 
 ```bash
 mkdir -p ~/.aws/amazonq/prompts && \
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
-cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
+cp sdd-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
 if [ ! -d ~/.aws/amazonq/.specify ]; then \
-  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' --exclude='memory/git-workflow.md' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
-  [ ! -f ~/.aws/amazonq/.specify/memory/constitution.md ] && cp sdd-llm-toolkit/.specify/templates/constitution-template.md ~/.aws/amazonq/.specify/memory/constitution.md || true; \
-  [ ! -f ~/.aws/amazonq/.specify/memory/git-workflow.md ] && cp sdd-llm-toolkit/.specify/templates/git-workflow-template.md ~/.aws/amazonq/.specify/memory/git-workflow.md || true; \
+  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' --exclude='memory/git-workflow.md' sdd-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
+  [ ! -f ~/.aws/amazonq/.specify/memory/constitution.md ] && cp sdd-toolkit/.specify/templates/constitution-template.md ~/.aws/amazonq/.specify/memory/constitution.md || true; \
+  [ ! -f ~/.aws/amazonq/.specify/memory/git-workflow.md ] && cp sdd-toolkit/.specify/templates/git-workflow-template.md ~/.aws/amazonq/.specify/memory/git-workflow.md || true; \
 else \
-  rsync -av --exclude='memory/' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
+  rsync -av --exclude='memory/' sdd-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
 fi && \
-cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
-rm -rf sdd-llm-toolkit && \
+cp -r sdd-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
+rm -rf sdd-toolkit && \
 cd - && \
 echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
@@ -44,19 +44,19 @@ Install prompts and `.specify/` directory in your current project. Navigate to y
 
 ```bash
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
 cd - && \
 mkdir -p .github/prompts && \
-for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+for file in /tmp/sdd-toolkit/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
 done && \
 if [ ! -d .specify ]; then \
-  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
 else \
-  rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+  rsync -av --exclude='memory/' /tmp/sdd-toolkit/.specify/ .specify/; \
 fi && \
-cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
-rm -rf /tmp/sdd-llm-toolkit && \
+cp -r /tmp/sdd-toolkit/sdd-toolkit . && \
+rm -rf /tmp/sdd-toolkit && \
 echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit installed successfully!"
 ```
 
@@ -94,10 +94,10 @@ echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit installed succes
 
 ### GitHub Copilot (Install to Your Project)
 
-Navigate to your target project directory, then run this command (replace `/path/to/sdd-llm-toolkit` with the actual path to this cloned repository):
+Navigate to your target project directory, then run this command (replace `/path/to/sdd-toolkit` with the actual path to this cloned repository):
 
 ```bash
-TOOLKIT_PATH="/path/to/sdd-llm-toolkit" && \
+TOOLKIT_PATH="/path/to/sdd-toolkit" && \
 mkdir -p .github/prompts && \
 for file in "$TOOLKIT_PATH"/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
@@ -113,7 +113,7 @@ echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit installed 
 
 **Note:**
 
-- Replace `/path/to/sdd-llm-toolkit` with the actual path to the cloned toolkit repository
+- Replace `/path/to/sdd-toolkit` with the actual path to the cloned toolkit repository
 - This installs prompts to `.github/prompts/` (Copilot requirement), `.specify/`, and `sdd-toolkit/` in your project
 - Excludes `constitution.md` and `git-workflow.md` on first install, preserves existing `.specify/memory/` directory on updates
 - Does NOT copy the `prompts/` folder to your project
@@ -139,10 +139,10 @@ cp -r sdd-toolkit ~/.aws/amazonq/
 
 **For GitHub Copilot:**
 
-Navigate to your target project, then run (replace `/path/to/sdd-llm-toolkit`):
+Navigate to your target project, then run (replace `/path/to/sdd-toolkit`):
 
 ```bash
-TOOLKIT_PATH="/path/to/sdd-llm-toolkit" && \
+TOOLKIT_PATH="/path/to/sdd-toolkit" && \
 mkdir -p .github/prompts && \
 for file in "$TOOLKIT_PATH"/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
@@ -286,7 +286,7 @@ The easiest way to update is using the automated update scripts:
 **For GitHub Copilot:**
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
+curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-toolkit/main/sdd-toolkit/sdd-update-copilot.sh | bash
 ```
 
 Or if you have the repository cloned:
@@ -298,7 +298,7 @@ Or if you have the repository cloned:
 **For Amazon Q Developer:**
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-llm-toolkit/main/sdd-toolkit/sdd-update-amazonq.sh | bash
+curl -sSL https://raw.githubusercontent.com/firstcommit730/sdd-toolkit/main/sdd-toolkit/sdd-update-amazonq.sh | bash
 ```
 
 Or if you have the repository cloned:
@@ -316,17 +316,17 @@ Pull the latest prompts and update your global Amazon Q installation:
 ```bash
 # Update Amazon Q prompts from repository
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
 rm -rf ~/.aws/amazonq/prompts/*.md && \
-cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+cp sdd-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
 if [ ! -d ~/.aws/amazonq/.specify ]; then \
-  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
+  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' sdd-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
 else \
-  rsync -av --exclude='memory/' sdd-llm-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
+  rsync -av --exclude='memory/' sdd-toolkit/.specify/ ~/.aws/amazonq/.specify/; \
 fi && \
 rm -rf ~/.aws/amazonq/sdd-toolkit && \
-cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
-rm -rf sdd-llm-toolkit && \
+cp -r sdd-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
+rm -rf sdd-toolkit && \
 cd - && \
 echo "✅ Amazon Q prompts, .specify directory, and sdd-toolkit updated successfully!"
 ```
@@ -340,19 +340,19 @@ Pull the latest prompts and update your project's Copilot installation:
 ```bash
 # Update GitHub Copilot prompts in current project
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
 cd - && \
 rm -rf .github/prompts/*.prompt.md && \
 mkdir -p .github/prompts && \
-for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
+for file in /tmp/sdd-toolkit/prompts/*.md; do \
   cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
 done && \
 rm -rf .specify/templates .specify/scripts && \
-cp -r /tmp/sdd-llm-toolkit/.specify/templates .specify/ && \
-cp -r /tmp/sdd-llm-toolkit/.specify/scripts .specify/ && \
+cp -r /tmp/sdd-toolkit/.specify/templates .specify/ && \
+cp -r /tmp/sdd-toolkit/.specify/scripts .specify/ && \
 rm -rf sdd-toolkit && \
-cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
-rm -rf /tmp/sdd-llm-toolkit && \
+cp -r /tmp/sdd-toolkit/sdd-toolkit . && \
+rm -rf /tmp/sdd-toolkit && \
 echo "✅ GitHub Copilot prompts, .specify directory, and sdd-toolkit updated successfully!"
 ```
 

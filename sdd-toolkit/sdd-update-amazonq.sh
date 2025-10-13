@@ -22,7 +22,7 @@ trap "rm -rf $TMP_DIR" EXIT
 
 echo -e "${YELLOW}📥 Cloning latest version from GitHub...${NC}"
 cd "$TMP_DIR"
-git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
 
 # Create Amazon Q prompts directory if it doesn't exist
 AMAZONQ_DIR="$HOME/.aws/amazonq"
@@ -43,7 +43,7 @@ rm -rf "$AMAZONQ_DIR/prompts"/*.md 2>/dev/null || true
 
 # Copy new prompts
 echo -e "${YELLOW}📝 Copying new prompt files...${NC}"
-for file in "$TMP_DIR"/sdd-llm-toolkit/prompts/*.md; do
+for file in "$TMP_DIR"/sdd-toolkit/prompts/*.md; do
     if [ -f "$file" ]; then
         filename=$(basename "$file")
         cp "$file" "$AMAZONQ_DIR/prompts/$filename"
@@ -57,11 +57,11 @@ echo -e "${YELLOW}📂 Updating .specify directory...${NC}"
 # Check if .specify exists and use appropriate method
 if [ ! -d "$AMAZONQ_DIR/.specify" ]; then
     # First time install - copy everything except git-workflow.md
-    rsync -av --exclude='memory/git-workflow.md' "$TMP_DIR"/sdd-llm-toolkit/.specify/ "$AMAZONQ_DIR/.specify/"
+    rsync -av --exclude='memory/git-workflow.md' "$TMP_DIR"/sdd-toolkit/.specify/ "$AMAZONQ_DIR/.specify/"
     echo -e "${GREEN}  ✓ Installed .specify directory (excluded git-workflow.md)${NC}"
 else
     # Update existing - preserve memory folder using rsync
-    rsync -av --exclude='memory/' "$TMP_DIR"/sdd-llm-toolkit/.specify/ "$AMAZONQ_DIR/.specify/"
+    rsync -av --exclude='memory/' "$TMP_DIR"/sdd-toolkit/.specify/ "$AMAZONQ_DIR/.specify/"
     echo -e "${GREEN}  ✓ Updated .specify directory (preserved memory folder)${NC}"
 fi
 
@@ -73,7 +73,7 @@ mkdir -p "$AMAZONQ_DIR/.specify/reference"
 
 # Update sdd-toolkit directory
 rm -rf "$AMAZONQ_DIR/sdd-toolkit" 2>/dev/null || true
-cp -r "$TMP_DIR"/sdd-llm-toolkit/sdd-toolkit "$AMAZONQ_DIR/"
+cp -r "$TMP_DIR"/sdd-toolkit/sdd-toolkit "$AMAZONQ_DIR/"
 echo -e "${GREEN}  ✓ Updated sdd-toolkit directory${NC}"
 
 echo -e "${GREEN}✅ Amazon Q Developer SDD Toolkit updated successfully!${NC}"

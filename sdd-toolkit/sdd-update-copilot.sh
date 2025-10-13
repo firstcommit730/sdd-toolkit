@@ -32,7 +32,7 @@ trap "rm -rf $TMP_DIR" EXIT
 
 echo -e "${YELLOW}📥 Cloning latest version from GitHub...${NC}"
 cd "$TMP_DIR"
-git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
 
 cd "$PROJECT_ROOT"
 
@@ -54,7 +54,7 @@ mkdir -p .github/prompts
 
 # Copy new prompts with .prompt.md extension
 echo -e "${YELLOW}📝 Copying new prompt files...${NC}"
-for file in "$TMP_DIR"/sdd-llm-toolkit/prompts/*.md; do
+for file in "$TMP_DIR"/sdd-toolkit/prompts/*.md; do
     if [ -f "$file" ]; then
         filename=$(basename "$file" .md)
         cp "$file" ".github/prompts/${filename}.prompt.md"
@@ -68,11 +68,11 @@ echo -e "${YELLOW}📂 Updating .specify directory...${NC}"
 # Check if .specify exists and use appropriate method
 if [ ! -d ".specify" ]; then
     # First time install - copy everything except git-workflow.md
-    rsync -av --exclude='memory/git-workflow.md' "$TMP_DIR"/sdd-llm-toolkit/.specify/ .specify/
+    rsync -av --exclude='memory/git-workflow.md' "$TMP_DIR"/sdd-toolkit/.specify/ .specify/
     echo -e "${GREEN}  ✓ Installed .specify directory (excluded git-workflow.md)${NC}"
 else
     # Update existing - preserve memory folder using rsync
-    rsync -av --exclude='memory/' "$TMP_DIR"/sdd-llm-toolkit/.specify/ .specify/
+    rsync -av --exclude='memory/' "$TMP_DIR"/sdd-toolkit/.specify/ .specify/
     echo -e "${GREEN}  ✓ Updated .specify directory (preserved memory folder)${NC}"
 fi
 
@@ -85,7 +85,7 @@ mkdir -p .specify/reference
 # Update sdd-toolkit directory
 echo -e "${YELLOW}🔧 Updating sdd-toolkit directory...${NC}"
 rm -rf sdd-toolkit 2>/dev/null || true
-cp -r "$TMP_DIR"/sdd-llm-toolkit/sdd-toolkit .
+cp -r "$TMP_DIR"/sdd-toolkit/sdd-toolkit .
 echo -e "${GREEN}  ✓ Updated sdd-toolkit${NC}"
 
 echo -e "${GREEN}✅ GitHub Copilot SDD Toolkit updated successfully!${NC}"
