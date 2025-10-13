@@ -17,7 +17,7 @@ Create or update the feature specification from a natural language feature descr
 
 ### Examples
 
-```bash
+```{{SCRIPT_LANG}}
 # Basic usage with default feat type
 @specify user authentication system
 
@@ -107,7 +107,7 @@ The user will provide a feature description (first text after the command), opti
 
   0.2. **Summarize the feature description**: Create a concise summary of the full feature description (including type prefix) that is 80 characters or less. This summary should capture the essential meaning while preserving the required type prefix and being suitable for use as a git branch name. Preserve key technical terms and maintain clarity.
 
-1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<summarized_description_with_prefix>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
+1. Run the script `.specify/scripts/{{SCRIPT_LANG}}/create-new-feature{{SCRIPT_EXT}} --json "<summarized_description_with_prefix>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
    **NOTE** Branch names are automatically generated from the summarized description (max 65 chars after transformation).
 

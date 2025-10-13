@@ -15,7 +15,7 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
      - Available features: [list directory names from .specify/specs/]
    - Set FEATURE_NAME to the determined feature name
    - Set FEATURE_DIR to `.specify/specs/<feature-name>/`
-   - Run `.specify/scripts/bash/check-prerequisites.sh <feature-name> --json --require-tasks` to validate and parse SPEC_FILE and AVAILABLE_DOCS. All paths must be absolute.
+   - Run `.specify/scripts/{{SCRIPT_LANG}}/check-prerequisites{{SCRIPT_EXT}} <feature-name> --json --require-tasks` to validate and parse SPEC_FILE and AVAILABLE_DOCS. All paths must be absolute.
 
 2. Verify required files exist:
 
@@ -44,8 +44,8 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 
    **Phase 1 - Critical Compliance** (Always Load):
 
-   ```bash
-   .specify/scripts/bash/load-constitution.sh "core,testing,security,branching"
+   ```{{SCRIPT_LANG}}
+   .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "core,testing,security,branching"
    ```
 ````
 
@@ -85,20 +85,20 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 
 7. **Progressive Loading (Phase 2) - If Issues Detected**: Load additional sections only if Phase 1 reveals specific issues:
 
-   ```bash
+   ```{{SCRIPT_LANG}}
    # Load architecture section if architectural issues detected
    if [[ $architecture_issues_found == true ]]; then
-     .specify/scripts/bash/load-constitution.sh "architecture"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "architecture"
    fi
 
    # Load observability section if logging/monitoring issues detected
    if [[ $observability_issues_found == true ]]; then
-     .specify/scripts/bash/load-constitution.sh "observability"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "observability"
    fi
 
    # Load operations section if deployment/config issues detected
    if [[ $operations_issues_found == true ]]; then
-     .specify/scripts/bash/load-constitution.sh "operations"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "operations"
    fi
    ```
 
@@ -110,9 +110,9 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 
 8. **Progressive Loading (Phase 3) - If Score < 80%**: Load remaining sections for comprehensive review:
 
-   ```bash
+   ```{{SCRIPT_LANG}}
    if [[ $overall_score < 80 ]]; then
-     .specify/scripts/bash/load-constitution.sh "optional"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "optional"
    fi
    ```
 
