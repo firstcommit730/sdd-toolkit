@@ -228,19 +228,19 @@ mkdir -p .specify/reference/user-authentication
 # Edit .specify/reference/user-authentication/README.md with requirements
 
 # 2. Create specification with reference context
-@specify Add JWT-based user authentication with login/logout -ref user-authentication
+@specify feat/jwt-based-user-authentication -ref user-authentication
 
-# 3. Generate plan (uses Reference Context from spec, no re-loading)
-@plan
+# 3. Generate plan (automatically uses Reference Context from spec.md)
+@plan feat/jwt-based-user-authentication
 
-# 4. Create tasks (uses Reference Context from spec, no re-loading)
-@tasks
+# 4. Create tasks (automatically uses Reference Context from spec.md)
+@tasks feat/jwt-based-user-authentication
 
-# 5. Execute implementation
-@implement
+# 5. Execute implementation (automatically uses Reference Context from spec.md)
+@implement feat/jwt-based-user-authentication
 
-# 6. Validate implementation quality (specify feature name)
-@audit user-authentication
+# 6. Validate implementation quality
+@audit feat/jwt-based-user-authentication
 ```
 
 **Working with Multiple Specs:**
