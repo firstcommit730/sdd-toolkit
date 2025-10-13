@@ -14,7 +14,7 @@ This toolkit packages that flow into markdown prompts and helper scripts for mul
 
 - Multi-vendor prompt distribution (Amazon Q + GitHub Copilot) with identical semantics
 - Unified command-style verbs (`@specify`, `@plan`, `@tasks`, `@implement`, etc.)
-- Reference folder mechanism (`@specify -ref <folder>`) to inject structured domain context
+- Reference folder mechanism (`@specify <description> -ref <folder>`) to inject structured domain context
 - Consistent, auditable, specification-first workflow across different AI assistants
 
 ### Markdown-Based Constitutions
@@ -98,12 +98,15 @@ This is a clean, modern implementation designed for simplicity and clarity from 
    See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
 
 2. **Start developing:**
+
    ```
-   @specify Add user authentication system
-   @plan
-   @tasks
-   @implement
-   @audit
+   @specify user authentication system
+   # Output: Branch Name: feat/user-authentication-system
+
+   @plan feat/user-authentication-system
+   @tasks feat/user-authentication-system
+   @implement feat/user-authentication-system
+   @audit user-authentication-system
    ```
 
 ## Why Markdown for LLM Consistency
@@ -213,7 +216,7 @@ Branch names must follow proper naming conventions and be descriptive.
 **Standard Workflow:**
 
 ```bash
-@specify Add JWT-based user authentication with login/logout
+@specify JWT-based user authentication with login/logout
 @plan
 @tasks
 @implement
@@ -227,20 +230,40 @@ Branch names must follow proper naming conventions and be descriptive.
 mkdir -p .specify/reference/user-authentication
 # Edit .specify/reference/user-authentication/README.md with requirements
 
-# 2. Create specification with reference context
-@specify feat/jwt-based-user-authentication -ref user-authentication
+# 2. Create specification with reference context (outputs branch name)
+@specify user authentication with login and logout -ref user-authentication
+# Output: Branch created: feat/user-authentication-with-login-logout
 
 # 3. Generate plan (automatically uses Reference Context from spec.md)
-@plan feat/jwt-based-user-authentication
+@plan feat/user-authentication-with-login-logout
 
 # 4. Create tasks (automatically uses Reference Context from spec.md)
-@tasks feat/jwt-based-user-authentication
+@tasks feat/user-authentication-with-login-logout
 
 # 5. Execute implementation (automatically uses Reference Context from spec.md)
-@implement feat/jwt-based-user-authentication
+@implement feat/user-authentication-with-login-logout
 
 # 6. Validate implementation quality
-@audit feat/jwt-based-user-authentication
+@audit feat/user-authentication-with-login-logout
+```
+
+**Using Different Branch Types:**
+
+```bash
+# Feature (default type if not specified)
+@specify user authentication system
+
+# Bug fix
+@specify payment timeout issue -type fix
+
+# Documentation update
+@specify api documentation update -type docs
+
+# Refactoring
+@specify code cleanup and optimization -type refactor
+
+# Combined with reference folder
+@specify payment processing -type feat -ref payment-patterns
 ```
 
 **Working with Multiple Specs:**
@@ -263,7 +286,7 @@ The toolkit uses an optimized reference context system that **loads once and reu
 
 ### How It Works
 
-1. **During `@specify -ref <folder>`**:
+1. **During `@specify <description> -ref <folder>`**:
 
    - Loads all files from `.specify/reference/<folder>/`
    - Extracts and categorizes insights:
@@ -314,20 +337,20 @@ As a [user], I want [goal] so that [benefit].
 EOF
 
 # Use in workflow
-@specify Your feature description -ref your-domain-name
+@specify your feature description -ref your-domain-name
 ```
 
 ## Available Prompts
 
-| Prompt          | Purpose                                                        | Usage                                                              |
-| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                    |
-| `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                           |
-| `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -ref <folder>` |
-| `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                            |
-| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                           |
-| `@implement`    | Execute implementation following task plan                     | `@implement`                                                       |
-| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>` or `@audit` (auto-selects if one spec)     |
+| Prompt          | Purpose                                                        | Usage                                                                           |
+| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                                 |
+| `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
+| `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -type <type> -ref <folder>` |
+| `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                                         |
+| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                                        |
+| `@implement`    | Execute implementation following task plan                     | `@implement`                                                                    |
+| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>` or `@audit` (auto-selects if one spec)                  |
 
 ### Prompt Details
 
@@ -350,8 +373,10 @@ EOF
 **Specification Creation**
 
 - Creates feature branches automatically
+- Supports explicit branch type specification via `-type` (defaults to `feat`)
 - Supports reference context via `-ref <folder>`
 - Generates structured spec.md with requirements
+- Outputs branch name for easy checkout
 - Optimized: Loads reference files once, stores summary
 
 **Implementation Planning**

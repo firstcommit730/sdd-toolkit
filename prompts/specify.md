@@ -4,56 +4,108 @@ Create or update the feature specification from a natural language feature descr
 
 ## Usage
 
-- `@specify <feature_description>` - Create a new feature specification
-- `@specify <feature_description> -ref <reference_folder>` - Create specification with additional context from a reference folder
+- `@specify <feature_description>` - Create a new feature specification (defaults to `feat` type)
+- `@specify <feature_description> -type <branch_type>` - Create specification with specific branch type
+- `@specify <feature_description> -ref <reference_folder>` - Create specification with reference context
+- `@specify <feature_description> -type <branch_type> -ref <reference_folder>` - Create specification with both type and reference
+
+### Arguments
+
+- **`<feature_description>`** (REQUIRED): Natural language description of the feature without type prefix (first text after `@specify`)
+- **`-type <branch_type>`** (OPTIONAL): Git branch type - must be one of: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `hotfix`, `maintenance` (defaults to `feat`)
+- **`-ref <reference_folder>`** (OPTIONAL): Name of the reference folder in `.specify/reference/` to use for context
+
+### Examples
+
+```bash
+# Basic usage with default feat type
+@specify user authentication system
+
+# With explicit type
+@specify payment timeout issue -type fix
+
+# With reference folder
+@specify user authentication system -ref auth-patterns
+
+# With both type and reference
+@specify api documentation update -type docs -ref api-standards
+```
 
 ---
 
 ## Create Feature Specification
 
-The user will provide a feature description and optionally a reference folder for additional context.
+The user will provide a feature description (first text after the command), optionally a branch type via `-type` (defaults to `feat`), and optionally a reference folder via `-ref` for additional context.
 
 ### Validation Requirements
 
-**CRITICAL**: All feature descriptions MUST include a valid branch type prefix. If the user provides a description without a proper prefix, immediately stop processing and return an error message.
+**CRITICAL**: Validate that required arguments are provided and that the branch type is valid.
+
+### Validation Requirements
+
+**CRITICAL**: Validate that required arguments are provided and that the branch type is valid.
 
 ### Steps
 
-0. **Validate Branch Type Prefix**: Before proceeding, ensure the feature description includes a valid branch type prefix according to the constitution.md Branch Naming standards:
+0. **Parse and Validate Arguments**: Before proceeding, parse the user input and validate:
 
-   - **REQUIRED**: The description MUST start with one of: `feat/`, `fix/`, `chore/`, `refactor/`, `test/`, `docs/`, `hotfix/`, `maintenance/`
-   - **STOP AND ERROR**: If no valid prefix is provided, immediately stop processing and inform the user they must specify a branch type prefix
-   - **Constitution Reference**: Per `.specify/memory/constitution.md` § 1 "Branching and Repository Standards", all branches must follow the `type/short-description` pattern
+   **Feature Description Extraction**:
 
-   **Valid Examples**:
+   - **REQUIRED**: Extract the feature description from the first text after `@specify` (before any flags)
+   - All text before the first `-` flag (if any) is the feature description
+   - **STOP AND ERROR**: If no feature description is provided, immediately stop processing and return an error message
 
-   - ✅ `feat/user-authentication-system`
-   - ✅ `fix/payment-timeout-issue`
-   - ✅ `docs/api-documentation-update`
-   - ❌ `user-authentication-system` (missing type prefix)
-   - ❌ `new-feature/authentication` (invalid type)
+   **Branch Type Validation**:
 
-   **ERROR HANDLING**: If the user's description does not start with a valid type prefix, respond with:
+   - **Default**: If `-type` is not provided, default to `feat`
+   - **REQUIRED**: If `-type` is provided, it MUST be one of: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `hotfix`, `maintenance`
+   - **STOP AND ERROR**: If an invalid type is provided, immediately stop processing and inform the user of valid types
+
+   **ERROR HANDLING**:
+
+   If feature description is missing:
 
    ```
-   ERROR: Invalid branch type prefix provided.
+   ERROR: Missing required feature description
 
-   The feature description must start with a valid branch type according to the constitution.md Branch Naming standards.
+   The feature description is required.
 
-   Required format: type/description
-   Valid types: feat, fix, chore, refactor, test, docs, hotfix, maintenance
+   Usage:
+   @specify <description>
+   @specify <description> -type <type>
+   @specify <description> -ref <reference_folder>
 
    Examples:
-   - feat/add-user-authentication
-   - fix/resolve-payment-timeout
-   - docs/update-api-documentation
-
-   Please provide your feature description with a proper type prefix.
+   @specify user authentication system
+   @specify payment timeout issue -type fix
+   @specify user authentication system -ref auth-patterns
    ```
 
-   Do not proceed with any further steps.
+   If `-type` has an invalid value:
 
-0.1. **Summarize the feature description**: After validating the prefix, create a concise summary of the feature description that is 80 characters or less. This summary should capture the essential meaning while preserving the required type prefix and being suitable for use as a git branch name. Preserve key technical terms and maintain clarity.
+   ```
+   ERROR: Invalid branch type provided
+
+   Branch type must be one of: feat, fix, chore, refactor, test, docs, hotfix, maintenance
+   Default: feat (if -type is not specified)
+
+   Valid examples:
+   - @specify user authentication system -type feat
+   - @specify payment timeout issue -type fix
+   - @specify api documentation update -type docs
+
+   Please provide a valid branch type or omit -type to use the default (feat).
+   ```
+
+   Do not proceed with any further steps if validation fails.
+
+0.1. **Construct Full Feature Description**: Combine the branch type with the feature description to create the full branch-ready description:
+
+- Format: `<type>/<feature_description>`
+- Example: If `-type fix` and feature description is "payment timeout issue", construct `fix/payment timeout issue`
+- If `-type` was not provided, use `feat/<feature_description>`
+
+  0.2. **Summarize the feature description**: Create a concise summary of the full feature description (including type prefix) that is 80 characters or less. This summary should capture the essential meaning while preserving the required type prefix and being suitable for use as a git branch name. Preserve key technical terms and maintain clarity.
 
 1. Run the script `.specify/scripts/bash/create-new-feature.sh --json "<summarized_description_with_prefix>"` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
@@ -99,22 +151,24 @@ Store this as REFERENCE_CONTEXT for inclusion in the spec.
 
 3. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description and reference folder (if provided) while preserving section order and headings.
 
-   **If a reference folder was used**, include both:
+   **If a reference folder was used**, include a **Reference Metadata section at the very top** (before the main feature title):
 
-   a) **YAML frontmatter at the very top**:
+   ```markdown
+   > **Reference**: `<folder_name>`
+   >
+   > _This specification uses context from the reference folder to ensure consistency with existing patterns and implementations._
 
-   ```yaml
-   ---
-   reference: <folder_name>
-   ---
+   # [Feature Title]
+
+   [Rest of spec content...]
    ```
 
-   b) **Reference Context section after User Stories**:
+   And include a **Reference Context section after User Stories**:
 
    ```markdown
    ## Reference Context
 
-   **Reference Folder**: [folder-name]
+   **Reference Folder**: `<folder_name>`
    **Purpose**: Context from existing implementation for consistency and pattern reuse
 
    ### Key Insights from Reference Material
@@ -145,6 +199,38 @@ Store this as REFERENCE_CONTEXT for inclusion in the spec.
 4. Report completion with branch name, spec file path, reference folder used (if any), and readiness for the next phase.
 
 Note: The script creates the feature directory and initializes the spec file.
+
+### Output Format
+
+Upon successful completion, display the following information:
+
+```
+✅ Feature specification created successfully
+
+Branch Name: <BRANCH_NAME>
+Spec File: <SPEC_FILE>
+Reference: <folder_name> (if used, otherwise "None")
+
+Next Steps:
+- Review the specification in the spec file
+- Run @plan to create an implementation plan
+- Run @tasks to break down into actionable tasks
+```
+
+**Example**:
+
+```
+✅ Feature specification created successfully
+
+Branch Name: feat/user-authentication-system
+Spec File: .specify/features/feat-user-authentication-system/spec.md
+Reference: auth-patterns
+
+Next Steps:
+- Review the specification in the spec file
+- Run @plan to create an implementation plan
+- Run @tasks to break down into actionable tasks
+```
 
 ---
 
@@ -238,8 +324,8 @@ After creating a reference folder:
 1. Edit the README.md with specific requirements for that domain/feature area
 2. Add additional files to the folder as needed
 3. Use the folder when creating specifications:
-   - `@specify <feature_description> -ref <folder_name>` - Creates spec with reference context
-   - The reference folder name is stored in the spec's YAML frontmatter
+   - `@specify <description> -ref <folder_name>` - Creates spec with reference context
+   - The reference folder name is stored in the spec's markdown metadata
    - `@plan` and `@tasks` automatically source the reference from the spec file
    - No need to pass `-ref` to @plan or @tasks - they read it from the spec
 
