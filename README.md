@@ -59,13 +59,15 @@ This is a clean, modern implementation designed for simplicity and clarity from 
 
 1. **Install prompts:**
 
-   **Amazon Q Developer (Global):**
+   **Amazon Q Developer (Global) - Bash:**
 
    ```bash
    mkdir -p ~/.aws/amazonq/prompts && \
    cd /tmp && \
    git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
-   cp sdd-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
+   for file in sdd-toolkit/prompts/*.md; do \
+     sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > ~/.aws/amazonq/prompts/"$(basename "$file")"; \
+   done && \
    cp -r sdd-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
    cd - && \
    if [ ! -d .specify ]; then \
@@ -76,7 +78,30 @@ This is a clean, modern implementation designed for simplicity and clarity from 
    rm -rf /tmp/sdd-toolkit
    ```
 
-   **GitHub Copilot (Project-Local):**
+   **Amazon Q Developer (Global) - PowerShell:**
+
+   ```powershell
+   $amazonQPath = "$env:USERPROFILE\.aws\amazonq"
+   New-Item -ItemType Directory -Force -Path "$amazonQPath\prompts" | Out-Null
+   Set-Location $env:TEMP
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
+   Get-ChildItem "sdd-toolkit\prompts\*.md" | ForEach-Object {
+     (Get-Content $_.FullName -Raw) `
+       -replace '{{SCRIPT_EXT}}','.ps1' `
+       -replace '{{SCRIPT_LANG}}','powershell' | `
+       Set-Content "$amazonQPath\prompts\$($_.Name)"
+   }
+   Copy-Item -Recurse -Force "sdd-toolkit\sdd-toolkit" "$amazonQPath\"
+   Set-Location -
+   if (-not (Test-Path ".specify")) {
+     robocopy "sdd-toolkit\.specify" ".specify" /E /XF constitution.md git-workflow.md /XD memory
+   } else {
+     robocopy "sdd-toolkit\.specify" ".specify" /E /XD memory
+   }
+   Remove-Item -Recurse -Force "$env:TEMP\sdd-toolkit"
+   ```
+
+   **GitHub Copilot (Project-Local) - Bash:**
 
    ```bash
    cd /tmp && \
@@ -84,7 +109,7 @@ This is a clean, modern implementation designed for simplicity and clarity from 
    cd - && \
    mkdir -p .github/prompts && \
    for file in /tmp/sdd-toolkit/prompts/*.md; do \
-     cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+     sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > .github/prompts/"$(basename "$file" .md).prompt.md"; \
    done && \
    if [ ! -d .specify ]; then \
      rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
@@ -93,6 +118,29 @@ This is a clean, modern implementation designed for simplicity and clarity from 
    fi && \
    cp -r /tmp/sdd-toolkit/sdd-toolkit . && \
    rm -rf /tmp/sdd-toolkit
+   ```
+
+   **GitHub Copilot (Project-Local) - PowerShell:**
+
+   ```powershell
+   Set-Location $env:TEMP
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
+   Set-Location -
+   New-Item -ItemType Directory -Force -Path ".github\prompts" | Out-Null
+   Get-ChildItem "$env:TEMP\sdd-toolkit\prompts\*.md" | ForEach-Object {
+     $baseName = $_.BaseName
+     (Get-Content $_.FullName -Raw) `
+       -replace '{{SCRIPT_EXT}}','.ps1' `
+       -replace '{{SCRIPT_LANG}}','powershell' | `
+       Set-Content ".github\prompts\$baseName.prompt.md"
+   }
+   if (-not (Test-Path ".specify")) {
+     robocopy "$env:TEMP\sdd-toolkit\.specify" ".specify" /E /XF constitution.md git-workflow.md /XD memory
+   } else {
+     robocopy "$env:TEMP\sdd-toolkit\.specify" ".specify" /E /XD memory
+   }
+   Copy-Item -Recurse -Force "$env:TEMP\sdd-toolkit\sdd-toolkit" "."
+   Remove-Item -Recurse -Force "$env:TEMP\sdd-toolkit"
    ```
 
    See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
