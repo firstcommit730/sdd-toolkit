@@ -9,7 +9,7 @@ FEATURE_NAME_RAW="$*"
 FEATURE_SLUG=$(echo "$FEATURE_NAME_RAW" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-|-$//g')
 
 ROOT_DIR=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
-SPECS_DIR="$ROOT_DIR/.specify/specs"
+SPECS_DIR="$ROOT_DIR/specs"
 mkdir -p "$SPECS_DIR"
 
 TARGET_DIR="$SPECS_DIR/${FEATURE_SLUG}"

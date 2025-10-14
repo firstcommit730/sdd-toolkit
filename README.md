@@ -14,7 +14,7 @@ This toolkit packages that flow into markdown prompts and helper scripts for mul
 
 - Multi-vendor prompt distribution (Amazon Q + GitHub Copilot) with identical semantics
 - Unified command-style verbs (`@specify`, `@plan`, `@tasks`, `@implement`, etc.)
-- Reference folder mechanism (`@specify -ref <folder>`) to inject structured domain context
+- Reference folder mechanism (`@specify <description> -ref <folder>`) to inject structured domain context
 - Consistent, auditable, specification-first workflow across different AI assistants
 
 ### Markdown-Based Constitutions
@@ -59,51 +59,161 @@ This is a clean, modern implementation designed for simplicity and clarity from 
 
 1. **Install prompts:**
 
-   **Amazon Q Developer (Global):**
+   **Amazon Q Developer (Global) - Bash:**
 
    ```bash
    mkdir -p ~/.aws/amazonq/prompts && \
    cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
-   cp sdd-llm-toolkit/prompts/*.md ~/.aws/amazonq/prompts/ && \
-   cp -r sdd-llm-toolkit/sdd-toolkit ~/.aws/amazonq/ && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
+   for file in sdd-toolkit/prompts/*.md; do \
+     sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > ~/.aws/amazonq/prompts/"$(basename "$file")"; \
+   done && \
    cd - && \
    if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
    else \
-     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/' /tmp/sdd-toolkit/.specify/ .specify/; \
    fi && \
-   rm -rf /tmp/sdd-llm-toolkit
+   mkdir -p .specify/memory specs && \
+   rm -rf /tmp/sdd-toolkit
    ```
 
-   **GitHub Copilot (Project-Local):**
+   **Amazon Q Developer (Global) - PowerShell:**
+
+   ```powershell
+   # Cross-platform paths
+   $homeDir = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:USERPROFILE } else { $env:HOME }
+   $tempPath = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:TEMP } else { if ($env:TMPDIR) { $env:TMPDIR } else { "/tmp" } }
+   $amazonQPath = Join-Path $homeDir ".aws" "amazonq"
+   $tempDir = Join-Path $tempPath "sdd-toolkit-install-$(Get-Random)"
+
+   # Create directories
+   $promptsPath = Join-Path $amazonQPath "prompts"
+   New-Item -ItemType Directory -Force -Path $promptsPath | Out-Null
+
+   # Clone repository
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git $tempDir
+
+   # Process prompts
+   $promptsDir = Join-Path $tempDir "prompts"
+   Get-ChildItem (Join-Path $promptsDir "*.md") | ForEach-Object {
+     (Get-Content $_.FullName -Raw -Encoding UTF8) `
+       -replace '{{SCRIPT_EXT}}','.ps1' `
+       -replace '{{SCRIPT_LANG}}','powershell' | `
+       Set-Content (Join-Path $promptsPath $_.Name) -Encoding UTF8
+   }
+
+   # Handle .specify directory
+   $sourceSpecifyDir = Join-Path $tempDir ".specify"
+   if (-not (Test-Path ".specify")) {
+     Copy-Item $sourceSpecifyDir ".specify" -Recurse -Force
+     $memorySourceDir = Join-Path $sourceSpecifyDir "memory"
+     if (Test-Path $memorySourceDir) {
+       $memoryDestDir = Join-Path ".specify" "memory"
+       New-Item -ItemType Directory -Force -Path $memoryDestDir | Out-Null
+       Get-ChildItem $memorySourceDir | Where-Object { $_.Name -notin @("constitution.md", "git-workflow.md") } | Copy-Item -Destination $memoryDestDir -Recurse -Force
+     }
+     # Remove excluded files from copied directory
+     $destMemoryDir = Join-Path ".specify" "memory"
+     @("constitution.md", "git-workflow.md") | ForEach-Object {
+       $excludeFile = Join-Path $destMemoryDir $_
+       if (Test-Path $excludeFile) { Remove-Item $excludeFile -Force }
+     }
+   } else {
+     Get-ChildItem $sourceSpecifyDir | Where-Object { $_.Name -ne "memory" } | Copy-Item -Destination ".specify" -Recurse -Force
+   }
+
+   # Ensure required directories exist
+   New-Item -ItemType Directory -Force -Path (Join-Path ".specify" "memory") | Out-Null
+   New-Item -ItemType Directory -Force -Path "specs" | Out-Null
+
+   # Cleanup
+   Remove-Item -Recurse -Force $tempDir
+   ```
+
+   **GitHub Copilot (Project-Local) - Bash:**
 
    ```bash
-   cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-llm-toolkit.git && \
-   cd - && \
+   TEMP_DIR="/tmp/sdd-toolkit-install-$$" && \
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git "$TEMP_DIR" && \
    mkdir -p .github/prompts && \
-   for file in /tmp/sdd-llm-toolkit/prompts/*.md; do \
-     cp "$file" .github/prompts/"$(basename "$file" .md).prompt.md"; \
+   for file in "$TEMP_DIR"/prompts/*.md; do \
+     sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > .github/prompts/"$(basename "$file" .md).prompt.md"; \
    done && \
    if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' "$TEMP_DIR"/.specify/ .specify/; \
    else \
-     rsync -av --exclude='memory/' /tmp/sdd-llm-toolkit/.specify/ .specify/; \
+     rsync -av --exclude='memory/' "$TEMP_DIR"/.specify/ .specify/; \
    fi && \
-   cp -r /tmp/sdd-llm-toolkit/sdd-toolkit . && \
-   rm -rf /tmp/sdd-llm-toolkit
+   mkdir -p .specify/memory specs && \
+   rm -rf "$TEMP_DIR"
+   ```
+
+   **GitHub Copilot (Project-Local) - PowerShell:**
+
+   ```powershell
+   # Cross-platform temp directory
+   $tempPath = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:TEMP } else { if ($env:TMPDIR) { $env:TMPDIR } else { "/tmp" } }
+   $tempDir = Join-Path $tempPath "sdd-toolkit-install-$(Get-Random)"
+
+   # Clone repository
+   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git $tempDir
+
+   # Create .github/prompts directory
+   $githubPromptsDir = Join-Path ".github" "prompts"
+   New-Item -ItemType Directory -Force -Path $githubPromptsDir | Out-Null
+
+   # Process prompts
+   $promptsDir = Join-Path $tempDir "prompts"
+   Get-ChildItem (Join-Path $promptsDir "*.md") | ForEach-Object {
+     $baseName = $_.BaseName
+     $outputPath = Join-Path $githubPromptsDir "$baseName.prompt.md"
+     (Get-Content $_.FullName -Raw -Encoding UTF8) `
+       -replace '{{SCRIPT_EXT}}','.ps1' `
+       -replace '{{SCRIPT_LANG}}','powershell' | `
+       Set-Content $outputPath -Encoding UTF8
+   }
+
+   # Handle .specify directory
+   $sourceSpecifyDir = Join-Path $tempDir ".specify"
+   if (-not (Test-Path ".specify")) {
+     Copy-Item $sourceSpecifyDir ".specify" -Recurse -Force
+     $memorySourceDir = Join-Path $sourceSpecifyDir "memory"
+     if (Test-Path $memorySourceDir) {
+       $memoryDestDir = Join-Path ".specify" "memory"
+       New-Item -ItemType Directory -Force -Path $memoryDestDir | Out-Null
+       Get-ChildItem $memorySourceDir | Where-Object { $_.Name -notin @("constitution.md", "git-workflow.md") } | Copy-Item -Destination $memoryDestDir -Recurse -Force
+     }
+     # Remove excluded files from copied directory
+     $destMemoryDir = Join-Path ".specify" "memory"
+     @("constitution.md", "git-workflow.md") | ForEach-Object {
+       $excludeFile = Join-Path $destMemoryDir $_
+       if (Test-Path $excludeFile) { Remove-Item $excludeFile -Force }
+     }
+   } else {
+     Get-ChildItem $sourceSpecifyDir | Where-Object { $_.Name -ne "memory" } | Copy-Item -Destination ".specify" -Recurse -Force
+   }
+
+   # Ensure required directories exist
+   New-Item -ItemType Directory -Force -Path (Join-Path ".specify" "memory") | Out-Null
+   New-Item -ItemType Directory -Force -Path "specs" | Out-Null
+
+   # Cleanup
+   Remove-Item -Recurse -Force $tempDir
    ```
 
    See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
 
 2. **Start developing:**
+
    ```
-   @specify Add user authentication system
-   @plan
-   @tasks
-   @implement
-   @audit
+   @specify user authentication system
+   # Output: Branch Name: feat/user-authentication-system
+
+   @plan feat/user-authentication-system
+   @tasks feat/user-authentication-system
+   @implement feat/user-authentication-system
+   @audit user-authentication-system
    ```
 
 ## Why Markdown for LLM Consistency
@@ -213,7 +323,7 @@ Branch names must follow proper naming conventions and be descriptive.
 **Standard Workflow:**
 
 ```bash
-@specify Add JWT-based user authentication with login/logout
+@specify JWT-based user authentication with login/logout
 @plan
 @tasks
 @implement
@@ -227,20 +337,40 @@ Branch names must follow proper naming conventions and be descriptive.
 mkdir -p .specify/reference/user-authentication
 # Edit .specify/reference/user-authentication/README.md with requirements
 
-# 2. Create specification with reference context
-@specify Add JWT-based user authentication with login/logout -ref user-authentication
+# 2. Create specification with reference context (outputs branch name)
+@specify user authentication with login and logout -ref user-authentication
+# Output: Branch created: feat/user-authentication-with-login-logout
 
-# 3. Generate plan (uses Reference Context from spec, no re-loading)
-@plan
+# 3. Generate plan (automatically uses Reference Context from spec.md)
+@plan feat/user-authentication-with-login-logout
 
-# 4. Create tasks (uses Reference Context from spec, no re-loading)
-@tasks
+# 4. Create tasks (automatically uses Reference Context from spec.md)
+@tasks feat/user-authentication-with-login-logout
 
-# 5. Execute implementation
-@implement
+# 5. Execute implementation (automatically uses Reference Context from spec.md)
+@implement feat/user-authentication-with-login-logout
 
-# 6. Validate implementation quality (specify feature name)
-@audit user-authentication
+# 6. Validate implementation quality
+@audit feat/user-authentication-with-login-logout
+```
+
+**Using Different Branch Types:**
+
+```bash
+# Feature (default type if not specified)
+@specify user authentication system
+
+# Bug fix
+@specify payment timeout issue -type fix
+
+# Documentation update
+@specify api documentation update -type docs
+
+# Refactoring
+@specify code cleanup and optimization -type refactor
+
+# Combined with reference folder
+@specify payment processing -type feat -ref payment-patterns
 ```
 
 **Working with Multiple Specs:**
@@ -263,7 +393,7 @@ The toolkit uses an optimized reference context system that **loads once and reu
 
 ### How It Works
 
-1. **During `@specify -ref <folder>`**:
+1. **During `@specify <description> -ref <folder>`**:
 
    - Loads all files from `.specify/reference/<folder>/`
    - Extracts and categorizes insights:
@@ -314,20 +444,20 @@ As a [user], I want [goal] so that [benefit].
 EOF
 
 # Use in workflow
-@specify Your feature description -ref your-domain-name
+@specify your feature description -ref your-domain-name
 ```
 
 ## Available Prompts
 
-| Prompt          | Purpose                                                        | Usage                                                              |
-| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                    |
-| `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                           |
-| `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -ref <folder>` |
-| `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                            |
-| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                           |
-| `@implement`    | Execute implementation following task plan                     | `@implement`                                                       |
-| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>` or `@audit` (auto-selects if one spec)     |
+| Prompt          | Purpose                                                        | Usage                                                                           |
+| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                                 |
+| `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
+| `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -type <type> -ref <folder>` |
+| `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                                         |
+| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                                        |
+| `@implement`    | Execute implementation following task plan                     | `@implement`                                                                    |
+| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>` or `@audit` (auto-selects if one spec)                  |
 
 ### Prompt Details
 
@@ -350,8 +480,10 @@ EOF
 **Specification Creation**
 
 - Creates feature branches automatically
+- Supports explicit branch type specification via `-type` (defaults to `feat`)
 - Supports reference context via `-ref <folder>`
 - Generates structured spec.md with requirements
+- Outputs branch name for easy checkout
 - Optimized: Loads reference files once, stores summary
 
 **Implementation Planning**

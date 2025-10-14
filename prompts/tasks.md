@@ -19,13 +19,13 @@ The user may optionally provide a feature name. If not provided, the system will
 
    - **If user provided feature name**: Use that specific feature
    - **If no feature name provided**:
-     - List all available features in `.specify/specs/`
+     - List all available features in `specs/`
      - If only one feature exists: use it automatically
      - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to generate tasks for: @tasks <feature-name>"
-     - Available features: [list directory names from .specify/specs/]
+     - Available features: [list directory names from specs/]
    - Set FEATURE_NAME to the determined feature name
 
-2. Run `.specify/scripts/bash/check-task-prerequisites.sh <feature-name> --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+2. Run `.specify/scripts/{{SCRIPT_LANG}}/check-task-prerequisites{{SCRIPT_EXT}} <feature-name> --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
 
 3. Load and analyze available design documents:
 
@@ -47,10 +47,10 @@ The user may optionally provide a feature name. If not provided, the system will
 
    **Execution**:
 
-   ```bash
+   ```{{SCRIPT_LANG}}
    # Determine task type from plan.md and available artifacts
    # Then load appropriate sections
-   .specify/scripts/bash/load-constitution.sh "<section-list>"
+   .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "<section-list>"
    ```
 
    **Purpose**: Load only standards relevant to the tasks being created.

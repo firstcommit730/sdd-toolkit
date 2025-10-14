@@ -3,19 +3,19 @@ Audit the implementation against the specification to validate quality and align
 
 **Usage**: `@audit <feature-name>`
 
-Example: `@audit user-authentication` will audit `.specify/specs/user-authentication/`
+Example: `@audit user-authentication` will audit `specs/user-authentication/`
 
 1. Determine which feature to audit:
 
    - **If user provided feature name**: Use that specific feature
    - **If no feature name provided**:
-     - List all available features in `.specify/specs/`
+     - List all available features in `specs/`
      - If only one feature exists: use it automatically
      - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to audit: @audit <feature-name>"
-     - Available features: [list directory names from .specify/specs/]
+     - Available features: [list directory names from specs/]
    - Set FEATURE_NAME to the determined feature name
-   - Set FEATURE_DIR to `.specify/specs/<feature-name>/`
-   - Run `.specify/scripts/bash/check-prerequisites.sh <feature-name> --json --require-tasks` to validate and parse SPEC_FILE and AVAILABLE_DOCS. All paths must be absolute.
+   - Set FEATURE_DIR to `specs/<feature-name>/`
+   - Run `.specify/scripts/{{SCRIPT_LANG}}/check-prerequisites{{SCRIPT_EXT}} <feature-name> --json --require-tasks` to validate and parse SPEC_FILE and AVAILABLE_DOCS. All paths must be absolute.
 
 2. Verify required files exist:
 
@@ -44,8 +44,8 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 
    **Phase 1 - Critical Compliance** (Always Load):
 
-   ```bash
-   .specify/scripts/bash/load-constitution.sh "core,testing,security,branching"
+   ```{{SCRIPT_LANG}}
+   .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "core,testing,security,branching"
    ```
 ````
 
@@ -85,20 +85,20 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 
 7. **Progressive Loading (Phase 2) - If Issues Detected**: Load additional sections only if Phase 1 reveals specific issues:
 
-   ```bash
+   ```{{SCRIPT_LANG}}
    # Load architecture section if architectural issues detected
    if [[ $architecture_issues_found == true ]]; then
-     .specify/scripts/bash/load-constitution.sh "architecture"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "architecture"
    fi
 
    # Load observability section if logging/monitoring issues detected
    if [[ $observability_issues_found == true ]]; then
-     .specify/scripts/bash/load-constitution.sh "observability"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "observability"
    fi
 
    # Load operations section if deployment/config issues detected
    if [[ $operations_issues_found == true ]]; then
-     .specify/scripts/bash/load-constitution.sh "operations"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "operations"
    fi
    ```
 
@@ -110,9 +110,9 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 
 8. **Progressive Loading (Phase 3) - If Score < 80%**: Load remaining sections for comprehensive review:
 
-   ```bash
+   ```{{SCRIPT_LANG}}
    if [[ $overall_score < 80 ]]; then
-     .specify/scripts/bash/load-constitution.sh "optional"
+     .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "optional"
    fi
    ```
 
@@ -145,7 +145,7 @@ Example: `@audit user-authentication` will audit `.specify/specs/user-authentica
 11. Create `FEATURE_DIR/AUDIT.md` following the template format:
 
 - **IMPORTANT**: If `AUDIT.md` already exists in feature directory, overwrite it
-- Use absolute path: `[repo-root]/.specify/specs/[feature-name]/AUDIT.md`
+- Use absolute path: `[repo-root]/specs/[feature-name]/AUDIT.md`
 - Header with audit date, feature name, and quality scores
 - **Audit Phases Section**: Document which phases were executed and why
 - **Constitutional Compliance Section**: List loaded sections and compliance results

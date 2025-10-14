@@ -21,7 +21,7 @@ get_feature_dir() { echo "$1/specs/$2"; }
 # Exits with error if multiple features exist and none specified
 determine_feature() {
     local repo_root=$(get_repo_root)
-    local specs_dir="$repo_root/.specify/specs"
+    local specs_dir="$repo_root/specs"
     local feature_name="$1"
     
     # If feature name provided, validate it exists

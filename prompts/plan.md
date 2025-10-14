@@ -1,6 +1,10 @@
 # Plan
 
-Create an implementation plan for a feature specification using the plan template to generate design artifacts.
+Create an imp - List all available features in `specs/`
+
+- If none: ERROR "No features found. Use @specify to create a feature first"
+- If multiple:
+  - Available features: [list directory names from specs/]ntation plan for a feature specification using the plan template to generate design artifacts.
 
 ## Usage
 
@@ -25,7 +29,7 @@ The user may optionally provide a feature name. If not provided, the system will
      - Available features: [list directory names from .specify/specs/]
    - Set FEATURE_NAME to the determined feature name
 
-2. Run `.specify/scripts/bash/setup-plan.sh <feature-name> --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.
+2. Run `.specify/scripts/{{SCRIPT_LANG}}/setup-plan{{SCRIPT_EXT}} <feature-name> --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.
 
 3. Read and analyze the feature specification to understand:
 
@@ -35,12 +39,12 @@ The user may optionally provide a feature name. If not provided, the system will
    - Any technical constraints or dependencies mentioned
    - **If Reference Folder is specified**: Load all files from the referenced folder in `.specify/reference/[folder-name]/` for additional context
 
-4. **Load Constitutional Standards**: Execute `.specify/scripts/bash/load-constitution.sh` with targeted sections for planning:
+4. **Load Constitutional Standards**: Execute `.specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}}` with targeted sections for planning:
 
    **Planning-Specific Sections**:
 
-   ```bash
-   .specify/scripts/bash/load-constitution.sh "core,architecture,testing,branching"
+   ```{{SCRIPT_LANG}}
+   .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "core,architecture,testing,branching"
    ```
 
    **Purpose**: Load only the sections needed for technical planning:
