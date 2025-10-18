@@ -15,7 +15,7 @@ The SDD workflow consists of six main prompts that work together to transform a 
 
 ### Quality & Compliance
 
-5. **[@audit](flow-audit.md)** - Validate implementation quality
+5. **[@ssd-audit](flow-audit.md)** - Validate implementation quality
 6. **[@ssd-drift](flow-drift.md)** - Detect project-wide constitutional drift
 
 See [Workflow Overview](workflow-overview.md) for a complete end-to-end diagram.
@@ -116,7 +116,7 @@ Executes the implementation following the task plan.
 
 ---
 
-### 5. [@audit Flow](flow-audit.md)
+### 5. [@ssd-audit Flow](flow-audit.md)
 
 Validates implementation quality against specification and constitutional standards.
 
@@ -203,7 +203,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-implement
 
 # 5. Validate implementation quality
-@audit user-authentication
+@ssd-audit user-authentication
 ```
 
 ### Complete Workflow with Quality Checks
@@ -225,7 +225,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-implement
 
 # Validate implementation
-@audit user-authentication
+@ssd-audit user-authentication
 
 # Check if implementation introduced drift
 @ssd-drift
@@ -245,7 +245,7 @@ mkdir -p .specify/reference/auth-patterns
 @ssd-plan
 @ssd-tasks
 @ssd-implement
-@audit user-authentication
+@ssd-audit user-authentication
 ```
 
 ---

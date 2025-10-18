@@ -105,11 +105,11 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
   - Constitutional compliance during implementation
   - Just-in-time constitution loading (loads only sections needed for current file type)
 
-### 7. Audit Prompt (`@audit`)
+### 7. SSD Audit Prompt (`@ssd-audit`)
 
-- **Location**: `~/.aws/amazonq/prompts/audit.md`
+- **Location**: `~/.aws/amazonq/prompts/ssd-audit.md`
 - **Purpose**: Validate implementation quality and specification alignment after `@ssd-implement`
-- **Usage**: `@audit <feature-name>` or `@audit` (auto-selects if only one spec)
+- **Usage**: `@ssd-audit <feature-name>` or `@ssd-audit` (auto-selects if only one spec)
 - **Key Features**:
   - Audits a single feature specification at a time
   - Feature name parameter for projects with multiple specs
@@ -171,7 +171,7 @@ To use these prompts in Amazon Q:
 5. Type `@ssd-plan` to generate implementation plans (auto-detects feature or specify with `@ssd-plan <feature-name>`)
 6. Type `@ssd-tasks` to create task breakdowns (auto-detects feature or specify with `@ssd-tasks <feature-name>`)
 7. Type `@ssd-implement` to execute the implementation plan (auto-detects feature or specify with `@ssd-implement <feature-name>`)
-8. Type `@audit <feature-name>` to validate implementation quality and specification alignment
+8. Type `@ssd-audit <feature-name>` to validate implementation quality and specification alignment
 
 **Feature Name**: The feature name is the directory name in `.specify/specs/` (e.g., `user-authentication`, `payment-processing`)
 
@@ -190,7 +190,7 @@ To use these prompts in Amazon Q:
 @ssd-plan
 @ssd-tasks
 @ssd-implement
-@audit user-authentication
+@ssd-audit user-authentication
 @ssd-drift
 ```
 
@@ -203,11 +203,11 @@ To use these prompts in Amazon Q:
 @ssd-plan user-authentication
 @ssd-tasks user-authentication
 @ssd-implement user-authentication
-@audit user-authentication
+@ssd-audit user-authentication
 @ssd-plan payment-processing
 @ssd-tasks payment-processing
 @ssd-implement payment-processing
-@audit payment-processing
+@ssd-audit payment-processing
 ```
 
 ## Verification Status

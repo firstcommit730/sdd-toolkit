@@ -72,7 +72,7 @@ flowchart TB
         I11 --> I12
     end
 
-    subgraph Audit["@audit - Validate Implementation"]
+    subgraph Audit["@ssd-audit - Validate Implementation"]
         A1[Load spec.md + plan.md + tasks.md]
         A2[Validate implementation files exist]
         A3[Phase 1: Critical Standards Audit<br/>core, testing, security, branching]
@@ -187,7 +187,7 @@ flowchart TB
 
 ---
 
-### 5. @audit - Validate Implementation
+### 5. @ssd-audit - Validate Implementation
 
 **Input**: Complete feature implementation (spec.md + plan.md + tasks.md + code)  
 **Output**: Quality audit report with compliance scores  
@@ -256,7 +256,7 @@ Each stage has validation:
 
 After `@ssd-implement` completes:
 
-1. **@audit feature-name** - Validate implementation against spec
+1. **@ssd-audit feature-name** - Validate implementation against spec
 2. Code review and testing
 3. Merge to main branch
 4. Deploy to production
@@ -322,8 +322,8 @@ After `@ssd-implement` completes:
 @ssd-implement user-auth     # Specify feature
 
 # 5. Validate implementation
-@audit                   # Auto-detect feature
-@audit user-auth         # Specify feature
+@ssd-audit                   # Auto-detect feature
+@ssd-audit user-auth         # Specify feature
 ```
 
 ---
@@ -334,7 +334,7 @@ After `@ssd-implement` completes:
 - @ssd-plan: 10-20 minutes
 - @ssd-tasks: 5-10 minutes
 - @ssd-implement: 30-120 minutes (depends on complexity)
-- @audit: 5-15 minutes
+- @ssd-audit: 5-15 minutes
 
 **Total Files Created**: 8+ files per feature
 

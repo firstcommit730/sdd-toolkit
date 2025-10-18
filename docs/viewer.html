@@ -288,7 +288,7 @@
           aria-controls="diagram-audit"
           data-target="diagram-audit"
         >
-          ✅ @audit
+          ✅ @ssd-audit
         </button>
         <button
           id="tab-drift"
@@ -626,9 +626,9 @@ flowchart TD
         </div>
       </div>
 
-      <!-- @audit Diagram -->
+      <!-- @ssd-audit Diagram -->
       <div id="diagram-audit" class="diagram-container" role="tabpanel" aria-labelledby="tab-audit" hidden>
-        <h2 class="diagram-title">@audit - Validate Implementation Quality</h2>
+        <h2 class="diagram-title">@ssd-audit - Validate Implementation Quality</h2>
         <p class="diagram-description">
           Progressive audit process that validates implementation against specification and constitutional standards.
           Uses two-phase loading: critical compliance first, then additional sections only if issues detected.
@@ -636,13 +636,13 @@ flowchart TD
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-    Start([User: @audit feature-name]) --> CheckSpecs{Check for specs<br/>with required files}
+    Start([User: @ssd-audit feature-name]) --> CheckSpecs{Check for specs<br/>with required files}
 
     CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found<br/>Run @ssd-specify first<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show available features<br/>Prompt user to specify]
     CheckSpecs -->|Single| ValidateFiles
 
-    PromptSelect --> UserSelect[User: @audit feature-name]
+    PromptSelect --> UserSelect[User: @ssd-audit feature-name]
   UserSelect --> ValidateFiles[Verify required files exist: spec.md; plan.md; tasks.md]
 
     ValidateFiles --> CheckMissing{All files<br/>present?}
