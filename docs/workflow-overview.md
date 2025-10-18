@@ -344,7 +344,7 @@ After `@implement` completes:
 
 Beyond the core development workflow, additional prompts support project management and quality:
 
-### @constitution
+### @ssd-init
 
 - Create or update project constitution with semantic versioning
 - Validate consistency across templates
@@ -360,7 +360,7 @@ Beyond the core development workflow, additional prompts support project managem
 
 ```bash
 # Create project constitution
-@constitution
+@ssd-init
 
 # Check project-wide compliance
 @drift

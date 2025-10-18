@@ -707,7 +707,7 @@ flowchart TD
 flowchart TD
     Start([User: @drift]) --> CheckConstitution{Constitution exists?<br/>.specify/memory/<br/>constitution.md}
 
-    CheckConstitution -->|No| ErrorNoConst[ERROR: Constitution not found<br/>Run @constitution first<br/>STOP]
+    CheckConstitution -->|No| ErrorNoConst[ERROR: Constitution not found<br/>Run @ssd-init first<br/>STOP]
     CheckConstitution -->|Yes| LoadConstitution[Load constitution.md<br/>All principles & requirements]
 
     LoadConstitution --> LoadTemplate[Load drift-template.md]

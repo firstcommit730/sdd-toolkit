@@ -4,9 +4,9 @@
 
 The following GitHub prompts have been successfully ported to Amazon Q format:
 
-### 1. Constitution Prompt (`@constitution`)
+### 1. SSD Init Prompt (`@ssd-init`)
 
-- **Location**: `~/.aws/amazonq/prompts/constitution.md`
+- **Location**: `~/.aws/amazonq/prompts/ssd-init.md`
 - **Purpose**: Create or update modular project constitution files
 - **Key Features**:
   - **Modular architecture with template/instance separation**:
@@ -164,7 +164,7 @@ The toolkit now uses an optimized reference context system:
 
 To use these prompts in Amazon Q:
 
-1. Type `@constitution` to create or update project constitution
+1. Type `@ssd-init` to create or update project constitution
 2. Type `@drift` to detect constitutional drift and generate realignment TODO list
 3. Type `@specify <feature_description>` to create new feature specifications
 4. Type `@specify <feature_description> -ref <folder>` to use reference context
@@ -185,7 +185,7 @@ To use these prompts in Amazon Q:
 **Example Workflow (Single Feature)**:
 
 ```
-@constitution
+@ssd-init
 @specify Add user authentication with JWT -ref auth-requirements
 @plan
 @tasks
@@ -197,7 +197,7 @@ To use these prompts in Amazon Q:
 **Example Workflow (Multiple Features)**:
 
 ```
-@constitution
+@ssd-init
 @specify Add user authentication with JWT
 @specify Add payment processing with Stripe
 @plan user-authentication
@@ -213,6 +213,7 @@ To use these prompts in Amazon Q:
 ## Verification Status
 
 ✅ All prompts created successfully in `~/.aws/amazonq/prompts/`
+✅ SSD Init prompt (formerly constitution) for project initialization
 ✅ Drift detection prompt added for constitutional drift monitoring
 ✅ Reference Context optimization implemented (load once, reuse 3×)
 ✅ Multi-spec support added to plan, tasks, implement, and audit prompts

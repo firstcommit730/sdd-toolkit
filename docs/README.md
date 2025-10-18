@@ -260,7 +260,7 @@ The SDD toolkit uses a **modular constitution architecture** with template/insta
 
 - `core-template.md`, `architecture-template.md`, `testing-template.md`, etc.
 - Pristine templates with placeholders, never modified
-- Copied to memory/ on first `@constitution` run
+- Copied to memory/ on first `@ssd-init` run
 
 **Working Copies** (in `.specify/memory/constitution/`):
 

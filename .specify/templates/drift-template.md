@@ -16,7 +16,7 @@
    → security.md - Security policies
    → observability.md - Logging, monitoring standards
    → optional.md - Project-specific standards
-   → If not found: ERROR "Constitution not found. Run @constitution first"
+   → If not found: ERROR "Constitution not found. Run @ssd-init first"
    → Extract: all principles, requirements, standards from each file
 2. Scan project structure and files:
    → README.md, package.json, pyproject.toml, etc.

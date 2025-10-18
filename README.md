@@ -180,6 +180,7 @@ Branch names must follow proper naming conventions and be descriptive.
 **Standard Workflow:**
 
 ```bash
+@ssd-init  # Initialize project constitution first
 @specify JWT-based user authentication with login/logout
 @plan feat/jwt-based-user-authentication-with-login-logout
 @tasks feat/jwt-based-user-authentication-with-login-logout
@@ -306,15 +307,15 @@ EOF
 
 ## Available Prompts
 
-| Prompt          | Purpose                                                        | Usage                                                                           |
-| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                                 |
-| `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
-| `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -type <type> -ref <folder>` |
-| `@plan`         | Generate implementation plans and design artifacts             | `@plan <feature-name>`                                                          |
-| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks <feature-name>`                                                         |
-| `@implement`    | Execute implementation following task plan                     | `@implement <feature-name>`                                                     |
-| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>`                                                         |
+| Prompt       | Purpose                                                        | Usage                                                                           |
+| ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `@ssd-init`  | Create/update project constitution with versioning             | `@ssd-init`                                                                     |
+| `@drift`     | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
+| `@specify`   | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -type <type> -ref <folder>` |
+| `@plan`      | Generate implementation plans and design artifacts             | `@plan <feature-name>`                                                          |
+| `@tasks`     | Create dependency-ordered task breakdowns                      | `@tasks <feature-name>`                                                         |
+| `@implement` | Execute implementation following task plan                     | `@implement <feature-name>`                                                     |
+| `@audit`     | Validate implementation against specification                  | `@audit <feature-name>`                                                         |
 
 ### Prompt Details
 
