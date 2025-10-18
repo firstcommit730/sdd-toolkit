@@ -13,7 +13,7 @@ This toolkit packages that flow into markdown prompts and helper scripts for mul
 ### Workflow Excellence
 
 - Multi-vendor prompt distribution (Amazon Q + GitHub Copilot) with identical semantics
-- Unified command-style verbs (`@ssd-specify`, `@plan`, `@tasks`, `@implement`, etc.)
+- Unified command-style verbs (`@ssd-specify`, `@ssd-plan`, `@tasks`, `@implement`, etc.)
 - Reference folder mechanism (`@ssd-specify <description> -ref <folder>`) to inject structured domain context
 - Consistent, auditable, specification-first workflow across different AI assistants
 
@@ -67,7 +67,7 @@ Use the project-local install in the Installation Guide: see [INSTALL.md — Git
    @ssd-specify user authentication system
    # Output: Branch Name: feat/user-authentication-system
 
-   @plan feat/user-authentication-system
+   @ssd-plan feat/user-authentication-system
    @tasks feat/user-authentication-system
    @implement feat/user-authentication-system
    @audit user-authentication-system
@@ -143,7 +143,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   @ssd-specify  │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
+│   @ssd-specify  │───▶│    @ssd-plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
 │             │    │              │    │             │    │             │    │             │
 │ Creates     │    │ Generates    │    │ Creates     │    │ Executes    │    │ Validates   │
 │ spec.md     │    │ design docs  │    │ tasks.md    │    │ code        │    │ quality     │
@@ -154,7 +154,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│    @ssd-specify     │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
+│    @ssd-specify     │───▶│    @ssd-plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
 │  -ref <folder>  │    │              │    │             │    │             │    │             │
 │                 │    │              │    │             │    │             │    │             │
 │ Loads reference │    │ Uses stored  │    │ Applies     │    │ Executes    │    │ Validates   │
@@ -182,7 +182,7 @@ Branch names must follow proper naming conventions and be descriptive.
 ```bash
 @ssd-init  # Initialize project constitution first
 @ssd-specify JWT-based user authentication with login/logout
-@plan feat/jwt-based-user-authentication-with-login-logout
+@ssd-plan feat/jwt-based-user-authentication-with-login-logout
 @tasks feat/jwt-based-user-authentication-with-login-logout
 @implement feat/jwt-based-user-authentication-with-login-logout
 @audit jwt-based-user-authentication-with-login-logout  # Audit specific feature
@@ -200,7 +200,7 @@ mkdir -p .specify/reference/user-authentication
 # Output: Branch created: feat/user-authentication-with-login-logout
 
 # 3. Generate plan (automatically uses Reference Context from spec.md)
-@plan feat/user-authentication-with-login-logout
+@ssd-plan feat/user-authentication-with-login-logout
 
 # 4. Create tasks (automatically uses Reference Context from spec.md)
 @tasks feat/user-authentication-with-login-logout
@@ -261,7 +261,7 @@ The toolkit uses an optimized reference context system that **loads once and reu
      - Testing Approaches
    - Stores comprehensive summary in spec.md's **Reference Context** section
 
-2. **During `@plan` and `@tasks`**:
+2. **During `@ssd-plan` and `@tasks`**:
    - Reads the Reference Context section from spec.md
    - Uses pre-analyzed insights without re-loading files
    - 50-70% faster with consistent context across stages
@@ -312,7 +312,7 @@ EOF
 | `@ssd-init`  | Create/update project constitution with versioning             | `@ssd-init`                                                                     |
 | `@drift`     | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
 | `@ssd-specify`   | Create feature specifications from descriptions                | `@ssd-specify <description>` or `@ssd-specify <description> -type <type> -ref <folder>` |
-| `@plan`      | Generate implementation plans and design artifacts             | `@plan <feature-name>`                                                          |
+| `@ssd-plan`      | Generate implementation plans and design artifacts             | `@ssd-plan <feature-name>`                                                          |
 | `@tasks`     | Create dependency-ordered task breakdowns                      | `@tasks <feature-name>`                                                         |
 | `@implement` | Execute implementation following task plan                     | `@implement <feature-name>`                                                     |
 | `@audit`     | Validate implementation against specification                  | `@audit <feature-name>`                                                         |

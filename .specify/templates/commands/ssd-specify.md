@@ -123,7 +123,7 @@ Store this as REFERENCE_CONTEXT for inclusion in the spec.
    [List files that were loaded and analyzed]
    ```
 
-   This allows @plan and @tasks to use the pre-analyzed insights without re-loading files.
+   This allows @ssd-plan and @tasks to use the pre-analyzed insights without re-loading files.
 
 4. Report completion with branch name, spec file path, reference folder used (if any), and readiness for the next phase.
 
@@ -133,7 +133,7 @@ Note: The script creates the feature directory and initializes the spec file.
 
 ## Creating Reference Folders
 
-Reference folders provide reusable context that enhances @ssd-specify, @plan, and @tasks workflows.
+Reference folders provide reusable context that enhances @ssd-specify, @ssd-plan, and @tasks workflows.
 
 ### How to Create a Reference Folder
 
@@ -223,12 +223,12 @@ After creating a reference folder:
 3. Use the folder when creating specifications:
    - `@ssd-specify <feature_description> -ref <folder_name>` - Creates spec with reference context
    - The reference folder name is stored in the spec's YAML frontmatter
-   - `@plan` and `@tasks` automatically source the reference from the spec file
-   - No need to pass `-ref` to @plan or @tasks - they read it from the spec
+   - `@ssd-plan` and `@tasks` automatically source the reference from the spec file
+   - No need to pass `-ref` to @ssd-plan or @tasks - they read it from the spec
 
 ### Important Notes
 
 - Only create the folder if it doesn't already exist
 - The folder name should be descriptive and kebab-case (e.g., `user-authentication`, `payment-system`)
 - The README.md serves as the primary reference document but additional files can be added
-- Reference folders provide consistent context: define once in @ssd-specify, automatically used by @plan and @tasks
+- Reference folders provide consistent context: define once in @ssd-specify, automatically used by @ssd-plan and @tasks

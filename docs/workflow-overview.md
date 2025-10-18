@@ -15,7 +15,7 @@ flowchart TB
         S1 --> S2 --> S3 --> S4 --> S5 --> S6
     end
 
-    subgraph Plan["@plan - Design Implementation"]
+    subgraph Plan["@ssd-plan - Design Implementation"]
         P1[Auto-detect or specify feature]
         P2[Load spec.md + reference context]
         P3[Load constitutional standards<br/>core,architecture,testing,branching]
@@ -118,7 +118,7 @@ flowchart TB
 
 ---
 
-### 2. @plan - Design Implementation
+### 2. @ssd-plan - Design Implementation
 
 **Input**: Feature specification  
 **Output**: Complete implementation plan with design artifacts  
@@ -214,14 +214,14 @@ flowchart TB
 ### Reference Context Flow
 
 1. **@ssd-specify**: Load reference folder once, store in spec.md
-2. **@plan**: Read reference context from spec.md metadata
+2. **@ssd-plan**: Read reference context from spec.md metadata
 3. **@tasks**: Read reference context from spec.md metadata
 4. **Benefit**: Reference files loaded once, reused 3x (67% reduction)
 
 ### Constitutional Loading Strategy
 
 - **@ssd-specify**: `branching` (validation only)
-- **@plan**: `core,architecture,testing,branching` (planning essentials)
+- **@ssd-plan**: `core,architecture,testing,branching` (planning essentials)
 - **@tasks**: Context-aware based on task types
 - **@implement**: Just-in-time based on file type being implemented
 
@@ -246,7 +246,7 @@ Tests are generated and executed before their corresponding implementation:
 Each stage has validation:
 
 - **@ssd-specify**: Branching standards compliance
-- **@plan**: Gate checks after each phase
+- **@ssd-plan**: Gate checks after each phase
 - **@tasks**: Dependency order verification
 - **@implement**: Task completion tracking
 
@@ -281,11 +281,11 @@ After `@implement` completes:
 ├── specs/
 │   └── <feature-name>/          # Feature workspace
 │       ├── spec.md              # ← @ssd-specify creates this
-│       ├── plan.md              # ← @plan creates this
-│       ├── research.md          # ← @plan creates this
-│       ├── data-model.md        # ← @plan creates this
-│       ├── contracts/           # ← @plan creates this
-│       ├── quickstart.md        # ← @plan creates this
+│       ├── plan.md              # ← @ssd-plan creates this
+│       ├── research.md          # ← @ssd-plan creates this
+│       ├── data-model.md        # ← @ssd-plan creates this
+│       ├── contracts/           # ← @ssd-plan creates this
+│       ├── quickstart.md        # ← @ssd-plan creates this
 │       └── tasks.md             # ← @tasks creates this
 └── templates/
     ├── constitution/            # Pristine template files (never modified)
@@ -310,8 +310,8 @@ After `@implement` completes:
 @ssd-specify "Add user authentication system" -ref auth-patterns
 
 # 2. Create implementation plan
-@plan                    # Auto-detect feature
-@plan user-auth          # Specify feature
+@ssd-plan                    # Auto-detect feature
+@ssd-plan user-auth          # Specify feature
 
 # 3. Generate task list
 @tasks                   # Auto-detect feature
@@ -331,7 +331,7 @@ After `@implement` completes:
 **Total Time Estimate**:
 
 - @ssd-specify: 2-5 minutes
-- @plan: 10-20 minutes
+- @ssd-plan: 10-20 minutes
 - @tasks: 5-10 minutes
 - @implement: 30-120 minutes (depends on complexity)
 - @audit: 5-15 minutes

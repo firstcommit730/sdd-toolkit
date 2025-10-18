@@ -37,7 +37,7 @@ flowchart TD
 
     CreateSpec --> CreateBranchGit[Create Git branch and switch]
 
-    CreateBranchGit --> Done([Complete: Spec created<br/>Ready for @plan])
+    CreateBranchGit --> Done([Complete: Spec created<br/>Ready for @ssd-plan])
 
     style Start fill:#e1f5ff
     style Done fill:#d4edda
@@ -51,7 +51,7 @@ flowchart TD
 1. **Reference Folder**: Optional context for enhanced specifications using `-ref <folder-name>`
 2. **Branch Validation**: Critical checkpoint - must comply with standards
 3. **Post-Script Validation**: Ensures generated branch name still complies
-4. **Reference Context**: Stored in spec for reuse by @plan and @tasks
+4. **Reference Context**: Stored in spec for reuse by @ssd-plan and @tasks
 
 ## Command Usage
 
@@ -70,4 +70,4 @@ flowchart TD
 
 ## Next Step
 
-Run `@plan` to create implementation plan
+Run `@ssd-plan` to create implementation plan
