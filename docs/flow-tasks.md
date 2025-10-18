@@ -1,8 +1,8 @@
-# @tasks Flow Diagram
+# @ssd-tasks Flow Diagram
 
 ```mermaid
 flowchart TD
-    Start([User: @tasks or @tasks feature-name]) --> CheckFeature{Feature name<br/>provided?}
+    Start([User: @ssd-tasks or @ssd-tasks feature-name]) --> CheckFeature{Feature name<br/>provided?}
 
     CheckFeature -->|Yes| UseProvided[Use specified feature]
     CheckFeature -->|No| ListSpecs[List .specify/specs/ directories]

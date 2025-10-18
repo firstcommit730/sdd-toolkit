@@ -10,7 +10,7 @@ The SDD workflow consists of six main prompts that work together to transform a 
 
 1. **[@ssd-specify](flow-specify.md)** - Create feature specification
 2. **[@ssd-plan](flow-plan.md)** - Design implementation with artifacts
-3. **[@tasks](flow-tasks.md)** - Generate dependency-ordered task list
+3. **[@ssd-tasks](flow-tasks.md)** - Generate dependency-ordered task list
 4. **[@implement](flow-implement.md)** - Execute the implementation
 
 ### Quality & Compliance
@@ -64,7 +64,7 @@ Generates implementation plan with design artifacts.
 
 ---
 
-### 3. [@tasks Flow](flow-tasks.md)
+### 3. [@ssd-tasks Flow](flow-tasks.md)
 
 Creates dependency-ordered, executable task list.
 
@@ -197,7 +197,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-plan
 
 # 3. Create task list
-@tasks
+@ssd-tasks
 
 # 4. Execute implementation
 @implement
@@ -219,7 +219,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-plan
 
 # Create task list
-@tasks
+@ssd-tasks
 
 # Execute implementation
 @implement
@@ -243,7 +243,7 @@ mkdir -p .specify/reference/auth-patterns
 
 # 3-6. Continue as normal (reference auto-loaded)
 @ssd-plan
-@tasks
+@ssd-tasks
 @implement
 @audit user-authentication
 ```
@@ -299,7 +299,7 @@ Reference folders provide reusable context that is:
 
 - Loaded **once** during @ssd-specify
 - Stored in spec.md metadata
-- **Automatically reused** by @ssd-plan and @tasks
+- **Automatically reused** by @ssd-plan and @ssd-tasks
 - **Result**: 67% reduction in context loading
 
 ### Constitutional Loading Strategies
@@ -314,7 +314,7 @@ Reference folders provide reusable context that is:
 - **Loads**: `core,architecture,testing,branching`
 - **Purpose**: Planning essentials (60% of constitution)
 
-#### @tasks
+#### @ssd-tasks
 
 - **Loads**: Based on task types being generated
 - **Options**:
@@ -354,7 +354,7 @@ Tasks marked with **[P]** can run in parallel:
 The workflow enforces TDD by generating tests before implementation:
 
 1. **@ssd-plan** → Generates contract test specifications
-2. **@tasks** → Orders tests before core implementation
+2. **@ssd-tasks** → Orders tests before core implementation
 3. **@implement** → Executes Tests phase before Core phase
 
 **Order**:
@@ -393,7 +393,7 @@ Setup → Tests [P] → Core → Integration → Polish [P]
 │       │   ├── users.md
 │       │   └── posts.md
 │       ├── quickstart.md            # ← @ssd-plan
-│       └── tasks.md                 # ← @tasks
+│       └── tasks.md                 # ← @ssd-tasks
 └── templates/
     ├── constitution/                # Pristine templates (never modified)
     │   ├── core-template.md        # Technology stack template

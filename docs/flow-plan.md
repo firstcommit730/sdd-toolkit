@@ -46,7 +46,7 @@ flowchart TD
 
     VerifyArtifacts --> UpdateProgress[Update Progress Tracking<br/>All phases complete]
 
-    UpdateProgress --> Done([Complete: Plan created<br/>Ready for @tasks])
+    UpdateProgress --> Done([Complete: Plan created<br/>Ready for @ssd-tasks])
 
     style Start fill:#e1f5ff
     style Done fill:#d4edda
@@ -97,4 +97,4 @@ flowchart TD
 
 ## Next Step
 
-Run `@tasks` to generate detailed task list
+Run `@ssd-tasks` to generate detailed task list

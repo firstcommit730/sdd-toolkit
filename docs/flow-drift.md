@@ -538,7 +538,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 - `@ssd-init` - Create or update project constitution
 - `@ssd-specify` - Create feature specification
 - `@ssd-plan` - Design implementation
-- `@tasks` - Generate task list
+- `@ssd-tasks` - Generate task list
 - `@implement` - Execute implementation
 - `@audit` - Validate specific feature implementation
 - **`@drift`** - Detect project-wide constitutional drift ← You are here

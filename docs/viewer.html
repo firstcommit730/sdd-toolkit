@@ -268,7 +268,7 @@
           aria-controls="diagram-tasks"
           data-target="diagram-tasks"
         >
-          📋 @tasks
+          📋 @ssd-tasks
         </button>
         <button
           id="tab-implement"
@@ -330,7 +330,7 @@ flowchart TD
         P7 --> P8[Generate plan.md]
     end
 
-    subgraph tasks["@tasks - Generate Task List"]
+    subgraph tasks["@ssd-tasks - Generate Task List"]
         T1[Load plan artifacts] --> T2[Detect task types]
         T2 --> T3[Load relevant constitution]
         T3 --> T4[Generate Setup phase]
@@ -471,7 +471,7 @@ flowchart TD
     Gate3 -->|No| Phase3
     Gate3 -->|Yes| SavePlan[Save plan.md]
 
-    SavePlan --> Done([Complete: Design ready<br/>Run @tasks next])
+    SavePlan --> Done([Complete: Design ready<br/>Run @ssd-tasks next])
 
     style Start fill:#e1f5ff
     style Done fill:#d4edda
@@ -483,9 +483,9 @@ flowchart TD
         </div>
       </div>
 
-      <!-- @tasks Diagram -->
+      <!-- @ssd-tasks Diagram -->
       <div id="diagram-tasks" class="diagram-container" role="tabpanel" aria-labelledby="tab-tasks" hidden>
-        <h2 class="diagram-title">@tasks - Generate Task List</h2>
+        <h2 class="diagram-title">@ssd-tasks - Generate Task List</h2>
         <p class="diagram-description">
           Creates dependency-ordered, executable task list with five phases. Uses TDD approach with tests before
           implementation. Marks parallel-executable tasks with [P].
@@ -493,13 +493,13 @@ flowchart TD
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-  Start([User: @tasks feature-name]) --> CheckSpecs{Check for specs with plan.md}
+  Start([User: @ssd-tasks feature-name]) --> CheckSpecs{Check for specs with plan.md}
 
   CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found; Run @ssd-specify and @ssd-plan; STOP]
   CheckSpecs -->|Multiple| PromptSelect[Show features with plans; Prompt user to specify]
     CheckSpecs -->|Single| LoadArtifacts
 
-    PromptSelect --> UserSelect[User: @tasks feature-name]
+    PromptSelect --> UserSelect[User: @ssd-tasks feature-name]
   UserSelect --> LoadArtifacts[Load plan artifacts: data-model.md, contracts files, research.md, quickstart.md]
 
   LoadArtifacts --> DetectTypes[Detect task types needed: Testing?; API development?; Database work?; Infrastructure?]
@@ -552,7 +552,7 @@ flowchart TD
 flowchart TD
     Start([User: @implement feature-name]) --> CheckSpecs{Check for specs<br/>with tasks.md}
 
-    CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @ssd-specify, @ssd-plan, @tasks<br/>STOP]
+    CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @ssd-specify, @ssd-plan, @ssd-tasks<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show features with tasks<br/>Prompt user to specify]
     CheckSpecs -->|Single| LoadTasks
 

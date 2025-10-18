@@ -72,11 +72,11 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
   - Absolute path handling for file operations
   - Modular constitution loading (only loads relevant sections)
 
-### 5. Tasks Prompt (`@tasks`)
+### 5. SSD Tasks Prompt (`@ssd-tasks`)
 
-- **Location**: `~/.aws/amazonq/prompts/tasks.md`
+- **Location**: `~/.aws/amazonq/prompts/ssd-tasks.md`
 - **Purpose**: Generate dependency-ordered task lists for implementation
-- **Usage**: `@tasks` (auto-detects feature) or `@tasks <feature-name>` (explicit feature)
+- **Usage**: `@ssd-tasks` (auto-detects feature) or `@ssd-tasks <feature-name>` (explicit feature)
 - **Key Features**:
   - **Multi-spec support**: Works with projects that have multiple feature specs
   - Auto-selects feature if only one exists in `.specify/specs/`
@@ -92,7 +92,7 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
 ### 6. Implement Prompt (`@implement`)
 
 - **Location**: `~/.aws/amazonq/prompts/implement.md`
-- **Purpose**: Execute implementation plan by processing tasks.md
+- **Purpose**: Execute implementation plan by processing ssd-tasks.md
 - **Usage**: `@implement` (auto-detects feature) or `@implement <feature-name>` (explicit feature)
 - **Key Features**:
   - **Multi-spec support**: Works with projects that have multiple feature specs
@@ -144,13 +144,13 @@ The toolkit now uses an optimized reference context system:
 
 - `@ssd-specify`: Load reference files ➜ Generate spec
 - `@ssd-plan`: Load reference files again ➜ Generate plan
-- `@tasks`: Load reference files again ➜ Generate tasks
+- `@ssd-tasks`: Load reference files again ➜ Generate tasks
 
 **After (Load Once, Reuse)**:
 
 - `@ssd-specify -ref <folder>`: Load reference files ➜ Summarize ➜ Store in spec.md
 - `@ssd-plan`: Read Reference Context from spec.md ➜ Generate plan
-- `@tasks`: Read Reference Context from spec.md ➜ Generate tasks
+- `@ssd-tasks`: Read Reference Context from spec.md ➜ Generate tasks
 
 **Benefits**:
 
@@ -169,7 +169,7 @@ To use these prompts in Amazon Q:
 3. Type `@ssd-specify <feature_description>` to create new feature specifications
 4. Type `@ssd-specify <feature_description> -ref <folder>` to use reference context
 5. Type `@ssd-plan` to generate implementation plans (auto-detects feature or specify with `@ssd-plan <feature-name>`)
-6. Type `@tasks` to create task breakdowns (auto-detects feature or specify with `@tasks <feature-name>`)
+6. Type `@ssd-tasks` to create task breakdowns (auto-detects feature or specify with `@ssd-tasks <feature-name>`)
 7. Type `@implement` to execute the implementation plan (auto-detects feature or specify with `@implement <feature-name>`)
 8. Type `@audit <feature-name>` to validate implementation quality and specification alignment
 
@@ -188,7 +188,7 @@ To use these prompts in Amazon Q:
 @ssd-init
 @ssd-specify Add user authentication with JWT -ref auth-requirements
 @ssd-plan
-@tasks
+@ssd-tasks
 @implement
 @audit user-authentication
 @drift
@@ -201,11 +201,11 @@ To use these prompts in Amazon Q:
 @ssd-specify Add user authentication with JWT
 @ssd-specify Add payment processing with Stripe
 @ssd-plan user-authentication
-@tasks user-authentication
+@ssd-tasks user-authentication
 @implement user-authentication
 @audit user-authentication
 @ssd-plan payment-processing
-@tasks payment-processing
+@ssd-tasks payment-processing
 @implement payment-processing
 @audit payment-processing
 ```
