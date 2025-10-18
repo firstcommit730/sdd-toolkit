@@ -350,7 +350,7 @@ Beyond the core development workflow, additional prompts support project managem
 - Validate consistency across templates
 - Generate sync impact reports
 
-### @drift
+### @ssd-drift
 
 - Detect constitutional drift across entire project
 - Identify security, coding, architecture, testing, and operations gaps
@@ -363,5 +363,5 @@ Beyond the core development workflow, additional prompts support project managem
 @ssd-init
 
 # Check project-wide compliance
-@drift
+@ssd-drift
 ```

@@ -16,7 +16,7 @@ The SDD workflow consists of six main prompts that work together to transform a 
 ### Quality & Compliance
 
 5. **[@audit](flow-audit.md)** - Validate implementation quality
-6. **[@drift](flow-drift.md)** - Detect project-wide constitutional drift
+6. **[@ssd-drift](flow-drift.md)** - Detect project-wide constitutional drift
 
 See [Workflow Overview](workflow-overview.md) for a complete end-to-end diagram.
 
@@ -146,7 +146,7 @@ Validates implementation quality against specification and constitutional standa
 
 ---
 
-### 6. [@drift Flow](flow-drift.md)
+### 6. [@ssd-drift Flow](flow-drift.md)
 
 Detects project-wide drift from constitutional standards.
 
@@ -210,7 +210,7 @@ See [Workflow Overview](workflow-overview.md) for:
 
 ```bash
 # Check project health before starting
-@drift
+@ssd-drift
 
 # Create specification
 @ssd-specify "Add user authentication system"
@@ -228,7 +228,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @audit user-authentication
 
 # Check if implementation introduced drift
-@drift
+@ssd-drift
 ```
 
 ### With Reference Context

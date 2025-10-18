@@ -28,9 +28,9 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
   - Token efficiency: Load only sections needed (e.g., `testing,branching` for test files)
   - Better scalability: Add new modules without affecting existing ones
 
-### 2. Drift Detection Prompt (`@drift`)
+### 2. SSD Drift Prompt (`@ssd-drift`)
 
-- **Location**: `~/.aws/amazonq/prompts/drift.md`
+- **Location**: `~/.aws/amazonq/prompts/ssd-drift.md`
 - **Purpose**: Detect constitutional drift and generate realignment TODO list
 - **Key Features**:
   - Constitutional drift detection
@@ -165,7 +165,7 @@ The toolkit now uses an optimized reference context system:
 To use these prompts in Amazon Q:
 
 1. Type `@ssd-init` to create or update project constitution
-2. Type `@drift` to detect constitutional drift and generate realignment TODO list
+2. Type `@ssd-drift` to detect constitutional drift and generate realignment TODO list
 3. Type `@ssd-specify <feature_description>` to create new feature specifications
 4. Type `@ssd-specify <feature_description> -ref <folder>` to use reference context
 5. Type `@ssd-plan` to generate implementation plans (auto-detects feature or specify with `@ssd-plan <feature-name>`)
@@ -191,7 +191,7 @@ To use these prompts in Amazon Q:
 @ssd-tasks
 @ssd-implement
 @audit user-authentication
-@drift
+@ssd-drift
 ```
 
 **Example Workflow (Multiple Features)**:
