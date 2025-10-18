@@ -242,7 +242,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 ```bash
 # Review architectural issues
 # Update plan if needed
-@plan <feature-name>
+@ssd-plan <feature-name>
 
 # Regenerate tasks
 @tasks <feature-name>
@@ -314,7 +314,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 ## Related Commands
 
 - `@ssd-specify` - Create feature specification
-- `@plan` - Design implementation
+- `@ssd-plan` - Design implementation
 - `@tasks` - Generate task list
 - `@implement` - Execute implementation
 - **`@audit`** - Validate implementation ← You are here

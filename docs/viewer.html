@@ -258,7 +258,7 @@
           aria-controls="diagram-plan"
           data-target="diagram-plan"
         >
-          🎯 @plan
+          🎯 @ssd-plan
         </button>
         <button
           id="tab-tasks"
@@ -320,7 +320,7 @@ flowchart TD
         S5 --> S6[Create Git branch]
     end
 
-    subgraph plan["@plan - Design Implementation"]
+    subgraph plan["@ssd-plan - Design Implementation"]
         P1[Load spec.md] --> P2[Load constitution]
         P2 --> P3[Phase 1: Research]
         P3 --> P4{Gate check}
@@ -413,7 +413,7 @@ flowchart TD
 
     CreateSpec --> CreateBranchGit[Create Git branch and switch]
 
-    CreateBranchGit --> Done([Complete: Spec created<br/>Ready for @plan])
+    CreateBranchGit --> Done([Complete: Spec created<br/>Ready for @ssd-plan])
 
     style Start fill:#e1f5ff
     style Done fill:#d4edda
@@ -424,9 +424,9 @@ flowchart TD
         </div>
       </div>
 
-      <!-- @plan Diagram -->
+      <!-- @ssd-plan Diagram -->
       <div id="diagram-plan" class="diagram-container" role="tabpanel" aria-labelledby="tab-plan" hidden>
-        <h2 class="diagram-title">@plan - Design Implementation</h2>
+        <h2 class="diagram-title">@ssd-plan - Design Implementation</h2>
         <p class="diagram-description">
           Three-phase execution with gate checks between phases. Generates comprehensive design artifacts including
           research, data models, API contracts, and test scenarios.
@@ -434,13 +434,13 @@ flowchart TD
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-    Start([User: @plan feature-name]) --> CheckSpecs{Check .specify/specs/<br/>for features}
+    Start([User: @ssd-plan feature-name]) --> CheckSpecs{Check .specify/specs/<br/>for features}
 
     CheckSpecs -->|None found| ErrorNoSpec[ERROR: No specs found<br/>Run @ssd-specify first<br/>STOP]
     CheckSpecs -->|Multiple found| PromptSelect[Show available features<br/>Prompt user to specify]
     CheckSpecs -->|Single found| LoadSpec[Load spec.md]
 
-    PromptSelect --> UserSelect[User: @plan feature-name]
+    PromptSelect --> UserSelect[User: @ssd-plan feature-name]
     UserSelect --> LoadSpec
 
     LoadSpec --> LoadConstitution[Load Constitution sections:<br/>core, architecture, testing, branching]
@@ -495,7 +495,7 @@ flowchart TD
 flowchart TD
   Start([User: @tasks feature-name]) --> CheckSpecs{Check for specs with plan.md}
 
-  CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found; Run @ssd-specify and @plan; STOP]
+  CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found; Run @ssd-specify and @ssd-plan; STOP]
   CheckSpecs -->|Multiple| PromptSelect[Show features with plans; Prompt user to specify]
     CheckSpecs -->|Single| LoadArtifacts
 
@@ -552,7 +552,7 @@ flowchart TD
 flowchart TD
     Start([User: @implement feature-name]) --> CheckSpecs{Check for specs<br/>with tasks.md}
 
-    CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @ssd-specify, @plan, @tasks<br/>STOP]
+    CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @ssd-specify, @ssd-plan, @tasks<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show features with tasks<br/>Prompt user to specify]
     CheckSpecs -->|Single| LoadTasks
 

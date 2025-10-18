@@ -9,7 +9,7 @@ The SDD workflow consists of six main prompts that work together to transform a 
 ### Core Development Workflow
 
 1. **[@ssd-specify](flow-specify.md)** - Create feature specification
-2. **[@plan](flow-plan.md)** - Design implementation with artifacts
+2. **[@ssd-plan](flow-plan.md)** - Design implementation with artifacts
 3. **[@tasks](flow-tasks.md)** - Generate dependency-ordered task list
 4. **[@implement](flow-implement.md)** - Execute the implementation
 
@@ -41,7 +41,7 @@ Creates a feature specification from natural language description.
 
 ---
 
-### 2. [@plan Flow](flow-plan.md)
+### 2. [@ssd-plan Flow](flow-plan.md)
 
 Generates implementation plan with design artifacts.
 
@@ -194,7 +194,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-specify "Add user authentication system"
 
 # 2. Generate implementation plan
-@plan
+@ssd-plan
 
 # 3. Create task list
 @tasks
@@ -216,7 +216,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-specify "Add user authentication system"
 
 # Generate implementation plan
-@plan
+@ssd-plan
 
 # Create task list
 @tasks
@@ -242,7 +242,7 @@ mkdir -p .specify/reference/auth-patterns
 @ssd-specify "Add user authentication system" -ref auth-patterns
 
 # 3-6. Continue as normal (reference auto-loaded)
-@plan
+@ssd-plan
 @tasks
 @implement
 @audit user-authentication
@@ -291,7 +291,7 @@ The SDD toolkit uses a **modular constitution architecture** with template/insta
 
 - `@implement` on test file → Loads `testing,branching` from `memory/constitution/`
 - `@implement` on API route → Loads `core,architecture,security,branching` from `memory/constitution/`
-- `@plan` → Loads `core,architecture,testing,branching` from `memory/constitution/`
+- `@ssd-plan` → Loads `core,architecture,testing,branching` from `memory/constitution/`
 
 ### Reference Context System
 
@@ -299,7 +299,7 @@ Reference folders provide reusable context that is:
 
 - Loaded **once** during @ssd-specify
 - Stored in spec.md metadata
-- **Automatically reused** by @plan and @tasks
+- **Automatically reused** by @ssd-plan and @tasks
 - **Result**: 67% reduction in context loading
 
 ### Constitutional Loading Strategies
@@ -309,7 +309,7 @@ Reference folders provide reusable context that is:
 - **Loads**: `branching` standards only
 - **Purpose**: Validate branch naming
 
-#### @plan
+#### @ssd-plan
 
 - **Loads**: `core,architecture,testing,branching`
 - **Purpose**: Planning essentials (60% of constitution)
@@ -353,7 +353,7 @@ Tasks marked with **[P]** can run in parallel:
 
 The workflow enforces TDD by generating tests before implementation:
 
-1. **@plan** → Generates contract test specifications
+1. **@ssd-plan** → Generates contract test specifications
 2. **@tasks** → Orders tests before core implementation
 3. **@implement** → Executes Tests phase before Core phase
 
@@ -386,13 +386,13 @@ Setup → Tests [P] → Core → Integration → Polish [P]
 ├── specs/                           # Feature workspaces
 │   └── <feature-name>/
 │       ├── spec.md                  # ← @ssd-specify
-│       ├── plan.md                  # ← @plan
-│       ├── research.md              # ← @plan
-│       ├── data-model.md            # ← @plan
-│       ├── contracts/               # ← @plan
+│       ├── plan.md                  # ← @ssd-plan
+│       ├── research.md              # ← @ssd-plan
+│       ├── data-model.md            # ← @ssd-plan
+│       ├── contracts/               # ← @ssd-plan
 │       │   ├── users.md
 │       │   └── posts.md
-│       ├── quickstart.md            # ← @plan
+│       ├── quickstart.md            # ← @ssd-plan
 │       └── tasks.md                 # ← @tasks
 └── templates/
     ├── constitution/                # Pristine templates (never modified)
@@ -445,7 +445,7 @@ ERROR: Multiple specs found. Please specify which feature...
 Available features: user-auth, payment-system, api-v2
 
 # Solution: Specify feature name
-@plan user-auth
+@ssd-plan user-auth
 ```
 
 ### Branching standards violation
@@ -506,13 +506,13 @@ For specialized features, load additional sections:
 
 ```bash
 # Security-focused feature
-@plan  # Loads: core,architecture,testing,security,branching
+@ssd-plan  # Loads: core,architecture,testing,security,branching
 
 # Performance-critical feature
-@plan  # Loads: core,architecture,testing,observability,branching
+@ssd-plan  # Loads: core,architecture,testing,observability,branching
 
 # Infrastructure feature
-@plan  # Loads: core,architecture,operations,security,branching
+@ssd-plan  # Loads: core,architecture,operations,security,branching
 ```
 
 ---

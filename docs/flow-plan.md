@@ -1,8 +1,8 @@
-# @plan Flow Diagram
+# @ssd-plan Flow Diagram
 
 ```mermaid
 flowchart TD
-    Start([User: @plan or @plan feature-name]) --> CheckFeature{Feature name<br/>provided?}
+    Start([User: @ssd-plan or @ssd-plan feature-name]) --> CheckFeature{Feature name<br/>provided?}
 
     CheckFeature -->|Yes| UseProvided[Use specified feature]
     CheckFeature -->|No| ListSpecs[List .specify/specs/ directories]
