@@ -439,7 +439,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 # Fix critical issues before starting new work
 # Then proceed with feature development
-@specify "new feature"
+@ssd-specify "new feature"
 ```
 
 ### During Code Review
@@ -536,7 +536,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 ## Related Commands
 
 - `@ssd-init` - Create or update project constitution
-- `@specify` - Create feature specification
+- `@ssd-specify` - Create feature specification
 - `@plan` - Design implementation
 - `@tasks` - Generate task list
 - `@implement` - Execute implementation

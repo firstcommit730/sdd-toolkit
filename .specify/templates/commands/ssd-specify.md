@@ -4,8 +4,8 @@ Create or update the feature specification from a natural language feature descr
 
 ## Usage
 
-- `@specify <feature_description>` - Create a new feature specification
-- `@specify <feature_description> -ref <reference_folder>` - Create specification with additional context from a reference folder
+- `@ssd-specify <feature_description>` - Create a new feature specification
+- `@ssd-specify <feature_description> -ref <reference_folder>` - Create specification with additional context from a reference folder
 
 ---
 
@@ -133,7 +133,7 @@ Note: The script creates the feature directory and initializes the spec file.
 
 ## Creating Reference Folders
 
-Reference folders provide reusable context that enhances @specify, @plan, and @tasks workflows.
+Reference folders provide reusable context that enhances @ssd-specify, @plan, and @tasks workflows.
 
 ### How to Create a Reference Folder
 
@@ -221,7 +221,7 @@ After creating a reference folder:
 1. Edit the README.md with specific requirements for that domain/feature area
 2. Add additional files to the folder as needed
 3. Use the folder when creating specifications:
-   - `@specify <feature_description> -ref <folder_name>` - Creates spec with reference context
+   - `@ssd-specify <feature_description> -ref <folder_name>` - Creates spec with reference context
    - The reference folder name is stored in the spec's YAML frontmatter
    - `@plan` and `@tasks` automatically source the reference from the spec file
    - No need to pass `-ref` to @plan or @tasks - they read it from the spec
@@ -231,4 +231,4 @@ After creating a reference folder:
 - Only create the folder if it doesn't already exist
 - The folder name should be descriptive and kebab-case (e.g., `user-authentication`, `payment-system`)
 - The README.md serves as the primary reference document but additional files can be added
-- Reference folders provide consistent context: define once in @specify, automatically used by @plan and @tasks
+- Reference folders provide consistent context: define once in @ssd-specify, automatically used by @plan and @tasks

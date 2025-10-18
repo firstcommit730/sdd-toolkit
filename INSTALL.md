@@ -246,7 +246,7 @@ ls -la .github/prompts/
 ls -la ~/.aws/amazonq/prompts/
 ```
 
-You should see the following prompts: `audit.md`, `ssd-init.md`, `drift.md`, `implement.md`, `plan.md`, `specify.md`, `tasks.md`
+You should see the following prompts: `audit.md`, `ssd-init.md`, `drift.md`, `implement.md`, `plan.md`, `ssd-specify.md`, `tasks.md`
 
 (Note: GitHub Copilot prompts will have `.prompt.md` extension)
 
@@ -281,7 +281,7 @@ Type `@ssd-init` in your IDE to test the installation and create your project co
 - `@audit` - Generate compliance audit and TODO list
 - `@ssd-init` - Update project constitution with versioning
 - `@drift` - Detect specification drift and validate implementation
-- `@specify` - Create feature specifications from descriptions
+- `@ssd-specify` - Create feature specifications from descriptions
 - `@plan` - Generate implementation plans and design artifacts
 - `@tasks` - Create dependency-ordered task breakdowns
 - `@implement` - Execute implementation following task plan
@@ -299,7 +299,7 @@ This toolkit requires the following directory structure:
 ```
 .specify/
 ├── memory/              # Constitution and audit logs
-├── reference/           # Domain context files (used via @specify -ref <folder>)
+├── reference/           # Domain context files (used via @ssd-specify -ref <folder>)
 ├── scripts/bash/        # Helper scripts
 └── templates/           # Markdown templates for prompts
 ```
@@ -311,7 +311,7 @@ The `.specify/` directory is automatically created when you first use the prompt
 1. Read [PROMPTS_HOWTO.md](./PROMPTS_HOWTO.md) for detailed usage guide
 2. Review [PROMPTS_SUMMARY.md](./PROMPTS_SUMMARY.md) for a quick reference
 3. Start with: `@ssd-init` to set up project governance (optional)
-4. Then: `@specify <your feature description>` to begin feature development
+4. Then: `@ssd-specify <your feature description>` to begin feature development
 5. Follow the workflow: specify → plan → tasks → implement → audit
 
 ## Troubleshooting

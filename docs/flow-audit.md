@@ -4,7 +4,7 @@
 flowchart TD
     Start([User: @audit feature-name]) --> CheckSpecs{Check for specs<br/>with required files}
 
-    CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found<br/>Run @specify first<br/>STOP]
+    CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found<br/>Run @ssd-specify first<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show available features<br/>Prompt user to specify]
     CheckSpecs -->|Single| ValidateFiles
 
@@ -313,7 +313,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 
 ## Related Commands
 
-- `@specify` - Create feature specification
+- `@ssd-specify` - Create feature specification
 - `@plan` - Design implementation
 - `@tasks` - Generate task list
 - `@implement` - Execute implementation
