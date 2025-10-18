@@ -246,7 +246,7 @@ ls -la .github/prompts/
 ls -la ~/.aws/amazonq/prompts/
 ```
 
-You should see the following prompts: `audit.md`, `ssd-init.md`, `ssd-drift.md`, `ssd-implement.md`, `ssd-plan.md`, `ssd-specify.md`, `ssd-tasks.md`
+You should see the following prompts: `ssd-audit.md`, `ssd-init.md`, `ssd-drift.md`, `ssd-implement.md`, `ssd-plan.md`, `ssd-specify.md`, `ssd-tasks.md`
 
 (Note: GitHub Copilot prompts will have `.prompt.md` extension)
 
@@ -278,7 +278,7 @@ Type `@ssd-init` in your IDE to test the installation and create your project co
 
 ## Available Prompts
 
-- `@audit` - Generate compliance audit and TODO list
+- `@ssd-audit` - Generate compliance audit and TODO list
 - `@ssd-init` - Update project constitution with versioning
 - `@ssd-drift` - Detect specification drift and validate implementation
 - `@ssd-specify` - Create feature specifications from descriptions

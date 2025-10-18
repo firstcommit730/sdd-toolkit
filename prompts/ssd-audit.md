@@ -4,7 +4,7 @@ Audit the implementation against the specification to validate quality and align
 
 ## Usage
 
-- `@audit <feature-name>` - Audit implementation for specified feature
+- `@ssd-audit <feature-name>` - Audit implementation for specified feature
 
 **Note**: The `<feature-name>` parameter is **REQUIRED**. If not provided, an error will be generated.
 
@@ -18,7 +18,7 @@ The user **MUST** provide a feature name. This parameter is compulsory.
 
 1. **Validate feature name parameter**:
 
-   - **If no feature name provided**: ERROR "Feature name is required. Usage: @audit <feature-name>"
+   - **If no feature name provided**: ERROR "Feature name is required. Usage: @ssd-audit <feature-name>"
    - **If feature name provided**: Continue with the specified feature
    - Verify the feature exists in `.specify/specs/`
    - If feature doesn't exist: ERROR "Feature '<feature-name>' not found in specs/. Available features: [list directory names from .specify/specs/]"

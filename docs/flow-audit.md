@@ -1,14 +1,14 @@
-# @audit Flow Diagram
+# @ssd-audit Flow Diagram
 
 ```mermaid
 flowchart TD
-    Start([User: @audit feature-name]) --> CheckSpecs{Check for specs<br/>with required files}
+    Start([User: @ssd-audit feature-name]) --> CheckSpecs{Check for specs<br/>with required files}
 
     CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found<br/>Run @ssd-specify first<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show available features<br/>Prompt user to specify]
     CheckSpecs -->|Single| ValidateFiles
 
-    PromptSelect --> UserSelect[User: @audit feature-name]
+    PromptSelect --> UserSelect[User: @ssd-audit feature-name]
     UserSelect --> ValidateFiles[Verify required files exist:<br/>- spec.md<br/>- plan.md<br/>- tasks.md]
 
     ValidateFiles --> CheckMissing{All files<br/>present?}
@@ -234,7 +234,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 
 # Fix critical issues first
 # Re-run audit to verify fixes
-@audit <feature-name>
+@ssd-audit <feature-name>
 ```
 
 ### If Major Refactoring Needed (Score < 70%)
@@ -251,7 +251,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 @ssd-implement <feature-name>
 
 # Re-audit
-@audit <feature-name>
+@ssd-audit <feature-name>
 ```
 
 ---
@@ -317,7 +317,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 - `@ssd-plan` - Design implementation
 - `@ssd-tasks` - Generate task list
 - `@ssd-implement` - Execute implementation
-- **`@audit`** - Validate implementation ← You are here
+- **`@ssd-audit`** - Validate implementation ← You are here
 - `@ssd-drift` - Detect constitutional drift across entire project
 
 ---

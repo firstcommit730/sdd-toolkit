@@ -70,7 +70,7 @@ Use the project-local install in the Installation Guide: see [INSTALL.md — Git
    @ssd-plan feat/user-authentication-system
    @ssd-tasks feat/user-authentication-system
    @ssd-implement feat/user-authentication-system
-   @audit user-authentication-system
+   @ssd-audit user-authentication-system
    ```
 
 ## Why Markdown for LLM Consistency
@@ -143,7 +143,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   @ssd-specify  │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @ssd-implement  │───▶│   @audit    │
+│   @ssd-specify  │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @ssd-implement  │───▶│   @ssd-audit    │
 │             │    │              │    │             │    │             │    │             │
 │ Creates     │    │ Generates    │    │ Creates     │    │ Executes    │    │ Validates   │
 │ spec.md     │    │ design docs  │    │ tasks.md    │    │ code        │    │ quality     │
@@ -154,7 +154,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│    @ssd-specify     │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @ssd-implement  │───▶│   @audit    │
+│    @ssd-specify     │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @ssd-implement  │───▶│   @ssd-audit    │
 │  -ref <folder>  │    │              │    │             │    │             │    │             │
 │                 │    │              │    │             │    │             │    │             │
 │ Loads reference │    │ Uses stored  │    │ Applies     │    │ Executes    │    │ Validates   │
@@ -185,7 +185,7 @@ Branch names must follow proper naming conventions and be descriptive.
 @ssd-plan feat/jwt-based-user-authentication-with-login-logout
 @ssd-tasks feat/jwt-based-user-authentication-with-login-logout
 @ssd-implement feat/jwt-based-user-authentication-with-login-logout
-@audit jwt-based-user-authentication-with-login-logout  # Audit specific feature
+@ssd-audit jwt-based-user-authentication-with-login-logout  # Audit specific feature
 ```
 
 **Enhanced with Reference Context:**
@@ -209,7 +209,7 @@ mkdir -p .specify/reference/user-authentication
 @ssd-implement feat/user-authentication-with-login-logout
 
 # 6. Validate implementation quality
-@audit feat/user-authentication-with-login-logout
+@ssd-audit feat/user-authentication-with-login-logout
 ```
 
 **Using Different Branch Types:**
@@ -235,12 +235,12 @@ mkdir -p .specify/reference/user-authentication
 
 ```bash
 # List available features if you forget the name
-@audit
-# Output: "Multiple specs found. Please specify which feature to audit: @audit <feature-name>"
+@ssd-audit
+# Output: "Multiple specs found. Please specify which feature to audit: @ssd-audit <feature-name>"
 #         Available features: user-authentication, payment-system, api-endpoints
 
 # Audit specific feature
-@audit payment-system
+@ssd-audit payment-system
 ```
 
 This generates design documents, creates a task list, and implements the feature following your project's constitutional principles. Reference folders in `.specify/reference/` provide structured context that is loaded once during specification and reused throughout the workflow.
@@ -315,7 +315,7 @@ EOF
 | `@ssd-plan`      | Generate implementation plans and design artifacts             | `@ssd-plan <feature-name>`                                                          |
 | `@ssd-tasks`     | Create dependency-ordered task breakdowns                      | `@ssd-tasks <feature-name>`                                                         |
 | `@ssd-implement` | Execute implementation following task plan                     | `@ssd-implement <feature-name>`                                                     |
-| `@audit`     | Validate implementation against specification                  | `@audit <feature-name>`                                                         |
+| `@ssd-audit`     | Validate implementation against specification                  | `@ssd-audit <feature-name>`                                                         |
 
 ### Prompt Details
 
@@ -372,7 +372,7 @@ EOF
 
 - Validates implementation against specification after `@ssd-implement`
 - Requires feature name parameter (compulsory)
-- Usage: `@audit <feature-name>`
+- Usage: `@ssd-audit <feature-name>`
 - Audits a single feature specification at a time
 - Checks requirements coverage, acceptance criteria, task completion
 - Audits code quality, testing, error handling, and security

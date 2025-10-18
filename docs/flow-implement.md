@@ -119,7 +119,7 @@ flowchart TD
     AllDone --> TaskError{Any task<br/>errors?}
 
     TaskError -->|Yes| ErrorReport[Report failed tasks<br/>Provide error context<br/>Suggest next steps]
-    TaskError -->|No| Done([Complete: Implementation done<br/>Ready for @audit])
+    TaskError -->|No| Done([Complete: Implementation done<br/>Ready for @ssd-audit])
 
     ErrorReport --> Done
 
@@ -246,4 +246,4 @@ From loaded constitutional sections:
 
 ## Next Step
 
-Run `@audit feature-name` to validate implementation
+Run `@ssd-audit feature-name` to validate implementation

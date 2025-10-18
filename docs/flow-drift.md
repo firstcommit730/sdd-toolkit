@@ -540,7 +540,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 - `@ssd-plan` - Design implementation
 - `@ssd-tasks` - Generate task list
 - `@ssd-implement` - Execute implementation
-- `@audit` - Validate specific feature implementation
+- `@ssd-audit` - Validate specific feature implementation
 - **`@ssd-drift`** - Detect project-wide constitutional drift ← You are here
 
 ---
