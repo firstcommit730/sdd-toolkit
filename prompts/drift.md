@@ -2,7 +2,7 @@
 Detect drift between the current project state and the constitution, creating a realignment TODO list.
 
 1. Check if constitution files exist in `.specify/memory/constitution/`. If not, throw an error:
-   "ERROR: Constitution not found. Run @constitution first to create the project constitution files."
+   "ERROR: Constitution not found. Run @ssd-init first to create the project constitution files."
 
 2. Read the modular constitution files from `.specify/memory/constitution/` to understand all principles and requirements:
 

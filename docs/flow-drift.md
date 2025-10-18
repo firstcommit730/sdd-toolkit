@@ -4,7 +4,7 @@
 flowchart TD
     Start([User: @drift]) --> CheckConstitution{Constitution exists?<br/>.specify/memory/<br/>constitution.md}
 
-    CheckConstitution -->|No| ErrorNoConst[ERROR: Constitution not found<br/>Run @constitution first<br/>STOP]
+    CheckConstitution -->|No| ErrorNoConst[ERROR: Constitution not found<br/>Run @ssd-init first<br/>STOP]
     CheckConstitution -->|Yes| LoadConstitution[Load constitution.md<br/>All principles & requirements]
 
     LoadConstitution --> LoadTemplate[Load drift-template.md]
@@ -425,7 +425,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # Update constitution (modular files)
-@constitution
+@ssd-init
 
 # Check what's now out of compliance
 @drift
@@ -535,7 +535,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ## Related Commands
 
-- `@constitution` - Create or update project constitution
+- `@ssd-init` - Create or update project constitution
 - `@specify` - Create feature specification
 - `@plan` - Design implementation
 - `@tasks` - Generate task list
