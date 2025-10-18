@@ -27,7 +27,7 @@ flowchart TB
         P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
     end
 
-    subgraph Tasks["@tasks - Generate Task List"]
+    subgraph Tasks["@ssd-tasks - Generate Task List"]
         T1[Auto-detect or specify feature]
         T2[Load plan.md + artifacts]
         T3[Detect task types needed]
@@ -139,7 +139,7 @@ flowchart TB
 
 ---
 
-### 3. @tasks - Generate Task List
+### 3. @ssd-tasks - Generate Task List
 
 **Input**: Implementation plan + design artifacts  
 **Output**: Dependency-ordered, executable task list  
@@ -215,14 +215,14 @@ flowchart TB
 
 1. **@ssd-specify**: Load reference folder once, store in spec.md
 2. **@ssd-plan**: Read reference context from spec.md metadata
-3. **@tasks**: Read reference context from spec.md metadata
+3. **@ssd-tasks**: Read reference context from spec.md metadata
 4. **Benefit**: Reference files loaded once, reused 3x (67% reduction)
 
 ### Constitutional Loading Strategy
 
 - **@ssd-specify**: `branching` (validation only)
 - **@ssd-plan**: `core,architecture,testing,branching` (planning essentials)
-- **@tasks**: Context-aware based on task types
+- **@ssd-tasks**: Context-aware based on task types
 - **@implement**: Just-in-time based on file type being implemented
 
 ### Parallel Execution
@@ -247,7 +247,7 @@ Each stage has validation:
 
 - **@ssd-specify**: Branching standards compliance
 - **@ssd-plan**: Gate checks after each phase
-- **@tasks**: Dependency order verification
+- **@ssd-tasks**: Dependency order verification
 - **@implement**: Task completion tracking
 
 ---
@@ -286,7 +286,7 @@ After `@implement` completes:
 │       ├── data-model.md        # ← @ssd-plan creates this
 │       ├── contracts/           # ← @ssd-plan creates this
 │       ├── quickstart.md        # ← @ssd-plan creates this
-│       └── tasks.md             # ← @tasks creates this
+│       └── tasks.md             # ← @ssd-tasks creates this
 └── templates/
     ├── constitution/            # Pristine template files (never modified)
     │   ├── core-template.md             # Technology stack template
@@ -314,8 +314,8 @@ After `@implement` completes:
 @ssd-plan user-auth          # Specify feature
 
 # 3. Generate task list
-@tasks                   # Auto-detect feature
-@tasks user-auth         # Specify feature
+@ssd-tasks                   # Auto-detect feature
+@ssd-tasks user-auth         # Specify feature
 
 # 4. Execute implementation
 @implement               # Auto-detect feature
@@ -332,7 +332,7 @@ After `@implement` completes:
 
 - @ssd-specify: 2-5 minutes
 - @ssd-plan: 10-20 minutes
-- @tasks: 5-10 minutes
+- @ssd-tasks: 5-10 minutes
 - @implement: 30-120 minutes (depends on complexity)
 - @audit: 5-15 minutes
 

@@ -51,7 +51,7 @@ flowchart TD
 1. **Reference Folder**: Optional context for enhanced specifications using `-ref <folder-name>`
 2. **Branch Validation**: Critical checkpoint - must comply with standards
 3. **Post-Script Validation**: Ensures generated branch name still complies
-4. **Reference Context**: Stored in spec for reuse by @ssd-plan and @tasks
+4. **Reference Context**: Stored in spec for reuse by @ssd-plan and @ssd-tasks
 
 ## Command Usage
 
