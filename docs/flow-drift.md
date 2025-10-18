@@ -1,8 +1,8 @@
-# @drift Flow Diagram
+# @ssd-drift Flow Diagram
 
 ```mermaid
 flowchart TD
-    Start([User: @drift]) --> CheckConstitution{Constitution exists?<br/>.specify/memory/<br/>constitution.md}
+    Start([User: @ssd-drift]) --> CheckConstitution{Constitution exists?<br/>.specify/memory/<br/>constitution.md}
 
     CheckConstitution -->|No| ErrorNoConst[ERROR: Constitution not found<br/>Run @ssd-init first<br/>STOP]
     CheckConstitution -->|Yes| LoadConstitution[Load constitution.md<br/>All principles & requirements]
@@ -357,7 +357,7 @@ One section per constitutional principle:
 
 **Contains**: Complete drift analysis with prioritized remediation plan
 
-**Note**: This file is **always overwritten** on each @drift run to ensure latest status.
+**Note**: This file is **always overwritten** on each @ssd-drift run to ensure latest status.
 
 ---
 
@@ -367,7 +367,7 @@ One section per constitutional principle:
 
 ```bash
 # Analyze existing codebase against new constitution
-@drift
+@ssd-drift
 
 # Review drift report
 cat .specify/specs/CONSTITUTION_DRIFT.md
@@ -379,7 +379,7 @@ cat .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # Run monthly to track drift over time
-@drift
+@ssd-drift
 
 # Compare with previous report
 git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
@@ -391,7 +391,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # Check compliance before major release
-@drift
+@ssd-drift
 
 # Ensure drift score is acceptable (< 10%)
 # Fix critical issues before deployment
@@ -401,7 +401,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # Identify technical debt
-@drift
+@ssd-drift
 
 # Use Medium/Low priority items as backlog
 # Plan sprints around high-priority drift items
@@ -411,7 +411,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # Focus on security drift
-@drift
+@ssd-drift
 
 # Review all CRITICAL items
 # Implement security remediation plan
@@ -428,14 +428,14 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 @ssd-init
 
 # Check what's now out of compliance
-@drift
+@ssd-drift
 ```
 
 ### Before Feature Development
 
 ```bash
 # Check current project health
-@drift
+@ssd-drift
 
 # Fix critical issues before starting new work
 # Then proceed with feature development
@@ -446,7 +446,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # Run drift check
-@drift
+@ssd-drift
 
 # Use findings to guide code review focus areas
 # Ensure PR doesn't introduce new drift
@@ -459,7 +459,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 @ssd-implement feature-name
 
 # Check if implementation introduced drift
-@drift
+@ssd-drift
 
 # Compare before/after drift scores
 ```
@@ -541,7 +541,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 - `@ssd-tasks` - Generate task list
 - `@ssd-implement` - Execute implementation
 - `@audit` - Validate specific feature implementation
-- **`@drift`** - Detect project-wide constitutional drift ← You are here
+- **`@ssd-drift`** - Detect project-wide constitutional drift ← You are here
 
 ---
 

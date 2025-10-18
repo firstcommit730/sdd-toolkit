@@ -226,7 +226,7 @@ When creating this drift report:
 
 ### Drift Prevention
 
-- Run `@drift` after major changes
+- Run `@ssd-drift` after major changes
 - Include drift checks in PR templates
 - Schedule regular constitutional reviews
 - Update constitution as project evolves

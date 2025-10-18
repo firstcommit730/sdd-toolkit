@@ -318,7 +318,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 - `@ssd-tasks` - Generate task list
 - `@ssd-implement` - Execute implementation
 - **`@audit`** - Validate implementation ← You are here
-- `@drift` - Detect constitutional drift across entire project
+- `@ssd-drift` - Detect constitutional drift across entire project
 
 ---
 

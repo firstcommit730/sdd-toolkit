@@ -310,7 +310,7 @@ EOF
 | Prompt       | Purpose                                                        | Usage                                                                           |
 | ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | `@ssd-init`  | Create/update project constitution with versioning             | `@ssd-init`                                                                     |
-| `@drift`     | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
+| `@ssd-drift`     | Detect constitutional drift and generate realignment TODO list | `@ssd-drift`                                                                        |
 | `@ssd-specify`   | Create feature specifications from descriptions                | `@ssd-specify <description>` or `@ssd-specify <description> -type <type> -ref <folder>` |
 | `@ssd-plan`      | Generate implementation plans and design artifacts             | `@ssd-plan <feature-name>`                                                          |
 | `@ssd-tasks`     | Create dependency-ordered task breakdowns                      | `@ssd-tasks <feature-name>`                                                         |

@@ -298,7 +298,7 @@
           aria-controls="diagram-drift"
           data-target="diagram-drift"
         >
-          🔍 @drift
+          🔍 @ssd-drift
         </button>
       </div>
 
@@ -695,9 +695,9 @@ flowchart TD
         </div>
       </div>
 
-      <!-- @drift Diagram -->
+      <!-- @ssd-drift Diagram -->
       <div id="diagram-drift" class="diagram-container" role="tabpanel" aria-labelledby="tab-drift" hidden>
-        <h2 class="diagram-title">@drift - Detect Constitutional Drift</h2>
+        <h2 class="diagram-title">@ssd-drift - Detect Constitutional Drift</h2>
         <p class="diagram-description">
           Scans the entire project to detect drift from constitutional standards. Creates prioritized TODO list with
           critical security issues, compliance gaps, and quality improvements.
@@ -705,7 +705,7 @@ flowchart TD
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-    Start([User: @drift]) --> CheckConstitution{Constitution exists?<br/>.specify/memory/<br/>constitution.md}
+    Start([User: @ssd-drift]) --> CheckConstitution{Constitution exists?<br/>.specify/memory/<br/>constitution.md}
 
     CheckConstitution -->|No| ErrorNoConst[ERROR: Constitution not found<br/>Run @ssd-init first<br/>STOP]
     CheckConstitution -->|Yes| LoadConstitution[Load constitution.md<br/>All principles & requirements]
