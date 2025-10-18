@@ -41,11 +41,11 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
   - Generates `.specify/specs/CONSTITUTION_DRIFT.md` with realignment tasks
   - Overwrites existing report on each run
 
-### 3. Specify Prompt (`@specify`)
+### 3. SSD Specify Prompt (`@ssd-specify`)
 
-- **Location**: `~/.aws/amazonq/prompts/specify.md`
+- **Location**: `~/.aws/amazonq/prompts/ssd-specify.md`
 - **Purpose**: Create feature specifications from natural language descriptions
-- **Usage**: `@specify <feature_description>` or `@specify <feature_description> -ref <folder>`
+- **Usage**: `@ssd-specify <feature_description>` or `@ssd-specify <feature_description> -ref <folder>`
 - **Key Features**:
   - Automatic branch creation (feature-name format)
   - Creates new feature directory in `.specify/specs/<feature-name>/`
@@ -142,13 +142,13 @@ The toolkit now uses an optimized reference context system:
 
 **Before (Redundant Loading)**:
 
-- `@specify`: Load reference files ➜ Generate spec
+- `@ssd-specify`: Load reference files ➜ Generate spec
 - `@plan`: Load reference files again ➜ Generate plan
 - `@tasks`: Load reference files again ➜ Generate tasks
 
 **After (Load Once, Reuse)**:
 
-- `@specify -ref <folder>`: Load reference files ➜ Summarize ➜ Store in spec.md
+- `@ssd-specify -ref <folder>`: Load reference files ➜ Summarize ➜ Store in spec.md
 - `@plan`: Read Reference Context from spec.md ➜ Generate plan
 - `@tasks`: Read Reference Context from spec.md ➜ Generate tasks
 
@@ -166,8 +166,8 @@ To use these prompts in Amazon Q:
 
 1. Type `@ssd-init` to create or update project constitution
 2. Type `@drift` to detect constitutional drift and generate realignment TODO list
-3. Type `@specify <feature_description>` to create new feature specifications
-4. Type `@specify <feature_description> -ref <folder>` to use reference context
+3. Type `@ssd-specify <feature_description>` to create new feature specifications
+4. Type `@ssd-specify <feature_description> -ref <folder>` to use reference context
 5. Type `@plan` to generate implementation plans (auto-detects feature or specify with `@plan <feature-name>`)
 6. Type `@tasks` to create task breakdowns (auto-detects feature or specify with `@tasks <feature-name>`)
 7. Type `@implement` to execute the implementation plan (auto-detects feature or specify with `@implement <feature-name>`)
@@ -186,7 +186,7 @@ To use these prompts in Amazon Q:
 
 ```
 @ssd-init
-@specify Add user authentication with JWT -ref auth-requirements
+@ssd-specify Add user authentication with JWT -ref auth-requirements
 @plan
 @tasks
 @implement
@@ -198,8 +198,8 @@ To use these prompts in Amazon Q:
 
 ```
 @ssd-init
-@specify Add user authentication with JWT
-@specify Add payment processing with Stripe
+@ssd-specify Add user authentication with JWT
+@ssd-specify Add payment processing with Stripe
 @plan user-authentication
 @tasks user-authentication
 @implement user-authentication

@@ -4,7 +4,7 @@ Complete flow diagram showing how the core development prompts work together in 
 
 ```mermaid
 flowchart TB
-    subgraph Specify["@specify - Create Specification"]
+    subgraph Specify["@ssd-specify - Create Specification"]
         S1[User provides feature description]
         S2[Optional: -ref reference-folder]
         S3[Validate branching standards]
@@ -101,7 +101,7 @@ flowchart TB
 
 ## Workflow Stages
 
-### 1. @specify - Create Specification
+### 1. @ssd-specify - Create Specification
 
 **Input**: Natural language feature description  
 **Output**: `spec.md` with structured requirements  
@@ -213,14 +213,14 @@ flowchart TB
 
 ### Reference Context Flow
 
-1. **@specify**: Load reference folder once, store in spec.md
+1. **@ssd-specify**: Load reference folder once, store in spec.md
 2. **@plan**: Read reference context from spec.md metadata
 3. **@tasks**: Read reference context from spec.md metadata
 4. **Benefit**: Reference files loaded once, reused 3x (67% reduction)
 
 ### Constitutional Loading Strategy
 
-- **@specify**: `branching` (validation only)
+- **@ssd-specify**: `branching` (validation only)
 - **@plan**: `core,architecture,testing,branching` (planning essentials)
 - **@tasks**: Context-aware based on task types
 - **@implement**: Just-in-time based on file type being implemented
@@ -245,7 +245,7 @@ Tests are generated and executed before their corresponding implementation:
 
 Each stage has validation:
 
-- **@specify**: Branching standards compliance
+- **@ssd-specify**: Branching standards compliance
 - **@plan**: Gate checks after each phase
 - **@tasks**: Dependency order verification
 - **@implement**: Task completion tracking
@@ -280,7 +280,7 @@ After `@implement` completes:
 │   └── <folder-name>/           # Optional reference context
 ├── specs/
 │   └── <feature-name>/          # Feature workspace
-│       ├── spec.md              # ← @specify creates this
+│       ├── spec.md              # ← @ssd-specify creates this
 │       ├── plan.md              # ← @plan creates this
 │       ├── research.md          # ← @plan creates this
 │       ├── data-model.md        # ← @plan creates this
@@ -306,8 +306,8 @@ After `@implement` completes:
 
 ```bash
 # 1. Create specification
-@specify "Add user authentication system"
-@specify "Add user authentication system" -ref auth-patterns
+@ssd-specify "Add user authentication system"
+@ssd-specify "Add user authentication system" -ref auth-patterns
 
 # 2. Create implementation plan
 @plan                    # Auto-detect feature
@@ -330,7 +330,7 @@ After `@implement` completes:
 
 **Total Time Estimate**:
 
-- @specify: 2-5 minutes
+- @ssd-specify: 2-5 minutes
 - @plan: 10-20 minutes
 - @tasks: 5-10 minutes
 - @implement: 30-120 minutes (depends on complexity)

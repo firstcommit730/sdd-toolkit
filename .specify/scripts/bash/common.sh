@@ -46,7 +46,7 @@ determine_feature() {
     
     if [[ "$feature_count" -eq 0 ]]; then
         echo "ERROR: No features found in $specs_dir" >&2
-        echo "Run @specify first to create a feature specification." >&2
+        echo "Run @ssd-specify first to create a feature specification." >&2
         return 1
     elif [[ "$feature_count" -eq 1 ]]; then
         # Auto-select single feature

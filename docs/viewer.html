@@ -248,7 +248,7 @@
           aria-controls="diagram-specify"
           data-target="diagram-specify"
         >
-          📝 @specify
+          📝 @ssd-specify
         </button>
         <button
           id="tab-plan"
@@ -312,7 +312,7 @@
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-    subgraph specify["@specify - Create Specification"]
+    subgraph specify["@ssd-specify - Create Specification"]
         S1[User describes feature] --> S2[Load branching standards]
         S2 --> S3{Validate branch name}
         S3 -->|Invalid| S4[Error: Fix branch name]
@@ -368,9 +368,9 @@ flowchart TD
         </div>
       </div>
 
-      <!-- @specify Diagram -->
+      <!-- @ssd-specify Diagram -->
       <div id="diagram-specify" class="diagram-container" role="tabpanel" aria-labelledby="tab-specify" hidden>
-        <h2 class="diagram-title">@specify - Create Feature Specification</h2>
+        <h2 class="diagram-title">@ssd-specify - Create Feature Specification</h2>
         <p class="diagram-description">
           Validates branching standards, creates a feature specification, and sets up the Git branch for development.
           Optional reference context can be loaded for reuse.
@@ -378,7 +378,7 @@ flowchart TD
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-    Start([User: @specify feature-description]) --> CheckRef{-ref flag<br/>provided?}
+    Start([User: @ssd-specify feature-description]) --> CheckRef{-ref flag<br/>provided?}
 
     CheckRef -->|No| LoadBranching[Load Branching Standards<br/>.specify/memory/git-workflow.md]
     CheckRef -->|Yes| LoadRef[Load Reference Folder<br/>.specify/reference/folder-name/]
@@ -436,7 +436,7 @@ flowchart TD
 flowchart TD
     Start([User: @plan feature-name]) --> CheckSpecs{Check .specify/specs/<br/>for features}
 
-    CheckSpecs -->|None found| ErrorNoSpec[ERROR: No specs found<br/>Run @specify first<br/>STOP]
+    CheckSpecs -->|None found| ErrorNoSpec[ERROR: No specs found<br/>Run @ssd-specify first<br/>STOP]
     CheckSpecs -->|Multiple found| PromptSelect[Show available features<br/>Prompt user to specify]
     CheckSpecs -->|Single found| LoadSpec[Load spec.md]
 
@@ -495,7 +495,7 @@ flowchart TD
 flowchart TD
   Start([User: @tasks feature-name]) --> CheckSpecs{Check for specs with plan.md}
 
-  CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found; Run @specify and @plan; STOP]
+  CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found; Run @ssd-specify and @plan; STOP]
   CheckSpecs -->|Multiple| PromptSelect[Show features with plans; Prompt user to specify]
     CheckSpecs -->|Single| LoadArtifacts
 
@@ -552,7 +552,7 @@ flowchart TD
 flowchart TD
     Start([User: @implement feature-name]) --> CheckSpecs{Check for specs<br/>with tasks.md}
 
-    CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @specify, @plan, @tasks<br/>STOP]
+    CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @ssd-specify, @plan, @tasks<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show features with tasks<br/>Prompt user to specify]
     CheckSpecs -->|Single| LoadTasks
 
@@ -638,7 +638,7 @@ flowchart TD
 flowchart TD
     Start([User: @audit feature-name]) --> CheckSpecs{Check for specs<br/>with required files}
 
-    CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found<br/>Run @specify first<br/>STOP]
+    CheckSpecs -->|None| ErrorNoSpec[ERROR: No specs found<br/>Run @ssd-specify first<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show available features<br/>Prompt user to specify]
     CheckSpecs -->|Single| ValidateFiles
 

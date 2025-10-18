@@ -13,8 +13,8 @@ This toolkit packages that flow into markdown prompts and helper scripts for mul
 ### Workflow Excellence
 
 - Multi-vendor prompt distribution (Amazon Q + GitHub Copilot) with identical semantics
-- Unified command-style verbs (`@specify`, `@plan`, `@tasks`, `@implement`, etc.)
-- Reference folder mechanism (`@specify <description> -ref <folder>`) to inject structured domain context
+- Unified command-style verbs (`@ssd-specify`, `@plan`, `@tasks`, `@implement`, etc.)
+- Reference folder mechanism (`@ssd-specify <description> -ref <folder>`) to inject structured domain context
 - Consistent, auditable, specification-first workflow across different AI assistants
 
 ### Markdown-Based Constitutions
@@ -64,7 +64,7 @@ Use the project-local install in the Installation Guide: see [INSTALL.md — Git
 2. **Start developing:**
 
    ```
-   @specify user authentication system
+   @ssd-specify user authentication system
    # Output: Branch Name: feat/user-authentication-system
 
    @plan feat/user-authentication-system
@@ -143,7 +143,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   @specify  │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
+│   @ssd-specify  │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
 │             │    │              │    │             │    │             │    │             │
 │ Creates     │    │ Generates    │    │ Creates     │    │ Executes    │    │ Validates   │
 │ spec.md     │    │ design docs  │    │ tasks.md    │    │ code        │    │ quality     │
@@ -154,7 +154,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│    @specify     │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
+│    @ssd-specify     │───▶│    @plan     │───▶│   @tasks    │───▶│ @implement  │───▶│   @audit    │
 │  -ref <folder>  │    │              │    │             │    │             │    │             │
 │                 │    │              │    │             │    │             │    │             │
 │ Loads reference │    │ Uses stored  │    │ Applies     │    │ Executes    │    │ Validates   │
@@ -181,7 +181,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```bash
 @ssd-init  # Initialize project constitution first
-@specify JWT-based user authentication with login/logout
+@ssd-specify JWT-based user authentication with login/logout
 @plan feat/jwt-based-user-authentication-with-login-logout
 @tasks feat/jwt-based-user-authentication-with-login-logout
 @implement feat/jwt-based-user-authentication-with-login-logout
@@ -196,7 +196,7 @@ mkdir -p .specify/reference/user-authentication
 # Edit .specify/reference/user-authentication/README.md with requirements
 
 # 2. Create specification with reference context (outputs branch name)
-@specify user authentication with login and logout -ref user-authentication
+@ssd-specify user authentication with login and logout -ref user-authentication
 # Output: Branch created: feat/user-authentication-with-login-logout
 
 # 3. Generate plan (automatically uses Reference Context from spec.md)
@@ -216,19 +216,19 @@ mkdir -p .specify/reference/user-authentication
 
 ```bash
 # Feature (default type if not specified)
-@specify user authentication system
+@ssd-specify user authentication system
 
 # Bug fix
-@specify payment timeout issue -type fix
+@ssd-specify payment timeout issue -type fix
 
 # Documentation update
-@specify api documentation update -type docs
+@ssd-specify api documentation update -type docs
 
 # Refactoring
-@specify code cleanup and optimization -type refactor
+@ssd-specify code cleanup and optimization -type refactor
 
 # Combined with reference folder
-@specify payment processing -type feat -ref payment-patterns
+@ssd-specify payment processing -type feat -ref payment-patterns
 ```
 
 **Working with Multiple Specs:**
@@ -251,7 +251,7 @@ The toolkit uses an optimized reference context system that **loads once and reu
 
 ### How It Works
 
-1. **During `@specify <description> -ref <folder>`**:
+1. **During `@ssd-specify <description> -ref <folder>`**:
 
    - Loads all files from `.specify/reference/<folder>/`
    - Extracts and categorizes insights:
@@ -302,7 +302,7 @@ As a [user], I want [goal] so that [benefit].
 EOF
 
 # Use in workflow
-@specify your feature description -ref your-domain-name
+@ssd-specify your feature description -ref your-domain-name
 ```
 
 ## Available Prompts
@@ -311,7 +311,7 @@ EOF
 | ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | `@ssd-init`  | Create/update project constitution with versioning             | `@ssd-init`                                                                     |
 | `@drift`     | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
-| `@specify`   | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -type <type> -ref <folder>` |
+| `@ssd-specify`   | Create feature specifications from descriptions                | `@ssd-specify <description>` or `@ssd-specify <description> -type <type> -ref <folder>` |
 | `@plan`      | Generate implementation plans and design artifacts             | `@plan <feature-name>`                                                          |
 | `@tasks`     | Create dependency-ordered task breakdowns                      | `@tasks <feature-name>`                                                         |
 | `@implement` | Execute implementation following task plan                     | `@implement <feature-name>`                                                     |

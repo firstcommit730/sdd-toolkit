@@ -1,8 +1,8 @@
-# @specify Flow Diagram
+# @ssd-specify Flow Diagram
 
 ```mermaid
 flowchart TD
-    Start([User: @specify feature-description]) --> CheckRef{-ref flag<br/>provided?}
+    Start([User: @ssd-specify feature-description]) --> CheckRef{-ref flag<br/>provided?}
 
     CheckRef -->|No| LoadBranching[Load Branching Standards<br/>.specify/memory/git-workflow.md]
     CheckRef -->|Yes| LoadRef[Load Reference Folder<br/>.specify/reference/folder-name/]
@@ -57,10 +57,10 @@ flowchart TD
 
 ```bash
 # Basic specification creation
-@specify "Add user authentication system"
+@ssd-specify "Add user authentication system"
 
 # With reference context
-@specify "Add user authentication system" -ref auth-patterns
+@ssd-specify "Add user authentication system" -ref auth-patterns
 ```
 
 ## Output Files

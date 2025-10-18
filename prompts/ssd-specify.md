@@ -4,14 +4,14 @@ Create or update the feature specification from a natural language feature descr
 
 ## Usage
 
-- `@specify <feature_description>` - Create a new feature specification (defaults to `feat` type)
-- `@specify <feature_description> -type <branch_type>` - Create specification with specific branch type
-- `@specify <feature_description> -ref <reference_folder>` - Create specification with reference context
-- `@specify <feature_description> -type <branch_type> -ref <reference_folder>` - Create specification with both type and reference
+- `@ssd-specify <feature_description>` - Create a new feature specification (defaults to `feat` type)
+- `@ssd-specify <feature_description> -type <branch_type>` - Create specification with specific branch type
+- `@ssd-specify <feature_description> -ref <reference_folder>` - Create specification with reference context
+- `@ssd-specify <feature_description> -type <branch_type> -ref <reference_folder>` - Create specification with both type and reference
 
 ### Arguments
 
-- **`<feature_description>`** (REQUIRED): Natural language description of the feature without type prefix (first text after `@specify`)
+- **`<feature_description>`** (REQUIRED): Natural language description of the feature without type prefix (first text after `@ssd-specify`)
 - **`-type <branch_type>`** (OPTIONAL): Git branch type - must be one of: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `hotfix`, `maintenance` (defaults to `feat`)
 - **`-ref <reference_folder>`** (OPTIONAL): Name of the reference folder in `.specify/reference/` to use for context
 
@@ -19,16 +19,16 @@ Create or update the feature specification from a natural language feature descr
 
 ```{{SCRIPT_LANG}}
 # Basic usage with default feat type
-@specify user authentication system
+@ssd-specify user authentication system
 
 # With explicit type
-@specify payment timeout issue -type fix
+@ssd-specify payment timeout issue -type fix
 
 # With reference folder
-@specify user authentication system -ref auth-patterns
+@ssd-specify user authentication system -ref auth-patterns
 
 # With both type and reference
-@specify api documentation update -type docs -ref api-standards
+@ssd-specify api documentation update -type docs -ref api-standards
 ```
 
 ---
@@ -51,7 +51,7 @@ The user will provide a feature description (first text after the command), opti
 
    **Feature Description Extraction**:
 
-   - **REQUIRED**: Extract the feature description from the first text after `@specify` (before any flags)
+   - **REQUIRED**: Extract the feature description from the first text after `@ssd-specify` (before any flags)
    - All text before the first `-` flag (if any) is the feature description
    - **STOP AND ERROR**: If no feature description is provided, immediately stop processing and return an error message
 
@@ -71,14 +71,14 @@ The user will provide a feature description (first text after the command), opti
    The feature description is required.
 
    Usage:
-   @specify <description>
-   @specify <description> -type <type>
-   @specify <description> -ref <reference_folder>
+   @ssd-specify <description>
+   @ssd-specify <description> -type <type>
+   @ssd-specify <description> -ref <reference_folder>
 
    Examples:
-   @specify user authentication system
-   @specify payment timeout issue -type fix
-   @specify user authentication system -ref auth-patterns
+   @ssd-specify user authentication system
+   @ssd-specify payment timeout issue -type fix
+   @ssd-specify user authentication system -ref auth-patterns
    ```
 
    If `-type` has an invalid value:
@@ -90,9 +90,9 @@ The user will provide a feature description (first text after the command), opti
    Default: feat (if -type is not specified)
 
    Valid examples:
-   - @specify user authentication system -type feat
-   - @specify payment timeout issue -type fix
-   - @specify api documentation update -type docs
+   - @ssd-specify user authentication system -type feat
+   - @ssd-specify payment timeout issue -type fix
+   - @ssd-specify api documentation update -type docs
 
    Please provide a valid branch type or omit -type to use the default (feat).
    ```
@@ -236,7 +236,7 @@ Next Steps:
 
 ## Creating Reference Folders
 
-Reference folders provide reusable context that enhances @specify, @plan, and @tasks workflows.
+Reference folders provide reusable context that enhances @ssd-specify, @plan, and @tasks workflows.
 
 ### How to Create a Reference Folder
 
@@ -324,7 +324,7 @@ After creating a reference folder:
 1. Edit the README.md with specific requirements for that domain/feature area
 2. Add additional files to the folder as needed
 3. Use the folder when creating specifications:
-   - `@specify <description> -ref <folder_name>` - Creates spec with reference context
+   - `@ssd-specify <description> -ref <folder_name>` - Creates spec with reference context
    - The reference folder name is stored in the spec's markdown metadata
    - `@plan` and `@tasks` automatically source the reference from the spec file
    - No need to pass `-ref` to @plan or @tasks - they read it from the spec
@@ -334,4 +334,4 @@ After creating a reference folder:
 - Only create the folder if it doesn't already exist
 - The folder name should be descriptive and kebab-case (e.g., `user-authentication`, `payment-system`)
 - The README.md serves as the primary reference document but additional files can be added
-- Reference folders provide consistent context: define once in @specify, automatically used by @plan and @tasks
+- Reference folders provide consistent context: define once in @ssd-specify, automatically used by @plan and @tasks

@@ -8,7 +8,7 @@ The SDD workflow consists of six main prompts that work together to transform a 
 
 ### Core Development Workflow
 
-1. **[@specify](flow-specify.md)** - Create feature specification
+1. **[@ssd-specify](flow-specify.md)** - Create feature specification
 2. **[@plan](flow-plan.md)** - Design implementation with artifacts
 3. **[@tasks](flow-tasks.md)** - Generate dependency-ordered task list
 4. **[@implement](flow-implement.md)** - Execute the implementation
@@ -24,7 +24,7 @@ See [Workflow Overview](workflow-overview.md) for a complete end-to-end diagram.
 
 ## Flow Diagrams
 
-### 1. [@specify Flow](flow-specify.md)
+### 1. [@ssd-specify Flow](flow-specify.md)
 
 Creates a feature specification from natural language description.
 
@@ -191,7 +191,7 @@ See [Workflow Overview](workflow-overview.md) for:
 
 ```bash
 # 1. Create specification
-@specify "Add user authentication system"
+@ssd-specify "Add user authentication system"
 
 # 2. Generate implementation plan
 @plan
@@ -213,7 +213,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @drift
 
 # Create specification
-@specify "Add user authentication system"
+@ssd-specify "Add user authentication system"
 
 # Generate implementation plan
 @plan
@@ -239,7 +239,7 @@ mkdir -p .specify/reference/auth-patterns
 # Add files to reference folder
 
 # 2. Create specification with reference
-@specify "Add user authentication system" -ref auth-patterns
+@ssd-specify "Add user authentication system" -ref auth-patterns
 
 # 3-6. Continue as normal (reference auto-loaded)
 @plan
@@ -297,14 +297,14 @@ The SDD toolkit uses a **modular constitution architecture** with template/insta
 
 Reference folders provide reusable context that is:
 
-- Loaded **once** during @specify
+- Loaded **once** during @ssd-specify
 - Stored in spec.md metadata
 - **Automatically reused** by @plan and @tasks
 - **Result**: 67% reduction in context loading
 
 ### Constitutional Loading Strategies
 
-#### @specify
+#### @ssd-specify
 
 - **Loads**: `branching` standards only
 - **Purpose**: Validate branch naming
@@ -385,7 +385,7 @@ Setup → Tests [P] → Core → Integration → Polish [P]
 │       └── patterns/                # Design patterns
 ├── specs/                           # Feature workspaces
 │   └── <feature-name>/
-│       ├── spec.md                  # ← @specify
+│       ├── spec.md                  # ← @ssd-specify
 │       ├── plan.md                  # ← @plan
 │       ├── research.md              # ← @plan
 │       ├── data-model.md            # ← @plan
@@ -456,16 +456,16 @@ Violations found:
 - Contains uppercase letters (must be lowercase only)
 
 # Solution: Use compliant branch name
-@specify "add-user-authentication"  # lowercase with hyphens
+@ssd-specify "add-user-authentication"  # lowercase with hyphens
 ```
 
 ### Missing prerequisites
 
 ```bash
-ERROR: No specs found. Run @specify first.
+ERROR: No specs found. Run @ssd-specify first.
 
 # Solution: Create specification first
-@specify "Your feature description"
+@ssd-specify "Your feature description"
 ```
 
 ---

@@ -9,7 +9,7 @@ flowchart TD
 
     ListSpecs --> CountSpecs{How many<br/>specs found?}
 
-    CountSpecs -->|Zero| ErrorNoSpecs[ERROR: No specs found<br/>Run @specify first]
+    CountSpecs -->|Zero| ErrorNoSpecs[ERROR: No specs found<br/>Run @ssd-specify first]
     CountSpecs -->|One| AutoSelect[Auto-select single spec]
     CountSpecs -->|Multiple| ErrorMultiple[ERROR: Multiple specs found<br/>Specify feature name]
 
