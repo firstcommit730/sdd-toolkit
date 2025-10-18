@@ -1,8 +1,8 @@
-# @implement Flow Diagram
+# @ssd-implement Flow Diagram
 
 ```mermaid
 flowchart TD
-    Start([User: @implement or @implement feature-name]) --> CheckFeature{Feature name<br/>provided?}
+    Start([User: @ssd-implement or @ssd-implement feature-name]) --> CheckFeature{Feature name<br/>provided?}
 
     CheckFeature -->|Yes| UseProvided[Use specified feature]
     CheckFeature -->|No| ListSpecs[List .specify/specs/ directories]

@@ -278,7 +278,7 @@
           aria-controls="diagram-implement"
           data-target="diagram-implement"
         >
-          ⚡ @implement
+          ⚡ @ssd-implement
         </button>
         <button
           id="tab-audit"
@@ -341,7 +341,7 @@ flowchart TD
         T8 --> T9[Create tasks.md]
     end
 
-    subgraph implement["@implement - Execute Implementation"]
+    subgraph implement["@ssd-implement - Execute Implementation"]
         I1[Load tasks.md] --> I2{For each phase}
         I2 --> I3{For each task}
         I3 --> I4[Detect file type]
@@ -530,7 +530,7 @@ flowchart TD
 
   FormatTasks --> SaveTasks[Save tasks.md in .specify/specs/feature-name/]
 
-  SaveTasks --> Done([Complete: Tasks ready; Run @implement next])
+  SaveTasks --> Done([Complete: Tasks ready; Run @ssd-implement next])
 
     style Start fill:#e1f5ff
     style Done fill:#d4edda
@@ -540,9 +540,9 @@ flowchart TD
         </div>
       </div>
 
-      <!-- @implement Diagram -->
+      <!-- @ssd-implement Diagram -->
       <div id="diagram-implement" class="diagram-container" role="tabpanel" aria-labelledby="tab-implement" hidden>
-        <h2 class="diagram-title">@implement - Execute Implementation</h2>
+        <h2 class="diagram-title">@ssd-implement - Execute Implementation</h2>
         <p class="diagram-description">
           Phase-by-phase execution with just-in-time constitutional loading based on file type. Handles parallel
           execution for independent tasks and sequential execution for dependencies.
@@ -550,13 +550,13 @@ flowchart TD
         <div class="diagram-content">
           <pre class="mermaid">
 flowchart TD
-    Start([User: @implement feature-name]) --> CheckSpecs{Check for specs<br/>with tasks.md}
+    Start([User: @ssd-implement feature-name]) --> CheckSpecs{Check for specs<br/>with tasks.md}
 
     CheckSpecs -->|None| ErrorNoSpec[ERROR: No tasks found<br/>Run @ssd-specify, @ssd-plan, @ssd-tasks<br/>STOP]
     CheckSpecs -->|Multiple| PromptSelect[Show features with tasks<br/>Prompt user to specify]
     CheckSpecs -->|Single| LoadTasks
 
-    PromptSelect --> UserSelect[User: @implement feature-name]
+    PromptSelect --> UserSelect[User: @ssd-implement feature-name]
     UserSelect --> LoadTasks[Load tasks.md<br/>Parse task list]
 
     LoadTasks --> PhaseLoop{For each phase:<br/>Setup, Tests, Core,<br/>Integration, Polish}

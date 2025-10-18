@@ -89,11 +89,11 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
   - Applies documented conventions to task descriptions
   - Context-aware constitution loading (only loads sections relevant to task type)
 
-### 6. Implement Prompt (`@implement`)
+### 6. SSD Implement Prompt (`@ssd-implement`)
 
-- **Location**: `~/.aws/amazonq/prompts/implement.md`
+- **Location**: `~/.aws/amazonq/prompts/ssd-implement.md`
 - **Purpose**: Execute implementation plan by processing ssd-tasks.md
-- **Usage**: `@implement` (auto-detects feature) or `@implement <feature-name>` (explicit feature)
+- **Usage**: `@ssd-implement` (auto-detects feature) or `@ssd-implement <feature-name>` (explicit feature)
 - **Key Features**:
   - **Multi-spec support**: Works with projects that have multiple feature specs
   - Auto-selects feature if only one exists in `.specify/specs/`
@@ -108,7 +108,7 @@ The following GitHub prompts have been successfully ported to Amazon Q format:
 ### 7. Audit Prompt (`@audit`)
 
 - **Location**: `~/.aws/amazonq/prompts/audit.md`
-- **Purpose**: Validate implementation quality and specification alignment after `@implement`
+- **Purpose**: Validate implementation quality and specification alignment after `@ssd-implement`
 - **Usage**: `@audit <feature-name>` or `@audit` (auto-selects if only one spec)
 - **Key Features**:
   - Audits a single feature specification at a time
@@ -170,7 +170,7 @@ To use these prompts in Amazon Q:
 4. Type `@ssd-specify <feature_description> -ref <folder>` to use reference context
 5. Type `@ssd-plan` to generate implementation plans (auto-detects feature or specify with `@ssd-plan <feature-name>`)
 6. Type `@ssd-tasks` to create task breakdowns (auto-detects feature or specify with `@ssd-tasks <feature-name>`)
-7. Type `@implement` to execute the implementation plan (auto-detects feature or specify with `@implement <feature-name>`)
+7. Type `@ssd-implement` to execute the implementation plan (auto-detects feature or specify with `@ssd-implement <feature-name>`)
 8. Type `@audit <feature-name>` to validate implementation quality and specification alignment
 
 **Feature Name**: The feature name is the directory name in `.specify/specs/` (e.g., `user-authentication`, `payment-processing`)
@@ -189,7 +189,7 @@ To use these prompts in Amazon Q:
 @ssd-specify Add user authentication with JWT -ref auth-requirements
 @ssd-plan
 @ssd-tasks
-@implement
+@ssd-implement
 @audit user-authentication
 @drift
 ```
@@ -202,11 +202,11 @@ To use these prompts in Amazon Q:
 @ssd-specify Add payment processing with Stripe
 @ssd-plan user-authentication
 @ssd-tasks user-authentication
-@implement user-authentication
+@ssd-implement user-authentication
 @audit user-authentication
 @ssd-plan payment-processing
 @ssd-tasks payment-processing
-@implement payment-processing
+@ssd-implement payment-processing
 @audit payment-processing
 ```
 

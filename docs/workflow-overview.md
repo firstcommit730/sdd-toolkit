@@ -43,7 +43,7 @@ flowchart TB
         T1 --> T2 --> T3 --> T4 --> T5 --> T6 --> T7 --> T8 --> T9 --> T10 --> T11
     end
 
-    subgraph Implement["@implement - Execute Implementation"]
+    subgraph Implement["@ssd-implement - Execute Implementation"]
         I1[Auto-detect or specify feature]
         I2[Load tasks.md + plan.md + artifacts]
         I3[Parse task phases & dependencies]
@@ -164,7 +164,7 @@ flowchart TB
 
 ---
 
-### 4. @implement - Execute Implementation
+### 4. @ssd-implement - Execute Implementation
 
 **Input**: Task list + all design artifacts  
 **Output**: Working implementation with all tasks completed  
@@ -223,7 +223,7 @@ flowchart TB
 - **@ssd-specify**: `branching` (validation only)
 - **@ssd-plan**: `core,architecture,testing,branching` (planning essentials)
 - **@ssd-tasks**: Context-aware based on task types
-- **@implement**: Just-in-time based on file type being implemented
+- **@ssd-implement**: Just-in-time based on file type being implemented
 
 ### Parallel Execution
 
@@ -248,13 +248,13 @@ Each stage has validation:
 - **@ssd-specify**: Branching standards compliance
 - **@ssd-plan**: Gate checks after each phase
 - **@ssd-tasks**: Dependency order verification
-- **@implement**: Task completion tracking
+- **@ssd-implement**: Task completion tracking
 
 ---
 
 ## Next Steps After Implementation
 
-After `@implement` completes:
+After `@ssd-implement` completes:
 
 1. **@audit feature-name** - Validate implementation against spec
 2. Code review and testing
@@ -318,8 +318,8 @@ After `@implement` completes:
 @ssd-tasks user-auth         # Specify feature
 
 # 4. Execute implementation
-@implement               # Auto-detect feature
-@implement user-auth     # Specify feature
+@ssd-implement               # Auto-detect feature
+@ssd-implement user-auth     # Specify feature
 
 # 5. Validate implementation
 @audit                   # Auto-detect feature
@@ -333,7 +333,7 @@ After `@implement` completes:
 - @ssd-specify: 2-5 minutes
 - @ssd-plan: 10-20 minutes
 - @ssd-tasks: 5-10 minutes
-- @implement: 30-120 minutes (depends on complexity)
+- @ssd-implement: 30-120 minutes (depends on complexity)
 - @audit: 5-15 minutes
 
 **Total Files Created**: 8+ files per feature

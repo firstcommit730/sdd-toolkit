@@ -59,7 +59,7 @@ determine_feature() {
         echo "Available features:" >&2
         ls -1 "$specs_dir" 2>/dev/null | sed 's/^/  - /' >&2
         echo "" >&2
-        echo "Usage: @ssd-plan <feature-name>, @ssd-tasks <feature-name>, or @implement <feature-name>" >&2
+        echo "Usage: @ssd-plan <feature-name>, @ssd-tasks <feature-name>, or @ssd-implement <feature-name>" >&2
         return 1
     fi
 }

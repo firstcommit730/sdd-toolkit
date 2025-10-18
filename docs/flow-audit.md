@@ -248,7 +248,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 @ssd-tasks <feature-name>
 
 # Re-implement problem areas
-@implement <feature-name>
+@ssd-implement <feature-name>
 
 # Re-audit
 @audit <feature-name>
@@ -316,7 +316,7 @@ cat .specify/specs/<feature-name>/audit-report.md
 - `@ssd-specify` - Create feature specification
 - `@ssd-plan` - Design implementation
 - `@ssd-tasks` - Generate task list
-- `@implement` - Execute implementation
+- `@ssd-implement` - Execute implementation
 - **`@audit`** - Validate implementation ← You are here
 - `@drift` - Detect constitutional drift across entire project
 
