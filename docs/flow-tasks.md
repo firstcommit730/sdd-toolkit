@@ -67,7 +67,7 @@ flowchart TD
 
     CreateTaskFile --> IncludeExamples[Include parallel execution<br/>examples with Task agent<br/>commands]
 
-    IncludeExamples --> Done([Complete: Tasks created<br/>Ready for @implement])
+    IncludeExamples --> Done([Complete: Tasks created<br/>Ready for @ssd-implement])
 
     style Start fill:#e1f5ff
     style Done fill:#d4edda
@@ -141,4 +141,4 @@ flowchart TD
 
 ## Next Step
 
-Run `@implement` to execute the implementation
+Run `@ssd-implement` to execute the implementation

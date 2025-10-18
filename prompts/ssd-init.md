@@ -84,7 +84,7 @@ Follow this execution flow:
    - Read `.specify/templates/tasks-template.md` and ensure task categorization reflects new or removed principle-driven task types (e.g., observability, versioning, testing discipline).
    - Read each command file in `.specify/templates/commands/*.md` to verify no outdated references remain when generic guidance is required.
    - Read any runtime guidance docs (e.g., `README.md`, `docs/quickstart.md`). Update references to principles changed.
-   - **Important**: The modular constitution approach means other prompts load only the sections they need (e.g., `@implement` loads `testing,branching` for test files, `core,architecture,security,branching` for API files). Ensure your changes maintain this modularity.
+   - **Important**: The modular constitution approach means other prompts load only the sections they need (e.g., `@ssd-implement` loads `testing,branching` for test files, `core,architecture,security,branching` for API files). Ensure your changes maintain this modularity.
 
 5. Produce a Sync Impact Report (prepend as an HTML comment at top of the updated constitution file(s)):
 
@@ -135,7 +135,7 @@ Do not create a new template; always operate on the existing `.specify/memory/co
 
 **Modular Constitution Benefits**:
 
-- **Token efficiency**: Load only the sections needed (e.g., `@implement` loads `testing,branching` for test files, not the entire constitution)
+- **Token efficiency**: Load only the sections needed (e.g., `@ssd-implement` loads `testing,branching` for test files, not the entire constitution)
 - **Focused updates**: Change architecture standards without touching testing standards
 - **Clear ownership**: Each file has a specific purpose and version
 - **Better scalability**: Add new constitution modules (e.g., `deployment.md`) without affecting existing ones

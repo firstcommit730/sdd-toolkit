@@ -11,7 +11,7 @@ The SDD workflow consists of six main prompts that work together to transform a 
 1. **[@ssd-specify](flow-specify.md)** - Create feature specification
 2. **[@ssd-plan](flow-plan.md)** - Design implementation with artifacts
 3. **[@ssd-tasks](flow-tasks.md)** - Generate dependency-ordered task list
-4. **[@implement](flow-implement.md)** - Execute the implementation
+4. **[@ssd-implement](flow-implement.md)** - Execute the implementation
 
 ### Quality & Compliance
 
@@ -89,7 +89,7 @@ Creates dependency-ordered, executable task list.
 
 ---
 
-### 4. [@implement Flow](flow-implement.md)
+### 4. [@ssd-implement Flow](flow-implement.md)
 
 Executes the implementation following the task plan.
 
@@ -200,7 +200,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-tasks
 
 # 4. Execute implementation
-@implement
+@ssd-implement
 
 # 5. Validate implementation quality
 @audit user-authentication
@@ -222,7 +222,7 @@ See [Workflow Overview](workflow-overview.md) for:
 @ssd-tasks
 
 # Execute implementation
-@implement
+@ssd-implement
 
 # Validate implementation
 @audit user-authentication
@@ -244,7 +244,7 @@ mkdir -p .specify/reference/auth-patterns
 # 3-6. Continue as normal (reference auto-loaded)
 @ssd-plan
 @ssd-tasks
-@implement
+@ssd-implement
 @audit user-authentication
 ```
 
@@ -289,8 +289,8 @@ The SDD toolkit uses a **modular constitution architecture** with template/insta
 
 **Example Loading**:
 
-- `@implement` on test file → Loads `testing,branching` from `memory/constitution/`
-- `@implement` on API route → Loads `core,architecture,security,branching` from `memory/constitution/`
+- `@ssd-implement` on test file → Loads `testing,branching` from `memory/constitution/`
+- `@ssd-implement` on API route → Loads `core,architecture,security,branching` from `memory/constitution/`
 - `@ssd-plan` → Loads `core,architecture,testing,branching` from `memory/constitution/`
 
 ### Reference Context System
@@ -323,7 +323,7 @@ Reference folders provide reusable context that is:
   - Infrastructure → `core,operations,security,branching`
   - Mixed → `core,testing,architecture,branching`
 
-#### @implement
+#### @ssd-implement
 
 - **Loads**: Just-in-time based on file type
 - **Purpose**: Load only standards needed for current task
@@ -355,7 +355,7 @@ The workflow enforces TDD by generating tests before implementation:
 
 1. **@ssd-plan** → Generates contract test specifications
 2. **@ssd-tasks** → Orders tests before core implementation
-3. **@implement** → Executes Tests phase before Core phase
+3. **@ssd-implement** → Executes Tests phase before Core phase
 
 **Order**:
 

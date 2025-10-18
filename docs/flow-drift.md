@@ -456,7 +456,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 
 ```bash
 # After implementing feature
-@implement feature-name
+@ssd-implement feature-name
 
 # Check if implementation introduced drift
 @drift
@@ -539,7 +539,7 @@ git diff HEAD~1 .specify/specs/CONSTITUTION_DRIFT.md
 - `@ssd-specify` - Create feature specification
 - `@ssd-plan` - Design implementation
 - `@ssd-tasks` - Generate task list
-- `@implement` - Execute implementation
+- `@ssd-implement` - Execute implementation
 - `@audit` - Validate specific feature implementation
 - **`@drift`** - Detect project-wide constitutional drift ← You are here
 

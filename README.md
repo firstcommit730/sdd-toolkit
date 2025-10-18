@@ -13,7 +13,7 @@ This toolkit packages that flow into markdown prompts and helper scripts for mul
 ### Workflow Excellence
 
 - Multi-vendor prompt distribution (Amazon Q + GitHub Copilot) with identical semantics
-- Unified command-style verbs (`@ssd-specify`, `@ssd-plan`, `@ssd-tasks`, `@implement`, etc.)
+- Unified command-style verbs (`@ssd-specify`, `@ssd-plan`, `@ssd-tasks`, `@ssd-implement`, etc.)
 - Reference folder mechanism (`@ssd-specify <description> -ref <folder>`) to inject structured domain context
 - Consistent, auditable, specification-first workflow across different AI assistants
 
@@ -69,7 +69,7 @@ Use the project-local install in the Installation Guide: see [INSTALL.md — Git
 
    @ssd-plan feat/user-authentication-system
    @ssd-tasks feat/user-authentication-system
-   @implement feat/user-authentication-system
+   @ssd-implement feat/user-authentication-system
    @audit user-authentication-system
    ```
 
@@ -143,7 +143,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   @ssd-specify  │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @implement  │───▶│   @audit    │
+│   @ssd-specify  │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @ssd-implement  │───▶│   @audit    │
 │             │    │              │    │             │    │             │    │             │
 │ Creates     │    │ Generates    │    │ Creates     │    │ Executes    │    │ Validates   │
 │ spec.md     │    │ design docs  │    │ tasks.md    │    │ code        │    │ quality     │
@@ -154,7 +154,7 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```
 ┌─────────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│    @ssd-specify     │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @implement  │───▶│   @audit    │
+│    @ssd-specify     │───▶│    @ssd-plan     │───▶│   @ssd-tasks    │───▶│ @ssd-implement  │───▶│   @audit    │
 │  -ref <folder>  │    │              │    │             │    │             │    │             │
 │                 │    │              │    │             │    │             │    │             │
 │ Loads reference │    │ Uses stored  │    │ Applies     │    │ Executes    │    │ Validates   │
@@ -184,7 +184,7 @@ Branch names must follow proper naming conventions and be descriptive.
 @ssd-specify JWT-based user authentication with login/logout
 @ssd-plan feat/jwt-based-user-authentication-with-login-logout
 @ssd-tasks feat/jwt-based-user-authentication-with-login-logout
-@implement feat/jwt-based-user-authentication-with-login-logout
+@ssd-implement feat/jwt-based-user-authentication-with-login-logout
 @audit jwt-based-user-authentication-with-login-logout  # Audit specific feature
 ```
 
@@ -206,7 +206,7 @@ mkdir -p .specify/reference/user-authentication
 @ssd-tasks feat/user-authentication-with-login-logout
 
 # 5. Execute implementation (automatically uses Reference Context from spec.md)
-@implement feat/user-authentication-with-login-logout
+@ssd-implement feat/user-authentication-with-login-logout
 
 # 6. Validate implementation quality
 @audit feat/user-authentication-with-login-logout
@@ -314,7 +314,7 @@ EOF
 | `@ssd-specify`   | Create feature specifications from descriptions                | `@ssd-specify <description>` or `@ssd-specify <description> -type <type> -ref <folder>` |
 | `@ssd-plan`      | Generate implementation plans and design artifacts             | `@ssd-plan <feature-name>`                                                          |
 | `@ssd-tasks`     | Create dependency-ordered task breakdowns                      | `@ssd-tasks <feature-name>`                                                         |
-| `@implement` | Execute implementation following task plan                     | `@implement <feature-name>`                                                     |
+| `@ssd-implement` | Execute implementation following task plan                     | `@ssd-implement <feature-name>`                                                     |
 | `@audit`     | Validate implementation against specification                  | `@audit <feature-name>`                                                         |
 
 ### Prompt Details
@@ -370,7 +370,7 @@ EOF
 
 **Implementation Audit**
 
-- Validates implementation against specification after `@implement`
+- Validates implementation against specification after `@ssd-implement`
 - Requires feature name parameter (compulsory)
 - Usage: `@audit <feature-name>`
 - Audits a single feature specification at a time

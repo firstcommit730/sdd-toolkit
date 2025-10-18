@@ -136,7 +136,7 @@ function Get-DeterminedFeature {
             Write-Error "  - $($_.Name)"
         }
         Write-Error ""
-        Write-Error "Usage: @ssd-plan <feature-name>, @ssd-tasks <feature-name>, or @implement <feature-name>"
+        Write-Error "Usage: @ssd-plan <feature-name>, @ssd-tasks <feature-name>, or @ssd-implement <feature-name>"
         throw "Multiple features found"
     }
 }
