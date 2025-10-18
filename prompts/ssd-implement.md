@@ -1,3 +1,8 @@
+<!--
+Copyright (c) Github Speckit
+MIT License
+-->
+
 # Implement
 
 Execute the implementation plan by progressively executing all tasks defined in tasks.md

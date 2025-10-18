@@ -1,3 +1,8 @@
+<!--
+Copyright (c) Github Speckit
+MIT License
+-->
+
 # Plan
 
 Create an implementation plan for a feature specification using the plan template to generate design artifacts.

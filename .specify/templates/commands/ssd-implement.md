@@ -1,3 +1,8 @@
+<!--
+Copyright (c) Github Speckit
+MIT License
+-->
+
 Execute the implementation plan by processing and executing all tasks defined in tasks.md
 
 1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.

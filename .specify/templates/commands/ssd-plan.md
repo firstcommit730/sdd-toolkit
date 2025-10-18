@@ -1,3 +1,8 @@
+<!--
+Copyright (c) Github Speckit
+MIT License
+-->
+
 Execute the implementation planning workflow using the plan template to generate design artifacts.
 
 1. Run `.specify/scripts/bash/setup-plan.sh --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.

@@ -1,8 +1,14 @@
+<!--
+Copyright (c) Github Speckit
+MIT License
+-->
+
 Create or update the project constitution from interactive or provided principle inputs, ensuring all dependent templates stay in sync.
 
 You are managing a **modular constitution system** with template/instance separation:
 
 **Templates** (`.specify/templates/constitution/`):
+
 - `core-template.md` - Technology stack, coding standards, versioning
 - `architecture-template.md` - Service patterns, design principles
 - `testing-template.md` - Test strategy, coverage requirements
@@ -11,6 +17,7 @@ You are managing a **modular constitution system** with template/instance separa
 - `optional-template.md` - Additional project-specific standards
 
 **Working Copies** (`.specify/memory/constitution/`):
+
 - `core.md`, `architecture.md`, `testing.md`, `security.md`, `observability.md`, `optional.md`
 - These are project-specific filled-in versions copied from templates
 
@@ -22,8 +29,9 @@ Follow this execution flow:
 
    - Check if `.specify/memory/constitution/` directory exists
    - Check if `.specify/memory/constitution/core.md` exists
-   
+
    - If **core.md does NOT exist in memory/constitution/**:
+
      - Inform the user: "Initializing modular constitution from templates..."
      - Create `.specify/memory/constitution/` directory
      - Copy template files to memory/constitution/, removing `-template` suffix:
@@ -37,13 +45,14 @@ Follow this execution flow:
        - If it **does NOT exist**: Copy `.specify/templates/git-workflow-template.md` to `.specify/memory/git-workflow.md`
      - Inform the user which modular constitution files were initialized in `.specify/memory/constitution/`
      - Proceed to next step
-   
+
    - If **files exist in memory/constitution/**:
+
      - Load the existing constitution files from `.specify/memory/constitution/` that the user wants to update
      - Check if `.specify/memory/git-workflow.md` exists
        - If it **does NOT exist**: Copy `.specify/templates/git-workflow-template.md` to `.specify/memory/git-workflow.md`
      - Proceed to next step
-   
+
    - Identify every placeholder token of the form `[ALL_CAPS_IDENTIFIER]` in the relevant constitution file(s).
      **IMPORTANT**: The user might require less or more principles than the ones used in the template. If a number is specified, respect that - follow the general template. You will update the doc accordingly.
 

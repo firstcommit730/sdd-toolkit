@@ -1,3 +1,8 @@
+<!--
+Copyright (c) Github Speckit
+MIT License
+-->
+
 # Specify
 
 Create or update the feature specification from a natural language feature description.

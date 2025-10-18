@@ -307,15 +307,15 @@ EOF
 
 ## Available Prompts
 
-| Prompt       | Purpose                                                        | Usage                                                                           |
-| ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `@ssd-init`  | Create/update project constitution with versioning             | `@ssd-init`                                                                     |
-| `@ssd-drift`     | Detect constitutional drift and generate realignment TODO list | `@ssd-drift`                                                                        |
+| Prompt           | Purpose                                                        | Usage                                                                                   |
+| ---------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `@ssd-init`      | Create/update project constitution with versioning             | `@ssd-init`                                                                             |
+| `@ssd-drift`     | Detect constitutional drift and generate realignment TODO list | `@ssd-drift`                                                                            |
 | `@ssd-specify`   | Create feature specifications from descriptions                | `@ssd-specify <description>` or `@ssd-specify <description> -type <type> -ref <folder>` |
-| `@ssd-plan`      | Generate implementation plans and design artifacts             | `@ssd-plan <feature-name>`                                                          |
-| `@ssd-tasks`     | Create dependency-ordered task breakdowns                      | `@ssd-tasks <feature-name>`                                                         |
-| `@ssd-implement` | Execute implementation following task plan                     | `@ssd-implement <feature-name>`                                                     |
-| `@ssd-audit`     | Validate implementation against specification                  | `@ssd-audit <feature-name>`                                                         |
+| `@ssd-plan`      | Generate implementation plans and design artifacts             | `@ssd-plan <feature-name>`                                                              |
+| `@ssd-tasks`     | Create dependency-ordered task breakdowns                      | `@ssd-tasks <feature-name>`                                                             |
+| `@ssd-implement` | Execute implementation following task plan                     | `@ssd-implement <feature-name>`                                                         |
+| `@ssd-audit`     | Validate implementation against specification                  | `@ssd-audit <feature-name>`                                                             |
 
 ### Prompt Details
 
@@ -403,8 +403,14 @@ AmazonQ install [INSTALL.md](./INSTALL.md#alternative-amazon-q-developer-global)
 
 ## Credits & Attribution
 
-This work is inspired by and originally derived from the excellent upstream project: [github/spec-kit](https://github.com/github/spec-kit) by GitHub. All credit for the methodology and workflow design goes to the original authors. This toolkit reworks distribution, naming, and multi-vendor support while retaining the spirit of the original specification-first workflow.
+This work is inspired by the amazing project: [github/spec-kit](https://github.com/github/spec-kit) by GitHub.
 
 ## License
 
-MIT License - Same as the original [github/spec-kit](https://github.com/github/spec-kit) project.
+This project is licensed under the [MIT License](./LICENSE).
+
+Portions of this project are based on or adapted from
+[Spec-Kit](https://github.com/github/spec-kit),
+© 2024 GitHub, Inc., licensed under the MIT License.
+See the [Spec-Kit LICENSE](https://github.com/github/spec-kit/blob/main/LICENSE)
+for details.
