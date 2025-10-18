@@ -34,7 +34,23 @@ The user **MUST** provide a feature name. This parameter is compulsory.
    - Any technical constraints or dependencies mentioned
    - **If Reference Folder is specified**: Load all files from the referenced folder in `.specify/reference/[folder-name]/` for additional context
 
-4. **Load Constitutional Standards**: Execute `.specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}}` with targeted sections for planning:
+4. **Validate Specification Completeness**:
+
+   - Check if the specification file (FEATURE_SPEC) contains "NEED CLARIFICATION"
+   - **If "NEED CLARIFICATION" is found**: STOP execution and ERROR with:
+
+     ```
+     ERROR: Cannot proceed with planning - specification requires clarification
+
+     The feature specification at <FEATURE_SPEC> contains unresolved "NEED CLARIFICATION" items.
+
+     Please run @ssd-specify <feature-name> again with the required information to complete
+     the specification before creating an implementation plan.
+     ```
+
+   - **If no "NEED CLARIFICATION" found**: Continue to next step
+
+5. **Load Constitutional Standards**: Execute `.specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}}` with targeted sections for planning:
 
    **Planning-Specific Sections**:
 
@@ -51,7 +67,7 @@ The user **MUST** provide a feature name. This parameter is compulsory.
 
    **Note**: This is ~60% more efficient than loading the full constitution while retaining all planning-relevant standards.
 
-5. Execute the implementation plan template:
+6. Execute the implementation plan template:
 
    - Load `.specify/templates/plan-template.md` (already copied to IMPL_PLAN path)
    - Set Input path to FEATURE_SPEC
@@ -66,12 +82,12 @@ The user **MUST** provide a feature name. This parameter is compulsory.
    - Update Progress Tracking as you complete each phase
    - **IMPORTANT**: Always include checkboxes `- [ ]` for all progress tracking items, phases, and gate checks
 
-6. Verify execution completed:
+7. Verify execution completed:
 
    - Check Progress Tracking shows all phases complete
    - Ensure all required artifacts were generated
    - Confirm no ERROR states in execution
 
-7. Report results with feature name, file paths, and generated artifacts.
+8. Report results with feature name, file paths, and generated artifacts.
 
 Use absolute paths with the repository root for all file operations to avoid path issues.

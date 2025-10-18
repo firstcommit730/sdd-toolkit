@@ -35,7 +35,23 @@ The user **MUST** provide a feature name. This parameter is compulsory.
    - IF EXISTS: Read quickstart.md for test scenarios
    - **Check spec.md for Reference Folder**: If specified, load all files from the referenced folder in `.specify/reference/[folder-name]/` for additional context
 
-4. **Load Constitutional Standards (Context-Aware)**: Based on the tasks being generated, load relevant sections:
+4. **Validate Plan Completeness**:
+
+   - Check if the plan.md file contains "NEED CLARIFICATION"
+   - **If "NEED CLARIFICATION" is found**: STOP execution and ERROR with:
+
+     ```
+     ERROR: Cannot proceed with task generation - implementation plan requires clarification
+
+     The implementation plan at <FEATURE_DIR>/plan.md contains unresolved "NEED CLARIFICATION" items.
+
+     Please run @ssd-plan <feature-name> again with the required information to complete
+     the implementation plan before generating tasks.
+     ```
+
+   - **If no "NEED CLARIFICATION" found**: Continue to next step
+
+5. **Load Constitutional Standards (Context-Aware)**: Based on the tasks being generated, load relevant sections:
 
    **Task Type Detection**:
 
@@ -60,7 +76,7 @@ The user **MUST** provide a feature name. This parameter is compulsory.
    - Simple libraries might not need data-model.md
    - Generate tasks based on what's available
 
-5. Generate tasks following the template:
+6. Generate tasks following the template:
 
    - Use `.specify/templates/tasks-template.md` as the base
    - **IMPORTANT**: All tasks must use checkbox format `- [ ] T001 Task description`
@@ -71,7 +87,7 @@ The user **MUST** provide a feature name. This parameter is compulsory.
      - **Integration tasks**: DB connections, middleware, logging
      - **Polish tasks [P]**: Unit tests, performance, docs
 
-6. Task generation rules:
+7. Task generation rules:
 
    - Each contract file → contract test task marked [P]
    - Each entity in data-model → model creation task marked [P]
@@ -81,7 +97,7 @@ The user **MUST** provide a feature name. This parameter is compulsory.
    - Same file = sequential (no [P])
    - **All tasks must start with `- [ ]` checkbox syntax**
 
-7. Order tasks by dependencies:
+8. Order tasks by dependencies:
 
    - Setup before everything
    - Tests before implementation (TDD)
@@ -90,16 +106,17 @@ The user **MUST** provide a feature name. This parameter is compulsory.
    - Core before integration
    - Everything before polish
 
-8. Include parallel execution examples:
+9. Include parallel execution examples:
 
    - Group [P] tasks that can run together
    - Show actual Task agent commands
 
-9. Create FEATURE_DIR/tasks.md with:
-   - Correct feature name from implementation plan
-   - Numbered tasks (T001, T002, etc.) with checkboxes `- [ ]`
-   - Clear file paths for each task
-   - Dependency notes
-   - Parallel execution guidance
+10. Create FEATURE_DIR/tasks.md with:
+
+- Correct feature name from implementation plan
+- Numbered tasks (T001, T002, etc.) with checkboxes `- [ ]`
+- Clear file paths for each task
+- Dependency notes
+- Parallel execution guidance
 
 The tasks.md should be immediately executable - each task must be specific enough that an LLM can complete it without additional context.
