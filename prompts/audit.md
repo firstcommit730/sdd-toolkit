@@ -1,30 +1,39 @@
-````markdown
+# Audit
+
 Audit the implementation against the specification to validate quality and alignment.
 
-**Usage**: `@audit <feature-name>`
+## Usage
 
-Example: `@audit user-authentication` will audit `specs/user-authentication/`
+- `@audit <feature-name>` - Audit implementation for specified feature
 
-1. Determine which feature to audit:
+**Note**: The `<feature-name>` parameter is **REQUIRED**. If not provided, an error will be generated.
 
-   - **If user provided feature name**: Use that specific feature
-   - **If no feature name provided**:
-     - List all available features in `specs/`
-     - If only one feature exists: use it automatically
-     - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to audit: @audit <feature-name>"
-     - Available features: [list directory names from specs/]
-   - Set FEATURE_NAME to the determined feature name
+---
+
+## Audit Implementation
+
+The user **MUST** provide a feature name. This parameter is compulsory.
+
+### Steps
+
+1. **Validate feature name parameter**:
+
+   - **If no feature name provided**: ERROR "Feature name is required. Usage: @audit <feature-name>"
+   - **If feature name provided**: Continue with the specified feature
+   - Verify the feature exists in `.specify/specs/`
+   - If feature doesn't exist: ERROR "Feature '<feature-name>' not found in specs/. Available features: [list directory names from .specify/specs/]"
+   - Set FEATURE_NAME to the provided feature name
    - Set FEATURE_DIR to `specs/<feature-name>/`
    - Run `.specify/scripts/{{SCRIPT_LANG}}/check-prerequisites{{SCRIPT_EXT}} <feature-name> --json --require-tasks` to validate and parse SPEC_FILE and AVAILABLE_DOCS. All paths must be absolute.
 
-2. Verify required files exist:
+2. **Verify required files exist**:
 
    - spec.md (required)
    - plan.md (required)
    - tasks.md (required)
    - If any missing: ERROR "Cannot audit without complete specification, plan, and tasks"
 
-3. Load the audit template:
+3. **Load the audit template**:
 
    - Use `.specify/templates/audit-template.md` as the structure
    - Set Input to feature directory path
@@ -32,7 +41,7 @@ Example: `@audit user-authentication` will audit `specs/user-authentication/`
    - The template is self-contained and executable
    - Follow error handling and gate checks as specified
 
-4. Load and analyze specification documents:
+4. **Load and analyze specification documents**:
 
    - Read spec.md for requirements and acceptance criteria
    - Read plan.md for technical design and architecture
@@ -47,17 +56,15 @@ Example: `@audit user-authentication` will audit `specs/user-authentication/`
    ```{{SCRIPT_LANG}}
    .specify/scripts/{{SCRIPT_LANG}}/load-constitution{{SCRIPT_EXT}} "core,testing,security,branching"
    ```
-````
 
-**Sections Loaded**:
+   **Sections Loaded**:
 
-- **core**: Technology stack, coding standards, error handling, validation
-- **testing**: Coverage requirements, test organization, security testing
+   - **core**: Technology stack, coding standards, error handling, validation
+   - **testing**: Coverage requirements, test organization, security testing
+   - **security**: Security principles, secrets management, input validation
+   - **branching**: Git workflow, commit standards
 
-  - **security**: Security principles, secrets management, input validation
-  - **branching**: Git workflow, commit standards
-
-  **Purpose**: Phase 1 covers most common compliance issues.
+   **Purpose**: Phase 1 covers most common compliance issues.
 
 6. Audit the implementation (Phase 1 - Initial Assessment): - **Requirements Coverage**: Verify all functional requirements (FR-XXX) are implemented
 

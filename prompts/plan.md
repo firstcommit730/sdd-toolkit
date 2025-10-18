@@ -1,33 +1,28 @@
 # Plan
 
-Create an imp - List all available features in `specs/`
-
-- If none: ERROR "No features found. Use @specify to create a feature first"
-- If multiple:
-  - Available features: [list directory names from specs/]ntation plan for a feature specification using the plan template to generate design artifacts.
+Create an implementation plan for a feature specification using the plan template to generate design artifacts.
 
 ## Usage
 
-- `@plan` - Create implementation plan for current/auto-detected feature
 - `@plan <feature-name>` - Create implementation plan for specified feature
+
+**Note**: The `<feature-name>` parameter is **REQUIRED**. If not provided, an error will be generated.
 
 ---
 
 ## Create Implementation Plan
 
-The user may optionally provide a feature name. If not provided, the system will auto-detect.
+The user **MUST** provide a feature name. This parameter is compulsory.
 
 ### Steps
 
-1. **Determine which feature to plan**:
+1. **Validate feature name parameter**:
 
-   - **If user provided feature name**: Use that specific feature
-   - **If no feature name provided**:
-     - List all available features in `.specify/specs/`
-     - If only one feature exists: use it automatically
-     - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to plan: @plan <feature-name>"
-     - Available features: [list directory names from .specify/specs/]
-   - Set FEATURE_NAME to the determined feature name
+   - **If no feature name provided**: ERROR "Feature name is required. Usage: @plan <feature-name>"
+   - **If feature name provided**: Continue with the specified feature
+   - Verify the feature exists in `.specify/specs/`
+   - If feature doesn't exist: ERROR "Feature '<feature-name>' not found in specs/. Available features: [list directory names from .specify/specs/]"
+   - Set FEATURE_NAME to the provided feature name
 
 2. Run `.specify/scripts/{{SCRIPT_LANG}}/setup-plan{{SCRIPT_EXT}} <feature-name> --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.
 

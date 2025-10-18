@@ -4,26 +4,25 @@ Generate an actionable, dependency-ordered tasks.md for the feature based on ava
 
 ## Usage
 
-- `@tasks` - Generate tasks for current/auto-detected feature
 - `@tasks <feature-name>` - Generate tasks for specified feature
+
+**Note**: The `<feature-name>` parameter is **REQUIRED**. If not provided, an error will be generated.
 
 ---
 
 ## Generate Tasks
 
-The user may optionally provide a feature name. If not provided, the system will auto-detect.
+The user **MUST** provide a feature name. This parameter is compulsory.
 
 ### Steps
 
-1. **Determine which feature to generate tasks for**:
+1. **Validate feature name parameter**:
 
-   - **If user provided feature name**: Use that specific feature
-   - **If no feature name provided**:
-     - List all available features in `specs/`
-     - If only one feature exists: use it automatically
-     - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to generate tasks for: @tasks <feature-name>"
-     - Available features: [list directory names from specs/]
-   - Set FEATURE_NAME to the determined feature name
+   - **If no feature name provided**: ERROR "Feature name is required. Usage: @tasks <feature-name>"
+   - **If feature name provided**: Continue with the specified feature
+   - Verify the feature exists in `.specify/specs/`
+   - If feature doesn't exist: ERROR "Feature '<feature-name>' not found in specs/. Available features: [list directory names from .specify/specs/]"
+   - Set FEATURE_NAME to the provided feature name
 
 2. Run `.specify/scripts/{{SCRIPT_LANG}}/check-task-prerequisites{{SCRIPT_EXT}} <feature-name> --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
 

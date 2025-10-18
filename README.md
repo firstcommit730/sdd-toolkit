@@ -1,6 +1,6 @@
 # LLM Specification Driven Development (SDD) Toolkit
 
-Specification Driven Development (SDD) workflow toolkit for collaborating with multiple AI coding assistants (Amazon Q Developer & GitHub Copilot) using consistent prompts and a spec→plan→tasks→implement loop.
+Specification Driven Development (SDD) workflow toolkit for collaborating with AI coding assistants—GitHub Copilot (primary) and Amazon Q Developer (alternative)—using consistent prompts and a spec→plan→tasks→implement loop.
 
 ## About
 
@@ -39,7 +39,7 @@ If you maintain or use another AI assistant, add support by placing these markdo
 
 Constitution files use **Markdown format** that is:
 
-- **Human-readable** and understand
+- **Human-readable** and easy to understand
 - **Simple to edit** with any text editor
 - **Version control friendly** with readable diffs
 - **Accessible** to all team members
@@ -57,152 +57,9 @@ This is a clean, modern implementation designed for simplicity and clarity from 
 
 ## Quick Start
 
-1. **Install prompts:**
+1. **Install prompts (GitHub Copilot):**
 
-   **Amazon Q Developer (Global) - Bash:**
-
-   ```bash
-   mkdir -p ~/.aws/amazonq/prompts && \
-   cd /tmp && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
-   for file in sdd-toolkit/prompts/*.md; do \
-     sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > ~/.aws/amazonq/prompts/"$(basename "$file")"; \
-   done && \
-   cd - && \
-   if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
-   else \
-     rsync -av --exclude='memory/' /tmp/sdd-toolkit/.specify/ .specify/; \
-   fi && \
-   mkdir -p .specify/memory specs && \
-   rm -rf /tmp/sdd-toolkit
-   ```
-
-   **Amazon Q Developer (Global) - PowerShell:**
-
-   ```powershell
-   # Cross-platform paths
-   $homeDir = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:USERPROFILE } else { $env:HOME }
-   $tempPath = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:TEMP } else { if ($env:TMPDIR) { $env:TMPDIR } else { "/tmp" } }
-   $amazonQPath = Join-Path $homeDir ".aws" "amazonq"
-   $tempDir = Join-Path $tempPath "sdd-toolkit-install-$(Get-Random)"
-
-   # Create directories
-   $promptsPath = Join-Path $amazonQPath "prompts"
-   New-Item -ItemType Directory -Force -Path $promptsPath | Out-Null
-
-   # Clone repository
-   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git $tempDir
-
-   # Process prompts
-   $promptsDir = Join-Path $tempDir "prompts"
-   Get-ChildItem (Join-Path $promptsDir "*.md") | ForEach-Object {
-     (Get-Content $_.FullName -Raw -Encoding UTF8) `
-       -replace '{{SCRIPT_EXT}}','.ps1' `
-       -replace '{{SCRIPT_LANG}}','powershell' | `
-       Set-Content (Join-Path $promptsPath $_.Name) -Encoding UTF8
-   }
-
-   # Handle .specify directory
-   $sourceSpecifyDir = Join-Path $tempDir ".specify"
-   if (-not (Test-Path ".specify")) {
-     Copy-Item $sourceSpecifyDir ".specify" -Recurse -Force
-     $memorySourceDir = Join-Path $sourceSpecifyDir "memory"
-     if (Test-Path $memorySourceDir) {
-       $memoryDestDir = Join-Path ".specify" "memory"
-       New-Item -ItemType Directory -Force -Path $memoryDestDir | Out-Null
-       Get-ChildItem $memorySourceDir | Where-Object { $_.Name -notin @("constitution.md", "git-workflow.md") } | Copy-Item -Destination $memoryDestDir -Recurse -Force
-     }
-     # Remove excluded files from copied directory
-     $destMemoryDir = Join-Path ".specify" "memory"
-     @("constitution.md", "git-workflow.md") | ForEach-Object {
-       $excludeFile = Join-Path $destMemoryDir $_
-       if (Test-Path $excludeFile) { Remove-Item $excludeFile -Force }
-     }
-   } else {
-     Get-ChildItem $sourceSpecifyDir | Where-Object { $_.Name -ne "memory" } | Copy-Item -Destination ".specify" -Recurse -Force
-   }
-
-   # Ensure required directories exist
-   New-Item -ItemType Directory -Force -Path (Join-Path ".specify" "memory") | Out-Null
-   New-Item -ItemType Directory -Force -Path "specs" | Out-Null
-
-   # Cleanup
-   Remove-Item -Recurse -Force $tempDir
-   ```
-
-   **GitHub Copilot (Project-Local) - Bash:**
-
-   ```bash
-   TEMP_DIR="/tmp/sdd-toolkit-install-$$" && \
-   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git "$TEMP_DIR" && \
-   mkdir -p .github/prompts && \
-   for file in "$TEMP_DIR"/prompts/*.md; do \
-     sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > .github/prompts/"$(basename "$file" .md).prompt.md"; \
-   done && \
-   if [ ! -d .specify ]; then \
-     rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' "$TEMP_DIR"/.specify/ .specify/; \
-   else \
-     rsync -av --exclude='memory/' "$TEMP_DIR"/.specify/ .specify/; \
-   fi && \
-   mkdir -p .specify/memory specs && \
-   rm -rf "$TEMP_DIR"
-   ```
-
-   **GitHub Copilot (Project-Local) - PowerShell:**
-
-   ```powershell
-   # Cross-platform temp directory
-   $tempPath = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:TEMP } else { if ($env:TMPDIR) { $env:TMPDIR } else { "/tmp" } }
-   $tempDir = Join-Path $tempPath "sdd-toolkit-install-$(Get-Random)"
-
-   # Clone repository
-   git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git $tempDir
-
-   # Create .github/prompts directory
-   $githubPromptsDir = Join-Path ".github" "prompts"
-   New-Item -ItemType Directory -Force -Path $githubPromptsDir | Out-Null
-
-   # Process prompts
-   $promptsDir = Join-Path $tempDir "prompts"
-   Get-ChildItem (Join-Path $promptsDir "*.md") | ForEach-Object {
-     $baseName = $_.BaseName
-     $outputPath = Join-Path $githubPromptsDir "$baseName.prompt.md"
-     (Get-Content $_.FullName -Raw -Encoding UTF8) `
-       -replace '{{SCRIPT_EXT}}','.ps1' `
-       -replace '{{SCRIPT_LANG}}','powershell' | `
-       Set-Content $outputPath -Encoding UTF8
-   }
-
-   # Handle .specify directory
-   $sourceSpecifyDir = Join-Path $tempDir ".specify"
-   if (-not (Test-Path ".specify")) {
-     Copy-Item $sourceSpecifyDir ".specify" -Recurse -Force
-     $memorySourceDir = Join-Path $sourceSpecifyDir "memory"
-     if (Test-Path $memorySourceDir) {
-       $memoryDestDir = Join-Path ".specify" "memory"
-       New-Item -ItemType Directory -Force -Path $memoryDestDir | Out-Null
-       Get-ChildItem $memorySourceDir | Where-Object { $_.Name -notin @("constitution.md", "git-workflow.md") } | Copy-Item -Destination $memoryDestDir -Recurse -Force
-     }
-     # Remove excluded files from copied directory
-     $destMemoryDir = Join-Path ".specify" "memory"
-     @("constitution.md", "git-workflow.md") | ForEach-Object {
-       $excludeFile = Join-Path $destMemoryDir $_
-       if (Test-Path $excludeFile) { Remove-Item $excludeFile -Force }
-     }
-   } else {
-     Get-ChildItem $sourceSpecifyDir | Where-Object { $_.Name -ne "memory" } | Copy-Item -Destination ".specify" -Recurse -Force
-   }
-
-   # Ensure required directories exist
-   New-Item -ItemType Directory -Force -Path (Join-Path ".specify" "memory") | Out-Null
-   New-Item -ItemType Directory -Force -Path "specs" | Out-Null
-
-   # Cleanup
-   Remove-Item -Recurse -Force $tempDir
-   ```
-
-   See [INSTALL.md](./INSTALL.md) for detailed installation instructions.
+Use the project-local install in the Installation Guide: see [INSTALL.md — GitHub Copilot (Project-Local)](./INSTALL.md#github-copilot-project-local--recommended).
 
 2. **Start developing:**
 
@@ -324,10 +181,10 @@ Branch names must follow proper naming conventions and be descriptive.
 
 ```bash
 @specify JWT-based user authentication with login/logout
-@plan
-@tasks
-@implement
-@audit user-authentication  # Audit specific feature
+@plan feat/jwt-based-user-authentication-with-login-logout
+@tasks feat/jwt-based-user-authentication-with-login-logout
+@implement feat/jwt-based-user-authentication-with-login-logout
+@audit jwt-based-user-authentication-with-login-logout  # Audit specific feature
 ```
 
 **Enhanced with Reference Context:**
@@ -454,10 +311,10 @@ EOF
 | `@constitution` | Create/update project constitution with versioning             | `@constitution`                                                                 |
 | `@drift`        | Detect constitutional drift and generate realignment TODO list | `@drift`                                                                        |
 | `@specify`      | Create feature specifications from descriptions                | `@specify <description>` or `@specify <description> -type <type> -ref <folder>` |
-| `@plan`         | Generate implementation plans and design artifacts             | `@plan`                                                                         |
-| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks`                                                                        |
-| `@implement`    | Execute implementation following task plan                     | `@implement`                                                                    |
-| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>` or `@audit` (auto-selects if one spec)                  |
+| `@plan`         | Generate implementation plans and design artifacts             | `@plan <feature-name>`                                                          |
+| `@tasks`        | Create dependency-ordered task breakdowns                      | `@tasks <feature-name>`                                                         |
+| `@implement`    | Execute implementation following task plan                     | `@implement <feature-name>`                                                     |
+| `@audit`        | Validate implementation against specification                  | `@audit <feature-name>`                                                         |
 
 ### Prompt Details
 
@@ -488,6 +345,7 @@ EOF
 
 **Implementation Planning**
 
+- Requires feature name parameter (compulsory)
 - Generates multi-phase design artifacts
 - Integrates constitutional requirements
 - Uses Reference Context from spec (no re-loading)
@@ -495,6 +353,7 @@ EOF
 
 **Task Generation**
 
+- Requires feature name parameter (compulsory)
 - Dependency-ordered task lists (TDD approach)
 - Marks parallel tasks with [P]
 - Uses Reference Context patterns
@@ -502,6 +361,7 @@ EOF
 
 **Implementation Execution**
 
+- Requires feature name parameter (compulsory)
 - Executes tasks in dependency order
 - Marks completed tasks as [X]
 - Respects parallel vs sequential constraints
@@ -510,7 +370,8 @@ EOF
 **Implementation Audit**
 
 - Validates implementation against specification after `@implement`
-- Usage: `@audit <feature-name>` or `@audit` (auto-selects if only one spec)
+- Requires feature name parameter (compulsory)
+- Usage: `@audit <feature-name>`
 - Audits a single feature specification at a time
 - Checks requirements coverage, acceptance criteria, task completion
 - Audits code quality, testing, error handling, and security
@@ -519,7 +380,6 @@ EOF
 - Generates quality scores and production readiness assessment
 - Creates feature-specific `AUDIT.md` in `.specify/specs/<feature>/`
 - Overwrites existing audit report on each run for fresh validation
-- For projects with multiple specs, specify which feature to audit
 
 ## Documentation
 
@@ -535,6 +395,10 @@ The `sdd-toolkit/` directory contains automated update scripts to keep your inst
 - **Update Scripts**: `sdd-update-copilot.sh`, `sdd-update-amazonq.sh`
 
 Scripts can be run directly from GitHub using curl, or locally if you've cloned the repository. See [sdd-toolkit/README.md](./sdd-toolkit/README.md) for details.
+
+## AmazonQ
+
+AmazonQ install [INSTALL.md](./INSTALL.md#alternative-amazon-q-developer-global).
 
 ## Credits & Attribution
 

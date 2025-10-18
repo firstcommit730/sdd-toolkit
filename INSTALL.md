@@ -1,10 +1,94 @@
 # LLM Specification Driven Development Toolkit - Installation Guide
 
-A vendor-neutral installation guide for setting up SDD prompts with Amazon Q Developer and GitHub Copilot.
+A vendor-neutral installation guide for setting up SDD prompts with GitHub Copilot (primary) and Amazon Q Developer (alternative).
 
 ## Quick Install
 
-### Amazon Q Developer (Global Installation)
+### GitHub Copilot (Project-Local) — Recommended
+
+**Bash:**
+
+```bash
+TEMP_DIR="/tmp/sdd-toolkit-install-$$" && \
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git "$TEMP_DIR" && \
+mkdir -p .github/prompts && \
+for file in "$TEMP_DIR"/prompts/*.md; do \
+  sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > .github/prompts/"$(basename "$file" .md).prompt.md"; \
+done && \
+if [ ! -d .specify ]; then \
+  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' "$TEMP_DIR"/.specify/ .specify/; \
+else \
+  rsync -av --exclude='memory/' "$TEMP_DIR"/.specify/ .specify/; \
+fi && \
+mkdir -p .specify/memory specs && \
+rm -rf "$TEMP_DIR"
+```
+
+**PowerShell:**
+
+```powershell
+# Cross-platform temp directory
+$tempPath = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:TEMP } else { if ($env:TMPDIR) { $env:TMPDIR } else { "/tmp" } }
+$tempDir = Join-Path $tempPath "sdd-toolkit-install-$(Get-Random)"
+
+# Clone repository
+git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git $tempDir
+
+# Create .github/prompts directory
+$githubPromptsDir = Join-Path ".github" "prompts"
+New-Item -ItemType Directory -Force -Path $githubPromptsDir | Out-Null
+
+# Process prompts
+$promptsDir = Join-Path $tempDir "prompts"
+Get-ChildItem (Join-Path $promptsDir "*.md") | ForEach-Object {
+  $baseName = $_.BaseName
+  $outputPath = Join-Path $githubPromptsDir "$baseName.prompt.md"
+  (Get-Content $_.FullName -Raw -Encoding UTF8) `
+    -replace '{{SCRIPT_EXT}}','.ps1' `
+    -replace '{{SCRIPT_LANG}}','powershell' | `
+    Set-Content $outputPath -Encoding UTF8
+}
+
+# Handle .specify directory
+$sourceSpecifyDir = Join-Path $tempDir ".specify"
+if (-not (Test-Path ".specify")) {
+  Copy-Item $sourceSpecifyDir ".specify" -Recurse -Force
+  $memorySourceDir = Join-Path $sourceSpecifyDir "memory"
+  if (Test-Path $memorySourceDir) {
+    $memoryDestDir = Join-Path ".specify" "memory"
+    New-Item -ItemType Directory -Force -Path $memoryDestDir | Out-Null
+    Get-ChildItem $memorySourceDir | Where-Object { $_.Name -notin @("constitution.md", "git-workflow.md") } | Copy-Item -Destination $memoryDestDir -Recurse -Force
+  }
+  # Remove excluded files from copied directory
+  $destMemoryDir = Join-Path ".specify" "memory"
+  @("constitution.md", "git-workflow.md") | ForEach-Object {
+    $excludeFile = Join-Path $destMemoryDir $_
+    if (Test-Path $excludeFile) { Remove-Item $excludeFile -Force }
+  }
+} else {
+  Get-ChildItem $sourceSpecifyDir | Where-Object { $_.Name -ne "memory" } | Copy-Item -Destination ".specify" -Recurse -Force
+}
+
+# Ensure required directories exist
+New-Item -ItemType Directory -Force -Path (Join-Path ".specify" "memory") | Out-Null
+New-Item -ItemType Directory -Force -Path "specs" | Out-Null
+
+# Cleanup
+Remove-Item -Recurse -Force $tempDir
+```
+
+**What this does:**
+
+- Clones the latest toolkit from GitHub
+- Creates `.github/prompts/` directory in your project
+- Replaces placeholders (`{{SCRIPT_EXT}}` and `{{SCRIPT_LANG}}`) with appropriate values for your shell
+- Copies all prompt files with `.prompt.md` extension (Copilot requirement)
+- Copies the complete `.specify/` directory structure to your project (excludes `constitution.md` and `git-workflow.md` on first install, preserves existing `memory/` folder on updates)
+- Cleans up temporary files
+
+Next: Continue with the Quick Start in the README to generate your first spec: see [README.md#quick-start](./README.md#quick-start).
+
+### Alternative: Amazon Q Developer (Global)
 
 **Bash:**
 
@@ -59,58 +143,7 @@ Write-Host "✅ Amazon Q prompts and .specify directory installed successfully!"
 - Copies the complete `.specify/` directory structure (excludes `constitution.md` and `git-workflow.md` on first install, preserves existing `memory/` folder on updates)
 - Cleans up temporary files
 
-### GitHub Copilot (Project-Local Installation)
-
-**Bash:**
-
-```bash
-cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
-cd - && \
-mkdir -p .github/prompts && \
-for file in /tmp/sdd-toolkit/prompts/*.md; do \
-  sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > .github/prompts/"$(basename "$file" .md).prompt.md"; \
-done && \
-if [ ! -d .specify ]; then \
-  rsync -av --exclude='memory/constitution.md' --exclude='memory/git-workflow.md' /tmp/sdd-toolkit/.specify/ .specify/; \
-else \
-  rsync -av --exclude='memory/' /tmp/sdd-toolkit/.specify/ .specify/; \
-fi && \
-rm -rf /tmp/sdd-toolkit && \
-echo "✅ GitHub Copilot prompts and .specify directory installed successfully!"
-```
-
-**PowerShell:**
-
-```powershell
-Set-Location $env:TEMP
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
-Set-Location -
-New-Item -ItemType Directory -Force -Path ".github\prompts" | Out-Null
-Get-ChildItem "$env:TEMP\sdd-toolkit\prompts\*.md" | ForEach-Object {
-  $baseName = $_.BaseName
-  (Get-Content $_.FullName -Raw) `
-    -replace '{{SCRIPT_EXT}}','.ps1' `
-    -replace '{{SCRIPT_LANG}}','powershell' | `
-    Set-Content ".github\prompts\$baseName.prompt.md"
-}
-if (-not (Test-Path ".specify")) {
-  robocopy "$env:TEMP\sdd-toolkit\.specify" ".specify" /E /XF constitution.md git-workflow.md /XD memory
-} else {
-  robocopy "$env:TEMP\sdd-toolkit\.specify" ".specify" /E /XD memory
-}
-Remove-Item -Recurse -Force "$env:TEMP\sdd-toolkit"
-Write-Host "✅ GitHub Copilot prompts and .specify directory installed successfully!"
-```
-
-**What this does:**
-
-- Clones the latest toolkit from GitHub
-- Creates `.github/prompts/` directory in your project
-- Replaces placeholders (`{{SCRIPT_EXT}}` and `{{SCRIPT_LANG}}`) with appropriate values for your shell
-- Copies all prompt files with `.prompt.md` extension (Copilot requirement)
-- Copies the complete `.specify/` directory structure to your project (excludes `constitution.md` and `git-workflow.md` on first install, preserves existing `memory/` folder on updates)
-- Cleans up temporary files
+<!-- intentionally blank: Amazon Q is documented above as an alternative in Quick Install -->
 
 ## Local Install (From Cloned Repository)
 
@@ -201,16 +234,16 @@ Write-Host "✅ GitHub Copilot prompts and .specify directory installed successf
 
 ## Verify Installation
 
-**Amazon Q Developer:**
-
-```bash
-ls -la ~/.aws/amazonq/prompts/
-```
-
 **GitHub Copilot:**
 
 ```bash
 ls -la .github/prompts/
+```
+
+**Amazon Q Developer:**
+
+```bash
+ls -la ~/.aws/amazonq/prompts/
 ```
 
 You should see the following prompts: `audit.md`, `constitution.md`, `drift.md`, `implement.md`, `plan.md`, `specify.md`, `tasks.md`
@@ -255,7 +288,7 @@ Type `@constitution` in your IDE to test the installation and create your projec
 
 ## Prerequisites
 
-- Amazon Q Developer or GitHub Copilot extension installed in your IDE
+- GitHub Copilot or Amazon Q Developer extension installed in your IDE
 - Project with `.specify/` directory structure
 - macOS, Linux, or WSL environment with zsh/bash shell access
 
@@ -283,16 +316,16 @@ The `.specify/` directory is automatically created when you first use the prompt
 
 ## Troubleshooting
 
-**Prompts not found in Amazon Q:**
-
-- Verify `~/.aws/amazonq/prompts/` directory exists
-- Check file permissions: `chmod 644 ~/.aws/amazonq/prompts/*.md`
-- Restart your IDE after installation
-
 **Prompts not found in GitHub Copilot:**
 
 - Ensure prompts are in `.github/prompts/` (project-local, not global)
 - Verify files have `.prompt.md` extension
+- Restart your IDE after installation
+
+**Prompts not found in Amazon Q:**
+
+- Verify `~/.aws/amazonq/prompts/` directory exists
+- Check file permissions: `chmod 644 ~/.aws/amazonq/prompts/*.md`
 - Restart your IDE after installation
 
 **Script errors:**
@@ -308,16 +341,16 @@ The `.specify/` directory is automatically created when you first use the prompt
 
 ## Uninstallation
 
-**Remove Amazon Q prompts:**
-
-```bash
-rm -rf ~/.aws/amazonq/prompts
-```
-
 **Remove GitHub Copilot prompts:**
 
 ```bash
 rm -rf .github/prompts
+```
+
+**Remove Amazon Q prompts:**
+
+```bash
+rm -rf ~/.aws/amazonq/prompts
 ```
 
 ## Updating to Latest Version
@@ -328,7 +361,7 @@ The easiest way to update is using the automated update scripts. These scripts w
 
 ### Manual Update (From GitHub Repository)
 
-#### Amazon Q Developer (Global)
+#### GitHub Copilot (Project-Local)
 
 **Bash:**
 
@@ -372,7 +405,7 @@ Remove-Item -Recurse -Force "$env:TEMP\sdd-toolkit"
 Write-Host "✅ Amazon Q prompts and .specify directory updated successfully!"
 ```
 
-#### GitHub Copilot (Project-Local)
+#### Amazon Q Developer (Global)
 
 **Bash:**
 

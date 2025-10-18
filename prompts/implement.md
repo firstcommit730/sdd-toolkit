@@ -4,26 +4,25 @@ Execute the implementation plan by progressively executing all tasks defined in 
 
 ## Usage
 
-- `@implement` - Execute implementation for current/auto-detected feature
 - `@implement <feature-name>` - Execute implementation for specified feature
+
+**Note**: The `<feature-name>` parameter is **REQUIRED**. If not provided, an error will be generated.
 
 ---
 
 ## Execute Implementation
 
-The user may optionally provide a feature name. If not provided, the system will auto-detect.
+The user **MUST** provide a feature name. This parameter is compulsory.
 
 ### Steps
 
-1. **Determine which feature to implement**:
+1. **Validate feature name parameter**:
 
-   - **If user provided feature name**: Use that specific feature
-   - **If no feature name provided**:
-     - List all available features in `specs/`
-     - If only one feature exists: use it automatically
-     - If multiple features exist: ERROR "Multiple specs found. Please specify which feature to implement: @implement <feature-name>"
-     - Available features: [list directory names from specs/]
-   - Set FEATURE_NAME to the determined feature name
+   - **If no feature name provided**: ERROR "Feature name is required. Usage: @implement <feature-name>"
+   - **If feature name provided**: Continue with the specified feature
+   - Verify the feature exists in `.specify/specs/`
+   - If feature doesn't exist: ERROR "Feature '<feature-name>' not found in specs/. Available features: [list directory names from .specify/specs/]"
+   - Set FEATURE_NAME to the provided feature name
 
 2. Run `.specify/scripts/{{SCRIPT_LANG}}/check-implementation-prerequisites{{SCRIPT_EXT}} <feature-name> --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
 
