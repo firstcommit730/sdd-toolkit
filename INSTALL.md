@@ -10,7 +10,7 @@ A vendor-neutral installation guide for setting up SDD prompts with GitHub Copil
 
 ```bash
 TEMP_DIR="/tmp/sdd-toolkit-install-$$" && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git "$TEMP_DIR" && \
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git "$TEMP_DIR" && \
 mkdir -p .github/prompts && \
 for file in "$TEMP_DIR"/prompts/*.md; do \
   sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > .github/prompts/"$(basename "$file" .md).prompt.md"; \
@@ -32,7 +32,7 @@ $tempPath = if ($IsWindows -or $env:OS -eq "Windows_NT") { $env:TEMP } else { if
 $tempDir = Join-Path $tempPath "sdd-toolkit-install-$(Get-Random)"
 
 # Clone repository
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git $tempDir
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git $tempDir
 
 # Create .github/prompts directory
 $githubPromptsDir = Join-Path ".github" "prompts"
@@ -95,7 +95,7 @@ Next: Continue with the Quick Start in the README to generate your first spec: s
 ```bash
 mkdir -p ~/.aws/amazonq/prompts && \
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git && \
 for file in sdd-toolkit/prompts/*.md; do \
   sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > ~/.aws/amazonq/prompts/"$(basename "$file")"; \
 done && \
@@ -116,7 +116,7 @@ echo "✅ Amazon Q prompts and .specify directory installed successfully!"
 $amazonQPath = "$env:USERPROFILE\.aws\amazonq"
 New-Item -ItemType Directory -Force -Path "$amazonQPath\prompts" | Out-Null
 Set-Location $env:TEMP
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git
 Get-ChildItem "sdd-toolkit\prompts\*.md" | ForEach-Object {
   (Get-Content $_.FullName -Raw) `
     -replace '{{SCRIPT_EXT}}','.ps1' `
@@ -367,7 +367,7 @@ The easiest way to update is using the automated update scripts. These scripts w
 
 ```bash
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git && \
 rm -rf ~/.aws/amazonq/prompts/*.md && \
 for file in sdd-toolkit/prompts/*.md; do \
   sed -e 's/{{SCRIPT_EXT}}/.sh/g' -e 's/{{SCRIPT_LANG}}/bash/g' "$file" > ~/.aws/amazonq/prompts/"$(basename "$file")"; \
@@ -389,7 +389,7 @@ echo "✅ Amazon Q prompts and .specify directory updated successfully!"
 ```powershell
 $amazonQPath = "$env:USERPROFILE\.aws\amazonq"
 Set-Location $env:TEMP
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git
 Remove-Item "$amazonQPath\prompts\*.md" -Force -ErrorAction SilentlyContinue
 Get-ChildItem "sdd-toolkit\prompts\*.md" | ForEach-Object {
   (Get-Content $_.FullName -Raw) `
@@ -411,7 +411,7 @@ Write-Host "✅ Amazon Q prompts and .specify directory updated successfully!"
 
 ```bash
 cd /tmp && \
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git && \
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git && \
 cd - && \
 rm -rf .github/prompts/*.prompt.md && \
 mkdir -p .github/prompts && \
@@ -431,7 +431,7 @@ echo "✅ GitHub Copilot prompts and .specify directory updated successfully!"
 
 ```powershell
 Set-Location $env:TEMP
-git clone --depth 1 https://github.com/firstcommit730/sdd-toolkit.git
+git clone --depth 1 https://github.com/sdd-toolkit/ai-code-assistant.git
 Set-Location -
 Remove-Item ".github\prompts\*.prompt.md" -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path ".github\prompts" | Out-Null
